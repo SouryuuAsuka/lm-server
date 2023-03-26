@@ -1,5 +1,5 @@
-name: lampy-server-build
-run-name: ${{ github.actor }} starts building the lampy-server 
+name: lm-server-build
+run-name: ${{ github.actor }} starts building the lm-server 
 on:
   push:
     branches:
@@ -25,9 +25,9 @@ jobs:
         script: |
           echo {$USER}
           ssh -T git@github.com
-          cd ~/lampy/lampy-server
-          git pull git@github.com:SouryuuAsuka/lampy-server.git main
+          cd ~/lampy-market/lm-server
+          git pull git@github.com:SouryuuAsuka/lm-server.git main
           git status
-          cd ../lampy-docker
+          cd ../lm-docker
           docker-compose build
           docker-compose up -d
