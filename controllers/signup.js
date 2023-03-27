@@ -12,8 +12,8 @@ let transporter = nodemailer.createTransport({
     port: 587,
     secure: true,
     auth:{
-        user: 'noreply@lampymarket.com',
-        pass: 'jg3j&W%YV5i#yLF%CZfq'
+        user: 'lampy.market',
+        pass: 'eeC4WmdJgK5k'
     },
 })
 
@@ -109,7 +109,7 @@ exports.signup = async (req, res) => {
                                 const dbResult = await pool.query(userInsertString, [username, email, hash2, salt, "NOW()"]);
                                 var mailKey = crypto.randomBytes(16).toString('hex');
                                 var mailToken = crypto.randomBytes(16).toString('hex');
-                                console.log("mailKey "+ mailKey);
+                                console.log("mailKИли Мишеey "+ mailKey);
                                 var mailKeyHash = await bcrypt.hash(mailKey, process.env.LOCAL_MAIL_KEY_SALT);
                                 console.log("mailKey "+ mailKey);
                                 console.log("mailKeyHash "+ JSON.stringify(mailKeyHash));
@@ -118,6 +118,7 @@ exports.signup = async (req, res) => {
                                 await pool.query(mailInsertString, [dbResult.rows[0].user_id, mailToken, mailKeyHash, "NOW()"]);
                                 
                                 var link = 'https://lampymarket.com/confirmemail?t=' + mailToken + '&k=' + mailKey
+                                console.log("start SMTP")
                                 let result = await transporter.sendMail({
                                     from: '"Сервер" <noreply@lampymarket.com>',
                                     to: email,
