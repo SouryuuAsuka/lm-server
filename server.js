@@ -59,7 +59,12 @@ app.use(cookies());
 app.use(cors({
   origin: 'https://lampymarket.com'
 }));
-
+app.use(cors({
+  origin: 'https://cbot.lampymarket.com'
+}));
+app.use(cors({
+  origin: 'https://tbot.lampymarket.com'
+}));
 // Позволяет видеть в req.ip реальный ip пользователя, а не nginx
 app.set('trust proxy', true)
 
