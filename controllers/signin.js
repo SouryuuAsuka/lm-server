@@ -61,19 +61,25 @@ exports.signin = async (req, res) => {
                             );
                             await pool.query(`INSERT INTO refresh_tokens (user_id, user_ip, created, token) VALUES ($1, $2, $3, $4)`, [userId, req.ip, tokenDate, tokenHash]);
 
-                            res.cookie('accessToken', accessToken, {
+                            /*res.cookie('accessToken', accessToken, {
                                 httpOnly: true,
                             })
                             res.cookie('refreshToken', refreshToken, {
                                 httpOnly: true,
-                            })
+                            })*/
                             var profileLink;
                             if (user.rows[0].username != '') {
                                 profileLink = user.rows[0].username;
                             } else {
                                 profileLink = "id" + user.rows[0].user_id
                             }
-                            return res.status(200).json({ success: true, profile: profileLink });
+                            return res.status(200)
+                            .cookie('accessToken', accessToken, {
+                                httpOnly: true,
+                            }).cookie('refreshToken', refreshToken, {
+                                httpOnly: true,
+                            })
+                            .json({ success: true, profile: profileLink });
                         } else { //TODO: ограничить количество вводов пароля
                             res.status(500).json({
                                 error: "Пароль неверен", //Database connection error
