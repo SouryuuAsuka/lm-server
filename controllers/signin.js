@@ -62,12 +62,10 @@ exports.signin = async (req, res) => {
                             await pool.query(`INSERT INTO refresh_tokens (user_id, user_ip, created, token) VALUES ($1, $2, $3, $4)`, [userId, req.ip, tokenDate, tokenHash]);
 
                             res.cookie('accessToken', accessToken, {
-                                domain: '.lampymarket.com',
-                                httpOnly: true,
+                                httpOnly: true
                             })
                             res.cookie('refreshToken', refreshToken, {
-                                domain: '.lampymarket.com',
-                                httpOnly: true,
+                                httpOnly: true
                             })
                             var profileLink;
                             if (user.rows[0].username != '') {
