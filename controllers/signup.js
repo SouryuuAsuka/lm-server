@@ -8,10 +8,12 @@ const { networkInterfaces } = require('os');
 
 //var postfixUser = process.env.SMTP_USER;
 let transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: "smtp.zoho.eu",
+    port: 587,
+    secure: true,
     auth:{
-        user: 'projectorfund@gmail.com',
-        pass: 'ifypsaofkkhkzygg'
+        user: 'noreply@lampymarket.com',
+        pass: 'jg3j&W%YV5i#yLF%CZfq'
     },
 })
 
@@ -115,11 +117,11 @@ exports.signup = async (req, res) => {
                                 const mailInsertString = `INSERT INTO mail_confirm_tokens (user_id, mail_token, mail_key, created) VALUES ($1, $2, $3, $4);`;
                                 await pool.query(mailInsertString, [dbResult.rows[0].user_id, mailToken, mailKeyHash, "NOW()"]);
                                 
-                                var link = 'https://lampy.space/confirmemail?t=' + mailToken + '&k=' + mailKey
+                                var link = 'https://lampymarket.com/confirmemail?t=' + mailToken + '&k=' + mailKey
                                 let result = await transporter.sendMail({
-                                    from: '"Сервер" <lampy.space@gmail.com>',
+                                    from: '"Сервер" <noreply@lampymarket.com>',
                                     to: email,
-                                    subject: 'Подтвердите вашу почту на lampy.space.com',
+                                    subject: 'Подтвердите вашу почту на lampymarket.com',
                                     text: 'Ссылка на подтверждение: ' + link,
                                     html:
                                         'Ссылка на подтверждение: <a href=' + link + '>' + link + '</a>',
