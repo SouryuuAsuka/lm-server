@@ -9,7 +9,7 @@ const { networkInterfaces } = require('os');
 //var postfixUser = process.env.SMTP_USER;
 let transporter = nodemailer.createTransport({
     host: "smtp.zoho.eu",
-    port: 587,
+    port: 465,
     secure: true,
     auth:{
         user: 'lampy.market',
