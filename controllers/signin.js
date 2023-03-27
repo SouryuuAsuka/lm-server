@@ -9,6 +9,13 @@ exports.signin = async (req, res) => {
         const login = req.body.login;
         console.log("login " + login)
         var user;
+        pool.query(`SELECT * FROM users WHERE email = $1`, [login], (err, orgRow) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(JSON.stringify(orgRow))
+            }
+        })
         if (validator.isEmail(login)) {
             user = await pool.query(`SELECT * FROM users WHERE email = $1`, [login])
         } else if (validator.matches(login, '^[a-zA-Z0-9_.-]*$')) {
@@ -63,11 +70,11 @@ exports.signin = async (req, res) => {
 
                             res.cookie('accessToken', accessToken, {
                                 domain: 'lampymarket.com',
-                                httpOnly: false,
+                                httpOnly: true,
                             })
                             res.cookie('refreshToken', refreshToken, {
                                 domain: 'lampymarket.com',
-                                httpOnly: false,
+                                httpOnly: true,
                             })
                             var profileLink;
                             if (user.rows[0].username != '') {
