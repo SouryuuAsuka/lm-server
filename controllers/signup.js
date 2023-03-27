@@ -12,8 +12,8 @@ let transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth:{
-        user: 'lampy.market',
-        pass: 'eeC4WmdJgK5k'
+        user: 'noreply@lampymarket.com',
+        pass: 'jg3j&W%YV5i#yLF%CZfq'
     },
 })
 
