@@ -63,11 +63,11 @@ exports.signin = async (req, res) => {
 
                             res.cookie('accessToken', accessToken, {
                                 domain: 'lampymarket.com',
-                                httpOnly: true,
+                                httpOnly: false,
                             })
                             res.cookie('refreshToken', refreshToken, {
                                 domain: 'lampymarket.com',
-                                httpOnly: true,
+                                httpOnly: false,
                             })
                             var profileLink;
                             if (user.rows[0].username != '') {
