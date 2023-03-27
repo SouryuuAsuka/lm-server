@@ -57,55 +57,12 @@ app.use(bodyParser.json())
 
 app.use(cookies());
 app.use(cors({
-  origin: 'https://lhb.lampy.space'
+  origin: 'https://lampymarket.com'
 }));
-const cbApi = axios.create({
-  baseURL: "https://api.coinbase.com",
-});
-
-const job = schedule.scheduleJob('*/5 * * * *', async function () {
-  var rates = {};
-  var tokens = [
-    "APE",
-    "BTC",
-    "BCH",
-    "DAI",
-    "DOGE",
-    "ETH",
-    "LTC",
-    "SHIB",
-    "USDT",
-    "USDC",
-    "MATIC",
-    "TON"
-  ];
-  for (let i = 0; i < tokens.length; i++) {
-    await cbApi.get("/v2/exchange-rates?currency=" + tokens[i])
-      .then((response) => {
-        rates[tokens[i]] = Number(response.data.data.rates.USD);
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-  console.log(JSON.stringify(rates));
-  fs.writeFile(__dirname +"/service/crypto_rates.json", JSON.stringify(rates), (err) => {
-    if (err)
-      console.log(err);
-    else {
-      var today = new Date();
-      var now = today.toLocaleString();
-      console.log("Crypto rates written successfully in "+ now);
-    }
-  })
-});
 
 // Позволяет видеть в req.ip реальный ip пользователя, а не nginx
 app.set('trust proxy', true)
 
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
 app.get('/rates', (req,res)=>{
   res.sendFile(__dirname +"/service/crypto_rates.json")
 })
