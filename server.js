@@ -106,42 +106,42 @@ app.set('trust proxy', true)
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
-app.get('/api/rates', (req,res)=>{
+app.get('/rates', (req,res)=>{
   res.sendFile(__dirname +"/service/crypto_rates.json")
 })
-app.get('/api/', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello World in panel api');
 });
 
-app.post('/api/signin', signin);
-app.post('/api/signup', signup);
-app.post('/api/confirmemail', confirmemail);
-app.get('/api/token', refreshToken);
-app.get('/api/profile', getProfile);
-app.get('/api/orglist', getOrgList);
-app.get('/api/org', getOrg);
+app.post('/signin', signin);
+app.post('/signup', signup);
+app.post('/confirmemail', confirmemail);
+app.get('/token', refreshToken);
+app.get('/profile', getProfile);
+app.get('/orglist', getOrgList);
+app.get('/org', getOrg);
 
-app.get('/api/org/purpose', getPurposeList);
+app.get('/org/purpose', getPurposeList);
 
 app.use(require('./middleware/auth'));
 
-app.post('/api/org/purpose', newPurpose);
-app.post('/api/org/purpose/edit', editPurpose);
-app.post('/api/org/purpose/active', setActive);
+app.post('/org/purpose', newPurpose);
+app.post('/org/purpose/edit', editPurpose);
+app.post('/org/purpose/active', setActive);
 
-app.post('/api/org', uploadAvatar.single('avatar'), newOrg);
-app.post('/api/org/edit', uploadAvatar.single('avatar'), editOrg);
-app.get('/api/org/paylist', getOrgPayments);
+app.post('/org', uploadAvatar.single('avatar'), newOrg);
+app.post('/org/edit', uploadAvatar.single('avatar'), editOrg);
+app.get('/org/paylist', getOrgPayments);
 
 
-app.get('/api/moderation/org', getOrgRequest);
-app.post('/api/moderation/org/confirm', orgConfirm);
-app.get('/api/moderation/org/requestlist', getOrgRequestList);
-app.get('/api/moderation/org/pay', getPayList);
-app.post('/api/moderation/org/pay/confirm', confirmPay);
-app.post('/api/moderation/org/pay/cansel', canselPay);
-app.delete('/api/token', signout);
-app.get('/api/user', getUser);
+app.get('/moderation/org', getOrgRequest);
+app.post('/moderation/org/confirm', orgConfirm);
+app.get('/moderation/org/requestlist', getOrgRequestList);
+app.get('/moderation/org/pay', getPayList);
+app.post('/moderation/org/pay/confirm', confirmPay);
+app.post('/moderation/org/pay/cansel', canselPay);
+app.delete('/token', signout);
+app.get('/user', getUser);
 
 app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () => {
   console.log(`Running on http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`);
