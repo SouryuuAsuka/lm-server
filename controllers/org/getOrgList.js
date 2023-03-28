@@ -17,27 +17,17 @@ exports.getOrgList = async (req, res) => {
             org.about AS about, 
             org.type AS type, 
             org.avatar AS avatar, 
-            p.pur_id AS pur_id,
-            p.name AS pur_name,
-            p.about AS pur_about,
-            p.sum AS pur_sum,
-            p.active AS pur_active,
-            p.balance_ton AS balance_ton,
-            p.balance_btc AS balance_btc,
-            p.balance_ape AS balance_ape,
-            p.balance_bch AS balance_bch, 
-            p.balance_dai AS balance_dai, 
-            p.balance_doge AS balance_doge,
-            p.balance_eth AS balance_eth, 
-            p.balance_ltc AS balance_ltc,
-            p.balance_shib AS balance_shib, 
-            p.balance_usdt AS balance_usdt, 
-            p.balance_usdc AS balance_usdc, 
-            p.balance_matic AS balance_matic
+            p.prod_id AS prod_id,
+            p.name AS prod_name,
+            p.about AS prod_about,
+            p.sum AS prod_sum,
+            p.active AS prod_active,
+            p.currency AS prod_currency,
+            p.sold AS prod_sold
             FROM organizations AS org 
-            LEFT JOIN purposes AS p
-            ON p.pur_id = (
-                SELECT p1.pur_id FROM purposes AS p1
+            LEFT JOIN products AS p
+            ON p.prod_id = (
+                SELECT p1.prod_id FROM products AS p1
                 WHERE p1.org_id = org.org_id AND p1.active = true
                 ORDER BY created DESC
                 LIMIT 1)
@@ -75,12 +65,12 @@ exports.getOrgList = async (req, res) => {
                                     about: orgRow.rows[i].about,
                                     type: orgRow.rows[i].type,
                                     avatar: orgRow.rows[i].avatar,
-                                    purId: orgRow.rows[i].pur_id,
-                                    purName: orgRow.rows[i].pur_name,
-                                    purAbout: orgRow.rows[i].pur_about,
-                                    purSum: orgRow.rows[i].pur_sum,
-                                    purActive: orgRow.rows[i].pur_active,
-                                    purUsdTotal: usdTotal.toFixed(1)
+                                    prodId: orgRow.rows[i].prod_id,
+                                    prodName: orgRow.rows[i].prod_name,
+                                    prodAbout: orgRow.rows[i].prod_about,
+                                    prodSum: orgRow.rows[i].prod_sum,
+                                    prodActive: orgRow.rows[i].prod_active,
+                                    prodSold: orgRow.rows[i].prod_sold
                                 }
                                 console.log(JSON.stringify(orgList[i]))
                                 if (i + 1 == orgRow.rows.length) {
