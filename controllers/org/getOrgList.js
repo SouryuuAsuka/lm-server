@@ -24,6 +24,7 @@ exports.getOrgList = async (req, res) => {
             p.sum AS prod_sum,
             p.active AS prod_active,
             p.currency AS prod_currency,
+            p.picture AS prod_picture,
             p.sold AS prod_sold
             FROM organizations AS org 
             LEFT JOIN goods AS p
@@ -59,6 +60,7 @@ exports.getOrgList = async (req, res) => {
                                             about: orgRow.rows[i].prod_about,
                                             sum: orgRow.rows[i].prod_sum,
                                             active: orgRow.rows[i].prod_active,
+                                            picture: orgRow.rows[i].prod_picture,
                                             sold: orgRow.rows[i].prod_sold
                                         })
                                         checkpoint = true;
@@ -79,6 +81,7 @@ exports.getOrgList = async (req, res) => {
                                             about: orgRow.rows[i].prod_about,
                                             sum: orgRow.rows[i].prod_sum,
                                             active: orgRow.rows[i].prod_active,
+                                            picture: orgRow.rows[i].prod_picture,
                                             sold: orgRow.rows[i].prod_sold
                                         })
                                     }
