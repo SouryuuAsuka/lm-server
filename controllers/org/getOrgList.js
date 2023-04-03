@@ -6,8 +6,8 @@ exports.getOrgList = async (req, res) => {
         var sqlVar = {};
         if (req.query.p == undefined) sqlVar.page = '0';
         else sqlVar.page = (req.query.p - 1) * 10;
-        if (req.query.c == undefined) sqlVar.country = '%';
-        else sqlVar.country = req.query.c;
+        if (req.query.c == undefined) sqlVar.city = '%';
+        else sqlVar.city = req.query.c;
         if (req.query.t == undefined) sqlVar.type = '{0, 1, 2}';
         else sqlVar.type = "{"+req.query.t+"}";
         pool.query(`
@@ -32,8 +32,8 @@ exports.getOrgList = async (req, res) => {
                 WHERE p1.org_id = org.org_id AND p1.active = true
                 ORDER BY created DESC
                 LIMIT 5)
-            WHERE org.country LIKE $1 AND org.type = ANY($2)
-            OFFSET $3 LIMIT 10`, [sqlVar.country, sqlVar.type, sqlVar.page], (err, orgRow) => {
+            WHERE org.city LIKE $1 AND org.type = ANY($2)
+            OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.type, sqlVar.page], (err, orgRow) => {
             if (err) {
 
                 console.log(err)
