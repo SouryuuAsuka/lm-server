@@ -82,7 +82,6 @@ exports.newOrg = async (req, res) => {
                             if (req.file) {
                                 avatar = 1;
                             }
-                            с
                             var image = sharp(req.file.path); // path to the stored image
                             image.resize({ width: 720, height: 720 }).toFormat("jpeg", { mozjpeg: true }).toFile(
                                 path.resolve(req.file.destination, 'resized', req.file.filename)
