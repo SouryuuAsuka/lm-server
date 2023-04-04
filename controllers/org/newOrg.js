@@ -73,7 +73,7 @@ exports.newOrg = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Некорректное значение города" })
                 }
                 else if (validator.isEmpty(req.file.path)) {
-                    return res.status(400).json({ success: false, error: "Тип организации должен быть указан" })
+                    return res.status(400).json({ success: false, error: "Аватар организации должен быть загружен" })
                 }
                 else {
                     pool.query(`SELECT * FROM users WHERE user_id = $1`, [decoded.userId], (err, user) => {
