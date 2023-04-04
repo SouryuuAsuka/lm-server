@@ -4,7 +4,11 @@ const fs = require('fs');
 
 exports.getOrgFromDB = async (req, tableName, res) => {
 
-    pool.query(`SELECT * FROM ${tableName} WHERE org_id = $1`, [req.query.id], async (err, orgRow) => {
+    pool.query(`
+        SELECT * FROM ${tableName} AS t
+        LEFT JOIN users AS u
+            ON p.prod_id = (
+        WHERE org_id = $1`, [req.query.id], async (err, orgRow) => {
         if (err) {
             console.log(err)
             return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
@@ -22,7 +26,7 @@ exports.getOrgFromDB = async (req, tableName, res) => {
                     about: orgRow.rows[0].about,
                     owner: orgRow.rows[0].owner,
                     avatar: orgRow.rows[0].avatar,
-                    categoy: orgRow.rows[0].categoy,
+                    category: orgRow.rows[0].category,
                     city: orgRow.rows[0].city
                 }
                 if (orgRow.rows[0].owner == owner) {
