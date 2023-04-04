@@ -22,8 +22,8 @@ exports.getOrgFromDB = async (req, tableName, res) => {
                     about: orgRow.rows[0].about,
                     owner: orgRow.rows[0].owner,
                     avatar: orgRow.rows[0].avatar,
-                    type: orgRow.rows[0].type,
-                    country: orgRow.rows[0].country
+                    categoy: orgRow.rows[0].categoy,
+                    city: orgRow.rows[0].city
                 }
                 if (orgRow.rows[0].owner == owner) {
                     fs.readFile(__dirname + "/crypto_rates.json", async (err, data) => {

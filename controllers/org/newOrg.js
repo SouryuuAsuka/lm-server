@@ -7,7 +7,7 @@ const sharp = require('sharp');
 
 var Minio = require('minio');
 const minioClient = new Minio.Client({
-    endPoint: 'minio',
+    endPoint: 'lm-minio',
     port: 9000,
     useSSL: false,
     accessKey: process.env.MINIO_ACCESS_KEY,
@@ -82,6 +82,7 @@ exports.newOrg = async (req, res) => {
                             if (req.file) {
                                 avatar = 1;
                             }
+                            с
                             var image = sharp(req.file.path); // path to the stored image
                             image.resize({ width: 720, height: 720 }).toFormat("jpeg", { mozjpeg: true }).toFile(
                                 path.resolve(req.file.destination, 'resized', req.file.filename)
