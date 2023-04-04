@@ -86,14 +86,8 @@ exports.getOrgList = async (req, res) => {
                                         })
                                     }
                                     if (i + 1 == orgRow.rows.length && j+1 == orgList.length) {
-                                        console.log(test);
                                         return res.status(200).json({ orgs: orgList, count: count });
                                     }   
-                                }
-                                console.log(JSON.stringify(orgList[i]))
-                                if (i + 1 == orgRow.rows.length) {
-                                    console.log(test);
-                                    return res.status(200).json({ orgs: orgList, count: count });
                                 }
                             }
                         }
