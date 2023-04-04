@@ -16,7 +16,18 @@ exports.getOrgRequest = async (req, res) => {
                     return res.status(500).json({ error: 'Недостаточно прав' });
                 } else {
                     pool.query(`
-                    SELECT * FROM organizations_request AS o
+                    SELECT 
+                    o.org_id AS org_id,
+                    o.name A name,                    
+                    o.about A about,                    
+                    o.avatar A avatar,                    
+                    o.category A category,                    
+                    o.city A city,                    
+                    u.email A email,          
+                    u.firstname A firstname, 
+                    u.surname A surname, 
+                    u.telegram A telegram, 
+                    FROM organizations_request AS o
                     LEFT JOIN users AS u
                     ON o.owner = u.user_id  
                     WHERE o.org_id = $1`, [req.query.id], async (err, orgRow) => {
