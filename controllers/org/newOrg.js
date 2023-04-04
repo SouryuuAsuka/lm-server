@@ -57,9 +57,6 @@ exports.newOrg = async (req, res) => {
                 else if (validator.isEmpty(req.body.preparTimeMax)) {
                     return res.status(400).json({ success: false, error: "Максимальное время изготовления товаров организации должен быть указано" })
                 }
-                else if (validator.isEmpty(req.body.country)) {
-                    return res.status(400).json({ success: false, error: "Страна должна быть указана" })
-                }
                 else if (!validator.matches(req.body.type, '^[012]{1}$')) {
                     return res.status(400).json({ success: false, error: "Некорректный тип организации" })
                 }
