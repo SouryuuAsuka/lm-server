@@ -36,8 +36,17 @@ exports.newOrg = async (req, res) => {
                 else if (!validator.matches(req.body.type, '^[012]{1}$')) {
                     return res.status(400).json({ success: false, error: "Некорректный тип организации" })
                 }
-                else if (!validator.matches(req.body.country, '^[a-z]{2}$')) {
-                    return res.status(400).json({ success: false, error: "Некорректное значение страны" })
+                else if (!validator.matches(req.body.preparTimeMin, '^[0-9]{1,3}$')) {
+                    return res.status(400).json({ success: false, error: "Некорректо указано минимальное время изготовления товаров" })
+                }
+                else if (!validator.matches(req.body.preparTimeMax, '^[0-9]{1,3}$')) {
+                    return res.status(400).json({ success: false, error: "Некорректо указано максимальное время изготовления товаров" })
+                }
+                else if (Number(req.body.preparTimeMax) < Number(req.body.preparTimeMin)) {
+                    return res.status(400).json({ success: false, error: "Минимальное время доставки превышает максимальное время изготовления" })
+                }
+                else if (!validator.matches(req.body.city, '^[a-z]{3,4}$')) {
+                    return res.status(400).json({ success: false, error: "Некорректное значение города" })
                 }
                 else if (validator.isEmpty(req.file.path)) {
                     return res.status(400).json({ success: false, error: "Тип организации должен быть указан" })
@@ -54,8 +63,8 @@ exports.newOrg = async (req, res) => {
                                 path.resolve(req.file.destination, 'resized', req.file.filename)
                             )  // get image metadata for size
                                 .then(function (metadata) { //TODO: Потом надо будет как-то нормально обрабатывать    изображения
-                                    const orgInsertString = "INSERT INTO organizations_request (name, about, owner, type, avatar, country, created) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING org_id"
-                                    pool.query(orgInsertString, [req.body.name, req.body.about, decoded.userId, req.body.type, avatar, req.body.country, "NOW()"], (err, orgRow) => {
+                                    const orgInsertString = "INSERT INTO organizations_request (name, about, owner, type, avatar, city, created, prepar_time_min, prepar_time_max) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING org_id"
+                                    pool.query(orgInsertString, [req.body.name, req.body.about, decoded.userId, req.body.type, avatar, req.body.city, "NOW()", req.body.preparTimeMin, req.body.preparTimeMax], (err, orgRow) => {
                                         if (err) {
                                             console.log(err)
                                             return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
