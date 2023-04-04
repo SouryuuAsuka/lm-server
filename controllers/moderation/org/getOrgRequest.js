@@ -18,15 +18,15 @@ exports.getOrgRequest = async (req, res) => {
                     pool.query(`
                     SELECT 
                     o.org_id AS org_id,
-                    o.name A name,                    
-                    o.about A about,                    
-                    o.avatar A avatar,                    
-                    o.category A category,                    
-                    o.city A city,                    
-                    u.email A email,          
-                    u.firstname A firstname, 
-                    u.surname A surname, 
-                    u.telegram A telegram, 
+                    o.name AS name, 
+                    o.about AS about, 
+                    o.avatar AS avatar, 
+                    o.category AS category, 
+                    o.city AS city, 
+                    u.email AS email, 
+                    u.firstname AS firstname, 
+                    u.surname AS surname, 
+                    u.telegram AS telegram
                     FROM organizations_request AS o
                     LEFT JOIN users AS u
                     ON o.owner = u.user_id  
