@@ -27,7 +27,7 @@ exports.newOrg = async (req, res) => {
                 else if (validator.isEmpty(req.body.about)) {
                     return res.status(400).json({ success: false, error: "Описание организации должно быть заполнено" })
                 }
-                else if (validator.isEmpty(req.body.type)) {
+                else if (validator.isEmpty(req.body.category)) {
                     return res.status(400).json({ success: false, error: "Тип организации должен быть указан" })
                 }
                 else if (validator.isEmpty(req.body.country)) {
@@ -63,8 +63,8 @@ exports.newOrg = async (req, res) => {
                                 path.resolve(req.file.destination, 'resized', req.file.filename)
                             )  // get image metadata for size
                                 .then(function (metadata) { //TODO: Потом надо будет как-то нормально обрабатывать    изображения
-                                    const orgInsertString = "INSERT INTO organizations_request (name, about, owner, type, avatar, city, created, prepar_time_min, prepar_time_max) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING org_id"
-                                    pool.query(orgInsertString, [req.body.name, req.body.about, decoded.userId, req.body.type, avatar, req.body.city, "NOW()", req.body.preparTimeMin, req.body.preparTimeMax], (err, orgRow) => {
+                                    const orgInsertString = "INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, prepar_time_min, prepar_time_max) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING org_id"
+                                    pool.query(orgInsertString, [req.body.name, req.body.about, decoded.userId, req.body.category, avatar, req.body.city, "NOW()", req.body.preparTimeMin, req.body.preparTimeMax], (err, orgRow) => {
                                         if (err) {
                                             console.log(err)
                                             return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
