@@ -30,7 +30,7 @@ exports.newOrg = async (req, res) => {
                 else if (validator.isEmpty(req.body.category)) {
                     return res.status(400).json({ success: false, error: "Тип организации должен быть указан" })
                 }
-                else if (validator.isEmpty(req.body.req.body.preparTimeMin)) {
+                else if (validator.isEmpty(req.body.preparTimeMin)) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовления товаров организации должен быть указан" })
                 }
                 else if (validator.isEmpty(req.body.preparTimeMax)) {
