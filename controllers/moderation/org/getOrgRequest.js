@@ -51,9 +51,7 @@ exports.getOrgRequest = async (req, res) => {
                                     city: orgRow.rows[0].city,
                                     email: orgRow.rows[0].email,
                                     firstname: orgRow.rows[0].firstname,
-                                    surname: orgRow.rows[0].surname,
-                                    telegram: orgRow.rows[0].telegram
-
+                                    surname: orgRow.rows[0].surname
                                 }
                                 if (orgRow.rows[0].owner == owner) {
                                     fs.readFile(__dirname + "/crypto_rates.json", async (err, data) => {
@@ -63,19 +61,8 @@ exports.getOrgRequest = async (req, res) => {
                                             console.log(data);
                                             return res.status(500).json({ error: 'Неверный запрос' });
                                         } else {
-                                            org.balance = [];
-                                            var usdTotal = 0;
-                                            var i = 1;
-                                            for (var token in parseData) {
-                                                usdTotal += parseData[token] * orgRow.rows[0]["balance_" + token.toLowerCase()];
-                                                org.balance.push({ name: token, sum: orgRow.rows[0]["balance_" + token.toLowerCase()] })
-                                                if (i == Object.keys(parseData).length) {
-                                                    org.usdTotal = usdTotal.toFixed(1);
-                                                    org.usdReceived = orgRow.rows[0].usd_received
-                                                    return res.status(200).json({ org: org });
-                                                }
-                                                else i++;
-                                            }
+                                            return res.status(200).json({ org: org });
+                                            
                                         }
                                     })
                                 } else {
