@@ -22,7 +22,7 @@ exports.getProfile = async (req, res) => {
                     user.avatar = "defaultAvatar";
                 }
                 if (!userRow.rows[0].telegram){
-                    var sult = trRow.rows[0].pass_sult;
+                    var sult = userRow.rows[0].pass_sult;
                     user.tgCode = sult.substring(sult.length - 6) 
                 }
                 return res.status(200).json({ profile: user });
