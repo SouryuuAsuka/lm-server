@@ -22,8 +22,8 @@ exports.getProfile = async (req, res) => {
                     user.avatar = "defaultAvatar";
                 }
                 if (!userRow.rows[0].telegram){
-                    var sult = userRow.rows[0].pass_sult;
-                    user.tgCode = sult.substring(sult.length - 6) 
+                    var salt = userRow.rows[0].pass_salt;
+                    user.tgCode = salt.substring(salt.length - 6) 
                 }
                 return res.status(200).json({ profile: user });
             } else {
