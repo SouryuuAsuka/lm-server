@@ -14,6 +14,7 @@ exports.getProfile = async (req, res) => {
                     surname: userRow.rows[0].surname,
                     userRole: userRow.rows[0].user_role,
                     regtime: userRow.rows[0].regtime,
+                    telegram: userRow.rows[0].telegram,
                 }
                 if (userRow.rows[0].avatar != null) {
                     user.avatar = userRow.rows[0].avatar;
