@@ -20,6 +20,10 @@ exports.getProfile = async (req, res) => {
                 } else {
                     user.avatar = "defaultAvatar";
                 }
+                if (!userRow.rows[0].telegram){
+                    var sult = trRow.rows[0].pass_sult;
+                    user.tgCode = sult.substring(sult.length - 6) 
+                }
                 return res.status(200).json({ profile: user });
             } else {
                 return res.status(500).json({ error: true, message: 'Пользователь не найден' });
