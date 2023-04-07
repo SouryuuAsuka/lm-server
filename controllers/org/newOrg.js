@@ -78,7 +78,7 @@ exports.newOrg = async (req, res) => {
                 }
                 else {
                     pool.query(`SELECT * FROM users WHERE user_id = $1`, [decoded.userId], (err, user) => {
-                        if (user.user_role != 0) {
+                        if (user.rows[0].user_role != 0 || user.rows[0].telegram ==true) {
                             var avatar = 0;
                             if (req.file) {
                                 avatar = 1;
