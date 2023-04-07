@@ -27,8 +27,8 @@ exports.orgConfirm = async (req, res) => {
                             async (client) => {
                                 
                                 var newOrgRow = await client.query(
-                                    `INSERT INTO organizations (owner, name, about, type, created, avatar, country) 
-                                    SELECT organizations_request.owner, organizations_request.name, organizations_request.about, organizations_request.type, organizations_request.created, organizations_request.avatar, organizations_request.country
+                                    `INSERT INTO organizations (owner, name, about, category, created, avatar, city) 
+                                    SELECT organizations_request.owner, organizations_request.name, organizations_request.about, organizations_request.category, organizations_request.created, organizations_request.avatar, organizations_request.city
                                     FROM organizations_request
                                     WHERE organizations_request.org_id = $1
                                     RETURNING organizations.org_id, organizations.owner`, [req.body.requestId]);

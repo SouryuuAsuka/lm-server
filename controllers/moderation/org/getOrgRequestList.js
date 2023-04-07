@@ -26,8 +26,6 @@ exports.getOrgRequestList = async (req, res) => {
                                         category: orgRow.rows[i].category,
                                         created: orgRow.rows[i].created,
                                         city: orgRow.rows[i].city,
-                                        preparTimeMin: orgRow.rows[i].prepar_time_min,
-                                        preparTimeMax: orgRow.rows[i].prepar_time_max,
                                         avatar: orgRow.rows[i].avatar
                                     }
                                     if (i + 1 == orgRow.rows.length) {
