@@ -26,10 +26,13 @@ exports.getOrgRequest = async (req, res) => {
                     u.email AS email, 
                     u.firstname AS firstname, 
                     u.surname AS surname, 
-                    u.telegram AS telegram
+                    u.telegram AS telegram,
+                    t.username AS telegramUsername
                     FROM organizations_request AS o
                     LEFT JOIN users AS u
                     ON o.owner = u.user_id  
+                    LEFT JOIN tg_users AS t
+                    ON u.user_id = t.user_id
                     WHERE o.org_id = $1`, [req.query.id], async (err, orgRow) => {
                         if (err) {
                             console.log(err)
@@ -51,7 +54,8 @@ exports.getOrgRequest = async (req, res) => {
                                     city: orgRow.rows[0].city,
                                     email: orgRow.rows[0].email,
                                     firstname: orgRow.rows[0].firstname,
-                                    surname: orgRow.rows[0].surname
+                                    surname: orgRow.rows[0].surname,
+                                    telegramUsername: orgRow.rows[0].telegramUsername
                                 }
                                 if (orgRow.rows[0].owner == owner) {
                                     fs.readFile(__dirname + "/crypto_rates.json", async (err, data) => {
@@ -62,7 +66,6 @@ exports.getOrgRequest = async (req, res) => {
                                             return res.status(500).json({ error: 'Неверный запрос' });
                                         } else {
                                             return res.status(200).json({ org: org });
-                                            
                                         }
                                     })
                                 } else {

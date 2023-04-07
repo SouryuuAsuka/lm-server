@@ -36,6 +36,7 @@ const { setActive } = require("@controllers/org/purpose/setActive");
 const { newOrg } = require("@controllers/org/newOrg");
 const { editOrg } = require("@controllers/org/editOrg");
 const { orgConfirm } = require("@controllers/moderation/org/confirm");
+const { setOrgComment } = require("@controllers/moderation/org/setOrgComment");
 const { getOrgRequest } = require("@controllers/moderation/org/getOrgRequest");
 const { getOrgRequestList } = require("@controllers/moderation/org/getOrgRequestList");
 const { getPayList } = require("@controllers/moderation/org/pay/getPayList");
@@ -93,6 +94,7 @@ app.get('/api/org/paylist', getOrgPayments);
 
 app.get('/api/moderation/org', getOrgRequest);
 app.post('/api/moderation/org/confirm', orgConfirm);
+app.post('/api/moderation/org/setcomment', setOrgComment);
 app.get('/api/moderation/org/requestlist', getOrgRequestList);
 app.get('/api/moderation/org/pay', getPayList);
 app.post('/api/moderation/org/pay/confirm', confirmPay);
