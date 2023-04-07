@@ -1,4 +1,5 @@
 const pool = require("@service/db");
+const cbot = require("@service/cbot_axios");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 var Minio = require('minio');
@@ -21,11 +22,15 @@ exports.orgConfirm = async (req, res) => {
             } else if(req.body.requestId==undefined){
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
             } else {
-                pool.query(`SELECT * FROM users WHERE user_id = $1`, [decoded.userId], (err, userRow) => {
+                pool.query(`
+                    SELECT * 
+                    FROM users AS u
+                    LEFT JOIN tg_users AS t
+                    ON u.user_id = t.user.id
+                    WHERE user_id = $1`, [decoded.userId], (err, userRow) => {
                     if (userRow.rows[0].user_role == 5 || userRow.rows[0].user_role == 6) {
                         tx(res, "Ошибка подключения к базе данных",
                             async (client) => {
-                                
                                 var newOrgRow = await client.query(
                                     `INSERT INTO organizations (owner, name, about, category, created, avatar, city) 
                                     SELECT organizations_request.owner, organizations_request.name, organizations_request.about, organizations_request.category, organizations_request.created, organizations_request.avatar, organizations_request.city
@@ -43,13 +48,17 @@ exports.orgConfirm = async (req, res) => {
                                             if (err) {
                                               return console.log('Unable to remove object', err)
                                             } else {
+                                                var msgText = "Ваша заявка принята!\nПерейдите на сайт lampymarket.com и войдите в свой аккаунт. В разделе \"Мои огранизации\" мы можете выбрать созданную организацию и добавить туда ваши товары.\n После заполнения организации свяжитесь с модераторми для того, чтобы ее сделали доступной для клиентов";
+                                                cbot.post('sendmsg',{
+                                                    key: process.env.CBOT_ACCESS_KEY, 
+                                                    id: userRow.rows[0].app_id,
+                                                    text: msgText
+                                                })
                                                 console.log('Removed the object')
                                                 return res.status(200).json({});
                                             }
                                           })
                                     }
-                                    console.log("Successfully copied the object:")
-                                    console.log("etag = " + data.etag + ", lastModified = " + data.lastModified)
                                   })
                             });
                     } else {
