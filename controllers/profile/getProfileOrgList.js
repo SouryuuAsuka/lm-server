@@ -1,7 +1,7 @@
 const pool = require("@service/db");
 const fs = require('fs');
 
-exports.getOrgList = async (req, res) => {
+exports.getProfileOrgList = async (req, res) => {
     try {
         var sqlVar = {};
         if (req.query.p == undefined) sqlVar.page = '0';

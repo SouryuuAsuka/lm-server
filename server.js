@@ -20,7 +20,7 @@ const { signin } = require("@controllers/signin");
 const { signup } = require("@controllers/signup");
 const { signout } = require("@controllers/signout");
 const { getProfile } = require("@controllers/getProfile");
-const { getProfileOrgs } = require("@controllers/profile/getProfileOrgList");
+const { getProfileOrgList } = require("@controllers/profile/getProfileOrgList");
 const { getUser } = require("@controllers/getUser");
 const { confirmemail } = require("@controllers/confirmemail");
 
@@ -80,7 +80,7 @@ app.get('/api/org/purpose', getPurposeList);
 app.use(require('./middleware/auth'));
 
 app.get('/api/profile', getProfile);
-app.get('/api/profile/orgs', getProfileOrgs);
+app.get('/api/profile/orgs', getProfileOrgList);
 
 app.post('/api/org/purpose', newPurpose);
 app.post('/api/org/purpose/edit', editPurpose);
