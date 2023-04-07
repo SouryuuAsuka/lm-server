@@ -1,6 +1,6 @@
 const pool = require("@service/db");
 
-exports.getProfileOrgsgetProfile = async (req, res) => {
+exports.getProfile = async (req, res) => {
     try {
         if (req.query.username == undefined) {
             return res.status(500).json({ error: true, message: 'Пустой запрос' });
