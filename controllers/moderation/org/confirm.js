@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 var Minio = require('minio');
 const tx = require("@service/tx");
 
-const minioClient  = new Minio.Client({
+const minioClient = new Minio.Client({
     endPoint: 'minio',
     port: 9000,
     useSSL: false,
@@ -19,7 +19,7 @@ exports.orgConfirm = async (req, res) => {
             console.log("начало проверки")
             if (err) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
-            } else if(req.body.requestId==undefined){
+            } else if (req.body.requestId == undefined) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
             } else {
                 pool.query(`
@@ -39,27 +39,34 @@ exports.orgConfirm = async (req, res) => {
                                     RETURNING organizations.org_id, organizations.owner`, [req.body.requestId]);
                                 await client.query(`DELETE FROM organizations_request WHERE org_id = $1;`, [req.body.requestId]);
                                 await client.query(`UPDATE users SET user_role = 3 WHERE user_id = $1;`, [newOrgRow.rows[0].user_id]);
-                                minioClient.copyObject('avatars-org', newOrgRow.rows[0].org_id+".jpeg", '/avatars-org-request/'+req.body.requestId+".jpeg", function(e, data) {
+                                minioClient.copyObject('avatars-org', newOrgRow.rows[0].org_id + ".jpeg", '/avatars-org-request/' + req.body.requestId + ".jpeg", function (e, data) {
                                     if (e) {
                                         console.log(e);
-                                        return res.status(500).json({ error: "Ошибка при обработке запроса"});
+                                        return res.status(500).json({ error: "Ошибка при обработке запроса" });
                                     } else {
-                                        minioClient.removeObject('avatars-org-request', req.body.requestId+".jpeg", function(err) {
+                                        minioClient.removeObject('avatars-org-request', req.body.requestId + ".jpeg", function (err) {
                                             if (err) {
-                                              return console.log('Unable to remove object', err)
+                                                console.log('Unable to remove object', err)
+                                                return res.status(500).json({ error: "Ошибка при сохранении аватара" });
                                             } else {
                                                 var msgText = "Ваша заявка принята!\nПерейдите на сайт lampymarket.com и войдите в свой аккаунт. В разделе \"Мои огранизации\" мы можете выбрать созданную организацию и добавить туда ваши товары.\n После заполнения организации свяжитесь с модераторми для того, чтобы ее сделали доступной для клиентов";
-                                                cbot.post('sendmsg',{
-                                                    key: process.env.CBOT_ACCESS_KEY, 
+                                                cbot.post('sendmsg', {
+                                                    key: process.env.CBOT_ACCESS_KEY,
                                                     id: userRow.rows[0].app_id,
                                                     text: msgText
                                                 })
-                                                console.log('Removed the object')
-                                                return res.status(200).json({});
+                                                .then(() => {
+                                                    console.log('Removed the object')
+                                                    return res.status(200).json({});
+                                                })
+                                                .catch(function (error) {
+                                                    console.log(error)
+                                                    return res.status(500).json({ error: "Ошибка при отправке сообщения в бот" });
+                                                  })
                                             }
-                                          })
+                                        })
                                     }
-                                  })
+                                })
                             });
                     } else {
                         return res.status(500).json({
@@ -73,6 +80,6 @@ exports.orgConfirm = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        return res.status(500).json({ error: "Ошибка при обработке запроса"});
+        return res.status(500).json({ error: "Ошибка при обработке запроса" });
     };
 }
