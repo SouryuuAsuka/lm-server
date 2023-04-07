@@ -26,8 +26,8 @@ exports.getProfileOrgsgetProfile = async (req, res) => {
                     user.tgCode = salt.substring(salt.length - 6) 
                 } else{
                     const tgUserRow = await pool.query(`SELECT * FROM tg_users WHERE user_id = $1`, [userRow.rows[0].user_id]);
-                    if (userRow.rows[0] != undefined) {
-                        user.username = userRow.rows[0].username;
+                    if (tgUserRow.rows[0] != undefined) {
+                        user.username = tgUserRow.rows[0].username;
                     }
                 }
                 return res.status(200).json({ profile: user });
