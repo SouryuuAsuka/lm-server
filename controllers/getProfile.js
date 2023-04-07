@@ -14,7 +14,7 @@ exports.getProfile = async (req, res) => {
                     surname: userRow.rows[0].surname,
                     userRole: userRow.rows[0].user_role,
                     regtime: userRow.rows[0].regtime,
-                    telegram: userRow.rows[0].telegram,
+                    telegram: userRow.rows[0].telegram
                 }
                 if (userRow.rows[0].avatar != null) {
                     user.avatar = userRow.rows[0].avatar;
@@ -24,6 +24,11 @@ exports.getProfile = async (req, res) => {
                 if (!userRow.rows[0].telegram){
                     var salt = userRow.rows[0].pass_salt;
                     user.tgCode = salt.substring(salt.length - 6) 
+                } else{
+                    const tgUserRow = await pool.query(`SELECT * FROM tg_users WHERE user_id = $1`, [userRow.rows[0].user_id]);
+                    if (userRow.rows[0] != undefined) {
+                        user.username = userRow.rows[0].username;
+                    }
                 }
                 return res.status(200).json({ profile: user });
             } else {
