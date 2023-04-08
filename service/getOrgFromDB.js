@@ -7,7 +7,7 @@ exports.getOrgFromDB = async (req, tableName, res) => {
     pool.query(`
         SELECT * FROM ${tableName} AS t
         LEFT JOIN users AS u
-            ON p.prod_id = (
+            ON p.prod_id = г
         WHERE org_id = $1`, [req.query.id], async (err, orgRow) => {
         if (err) {
             console.log(err)

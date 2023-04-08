@@ -4,21 +4,22 @@ const jwt = require('jsonwebtoken');
 
 exports.getOrgList = async (req, res) => {
     try {
-        if (req.cookies.accessToken != undefined){
+        dbOrgList(req, res)
+        /*if (req.cookies.accessToken != undefined){
             jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
                 if (err) {
                     return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
                 } else {
                     if (decoded.userRole ==  2 || decoded.userRole ==  3 || decoded.userRole == 5 || decoded.userRole == 6) {
-                        dbOrgList(req, res, true)
+                        dbOrgList(req, res, false)
                     } else {
                         dbOrgList(req, res, false)
                     }
                 }
             })
         } else {
-            dbOrgList(req, res, false)
-        }
+            dbOrgList(req, res)
+        }*/
         
     }
     catch (err) {
@@ -28,10 +29,10 @@ exports.getOrgList = async (req, res) => {
         });
     };
 }
-function dbOrgList(req, res, all) {
+function dbOrgList(req, res) {
     var sqlVar = {};
-        if(all) sqlVar.public = "{true, false}"
-        else sqlVar.public = "{true}"
+        /*if(all) sqlVar.public = "{true, false}"
+        else sqlVar.public = "{true}"*/
         if (req.query.p == undefined) sqlVar.page = '0';
         else sqlVar.page = (req.query.p - 1) * 10;
         if (req.query.c == undefined) sqlVar.city = '%';
@@ -46,6 +47,7 @@ function dbOrgList(req, res, all) {
             org.category AS category, 
             org.avatar AS avatar, 
             org.city AS city, 
+            org.public AS public, 
             g.good_id AS good_id,
             g.name AS good_name,
             g.about AS good_about,
@@ -61,14 +63,14 @@ function dbOrgList(req, res, all) {
                 WHERE g1.org_id = org.org_id AND g1.active = true
                 ORDER BY created DESC
                 LIMIT 5)
-            WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = ANY($3)
-            OFFSET $4 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.public, sqlVar.page], (err, orgRow) => {
+            WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
+            OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page], (err, orgRow) => {
             if (err) {
 
                 console.log(err)
                 return res.status(500).json({ error: 'Ошибка поиска' });
             } else {
-                var count = pool.query("SELECT COUNT(*) FROM organizations")
+                var count = pool.query("SELECT COUNT(*) FROM organizations  WHERE org.city LIKE $1 AND org.category = ANY($2)")
                 var orgList = [];
                 if (orgRow.rows[0] != undefined) {
                     fs.readFile(__dirname + "/../../service/exchange_rates.json", "utf8", (err, data) => {
@@ -135,6 +137,7 @@ function dbOrgList(req, res, all) {
                                                     sum: orgRow.rows[i].good_sum,
                                                     active: orgRow.rows[i].good_active,
                                                     picture: orgRow.rows[i].good_picture,
+                                                    public: orgRow.rows[i].public,
                                                     sold: orgRow.rows[i].good_sold
                                                 })
                                             }
