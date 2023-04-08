@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const cbot = axios.create({
-  baseURL: 'http://lm-cbot/weebhooks/',
+  baseURL: 'http://lm-cbot:3000/weebhooks/',
   timeout: 1000
 });
 
