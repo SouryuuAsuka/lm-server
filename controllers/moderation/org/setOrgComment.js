@@ -17,9 +17,9 @@ exports.setOrgComment = async (req, res) => {
                     SELECT * 
                     FROM organizations_request AS o
                     LEFT JOIN users AS u
-                    ON o.owner = u.user.id
+                    ON o.owner = u.user_id
                     LEFT JOIN tg_users AS t
-                    ON u.user_id = t.user.id
+                    ON u.user_id = t.user_id
                     WHERE o.owner = $1`, [req.body.orgId], async (err, userRow) => {
                     if (err) {
                         console.log(err)
