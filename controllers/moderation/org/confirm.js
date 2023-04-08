@@ -3,7 +3,6 @@ const cbot = require("@service/cbot_axios");
 const minioClient = require("@service/minio");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
-var Minio = require('minio');
 const tx = require("@service/tx");
 
 
