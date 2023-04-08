@@ -31,7 +31,7 @@ exports.orgConfirm = async (req, res) => {
                     ON o.owner = u.user_id
                     LEFT JOIN tg_users AS t
                     ON u.user_id = t.user_id
-                    WHERE o.org_id = $1`, [req.body.orgId], (err, userRow) => {
+                    WHERE o.org_id = $1`, [req.body.requestId], (err, userRow) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({ error: "Ошибка при обработке запроса" });
