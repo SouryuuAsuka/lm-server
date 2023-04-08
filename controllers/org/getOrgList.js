@@ -3,7 +3,34 @@ const fs = require('fs');
 
 exports.getOrgList = async (req, res) => {
     try {
-        var sqlVar = {};
+        if (req.cookies.accessToken != undefined){
+            jwt.verify(refreshToken, process.env.REFRESH_KEY_SECRET, async function (err, decoded) {
+                if (err) {
+                    return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
+                } else {
+                    if (decoded.userRole ==  2 || decoded.userRole ==  3 || decoded.userRole == 5 || decoded.userRole == 6) {
+                        dbOrgList(true)
+                    } else {
+                        dbOrgList(false)
+                    }
+                }
+            })
+        } else {
+            dbOrgList(false)
+        }
+        
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({
+            error: "Ошибка при обработке запроса", //Database connection error
+        });
+    };
+}
+function dbOrgList(all) {
+    var sqlVar = {};
+        if(all) sqlVar.public = "{true, false}"
+        else sqlVar.public = "{true}"
         if (req.query.p == undefined) sqlVar.page = '0';
         else sqlVar.page = (req.query.p - 1) * 10;
         if (req.query.c == undefined) sqlVar.city = '%';
@@ -33,8 +60,8 @@ exports.getOrgList = async (req, res) => {
                 WHERE p1.org_id = org.org_id AND p1.active = true
                 ORDER BY created DESC
                 LIMIT 5)
-            WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
-            OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page], (err, orgRow) => {
+            WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = ANY($3)
+            OFFSET $4 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.public, sqlVar.page], (err, orgRow) => {
             if (err) {
 
                 console.log(err)
@@ -99,11 +126,4 @@ exports.getOrgList = async (req, res) => {
             }
         });
 
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).json({
-            error: "Ошибка при обработке запроса", //Database connection error
-        });
-    };
 }
