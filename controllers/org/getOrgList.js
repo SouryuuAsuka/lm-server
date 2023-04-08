@@ -80,29 +80,16 @@ function dbOrgList(req, res, all) {
                         } else {
                             for (let i = 0; i < orgRow.rows.length; i++) {
                                 var checkpoint = false;
-                                for (let j = 0; j < orgList.length; j++) {
-                                    if (orgRow.rows[i].org_id == orgList[j].org_id){
-                                        orgList[j].goods.push({
-                                            id: orgRow.rows[i].prod_id,
-                                            name: orgRow.rows[i].prod_name,
-                                            about: orgRow.rows[i].prod_about,
-                                            sum: orgRow.rows[i].prod_sum,
-                                            active: orgRow.rows[i].prod_active,
-                                            picture: orgRow.rows[i].prod_picture,
-                                            sold: orgRow.rows[i].prod_sold
-                                        })
-                                        checkpoint = true;
-                                    } else if(j+1 == orgList.length && !checkpoint) {
-                                        orgList.push({
-                                            id: orgRow.rows[i].org_id,
-                                            name: orgRow.rows[i].name,
-                                            about: orgRow.rows[i].about,
-                                            category: orgRow.rows[i].category,
-                                            city: orgRow.rows[i].city,
-                                            avatar: orgRow.rows[i].avatar,
-                                            goods: []
-                   
-                                        })
+                                if(orgList.length == 0){
+                                    orgList.push({
+                                        id: orgRow.rows[i].org_id,
+                                        name: orgRow.rows[i].name,
+                                        about: orgRow.rows[i].about,
+                                        category: orgRow.rows[i].category,
+                                        city: orgRow.rows[i].city,
+                                        avatar: orgRow.rows[i].avatar               
+                                    })
+                                    if(orgRow.rows[i].prod_id != null){
                                         orgList[j].goods.push({
                                             id: orgRow.rows[i].prod_id,
                                             name: orgRow.rows[i].prod_name,
@@ -113,9 +100,46 @@ function dbOrgList(req, res, all) {
                                             sold: orgRow.rows[i].prod_sold
                                         })
                                     }
-                                    if (i + 1 == orgRow.rows.length && j+1 == orgList.length) {
-                                        return res.status(200).json({ orgs: orgList, count: count });
-                                    }   
+                                } else {
+                                    for (let j = 0; j < orgList.length; j++) {
+                                        if (orgRow.rows[i].org_id == orgList[j].org_id){
+                                            orgList[j].goods.push({
+                                                id: orgRow.rows[i].prod_id,
+                                                name: orgRow.rows[i].prod_name,
+                                                about: orgRow.rows[i].prod_about,
+                                                sum: orgRow.rows[i].prod_sum,
+                                                active: orgRow.rows[i].prod_active,
+                                                picture: orgRow.rows[i].prod_picture,
+                                                sold: orgRow.rows[i].prod_sold
+                                            })
+                                            checkpoint = true;
+                                        } else if(j+1 == orgList.length && !checkpoint) {
+                                            orgList.push({
+                                                id: orgRow.rows[i].org_id,
+                                                name: orgRow.rows[i].name,
+                                                about: orgRow.rows[i].about,
+                                                category: orgRow.rows[i].category,
+                                                city: orgRow.rows[i].city,
+                                                avatar: orgRow.rows[i].avatar,
+                                                goods: []
+                       
+                                            })
+                                            if(orgRow.rows[i].prod_id != null){
+                                                orgList[j].goods.push({
+                                                    id: orgRow.rows[i].prod_id,
+                                                    name: orgRow.rows[i].prod_name,
+                                                    about: orgRow.rows[i].prod_about,
+                                                    sum: orgRow.rows[i].prod_sum,
+                                                    active: orgRow.rows[i].prod_active,
+                                                    picture: orgRow.rows[i].prod_picture,
+                                                    sold: orgRow.rows[i].prod_sold
+                                                })
+                                            }
+                                        }
+                                        if (i + 1 == orgRow.rows.length && j+1 == orgList.length) {
+                                            return res.status(200).json({ orgs: orgList, count: count });
+                                        }   
+                                    }
                                 }
                             }
                         }
