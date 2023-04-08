@@ -27,7 +27,7 @@ exports.getOrgRequest = async (req, res) => {
                     u.firstname AS firstname, 
                     u.surname AS surname, 
                     u.telegram AS telegram,
-                    t.username AS telegramUsername
+                    t.username AS t_username
                     FROM organizations_request AS o
                     LEFT JOIN users AS u
                     ON o.owner = u.user_id  
@@ -55,7 +55,7 @@ exports.getOrgRequest = async (req, res) => {
                                     email: orgRow.rows[0].email,
                                     firstname: orgRow.rows[0].firstname,
                                     surname: orgRow.rows[0].surname,
-                                    telegramUsername: orgRow.rows[0].telegramUsername
+                                    telegramUsername: orgRow.rows[0].t_username
                                 }
                                 if (orgRow.rows[0].owner == owner) {
                                     fs.readFile(__dirname + "/crypto_rates.json", async (err, data) => {
