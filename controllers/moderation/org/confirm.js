@@ -21,14 +21,21 @@ exports.orgConfirm = async (req, res) => {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
             } else if (req.body.requestId == undefined) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
+            } else if (decoded.userRole != 5 && decoded.userRole != 6) {
+                return res.status(401).json({ error: true, message: 'Недостаточно прав для редактирования оранизации' });
             } else {
                 pool.query(`
                     SELECT * 
-                    FROM users AS u
+                    FROM organizations_request AS o
+                    LEFT JOIN users AS u
+                    ON o.owner = u.user_id
                     LEFT JOIN tg_users AS t
-                    ON u.user_id = t.user.id
-                    WHERE user_id = $1`, [decoded.userId], (err, userRow) => {
-                    if (userRow.rows[0].user_role == 5 || userRow.rows[0].user_role == 6) {
+                    ON u.user_id = t.user_id
+                    WHERE o.org_id = $1`, [req.body.orgId], (err, userRow) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(500).json({ error: "Ошибка при обработке запроса" });
+                    } else {
                         tx(res, "Ошибка подключения к базе данных",
                             async (client) => {
                                 var newOrgRow = await client.query(
@@ -55,25 +62,20 @@ exports.orgConfirm = async (req, res) => {
                                                     id: userRow.rows[0].app_id,
                                                     text: msgText
                                                 })
-                                                .then(() => {
-                                                    console.log('Removed the object')
-                                                    return res.status(200).json({});
-                                                })
-                                                .catch(function (error) {
-                                                    console.log(error)
-                                                    return res.status(500).json({ error: "Ошибка при отправке сообщения в бот" });
-                                                  })
+                                                    .then(() => {
+                                                        console.log('Removed the object')
+                                                        return res.status(200).json({});
+                                                    })
+                                                    .catch(function (error) {
+                                                        console.log(error)
+                                                        return res.status(500).json({ error: "Ошибка при отправке сообщения в бот" });
+                                                    })
                                             }
                                         })
                                     }
                                 })
                             });
-                    } else {
-                        return res.status(500).json({
-                            error: "Недостаточно прав для совершения операции", //Database connection error
-                        });
-                    }
-
+                    } 
                 })
             }
         })
