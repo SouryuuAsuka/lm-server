@@ -38,80 +38,31 @@ exports.getOrg = async (req, res) => {
                         return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                     } else {
                         if(decoded.userRole == 5 || decoded.userRole == 6 || orgRow.rows[0].owner ==  decoded.userId || orgRow.rows[0].good_active == true){
-
                             if (orgRow.rows[0] != undefined) {
-                                for (let i = 0; i < orgRow.rows.length; i++) {
-                                    var checkpoint = false;
-                                    if (orgList.length == 0) {
-                                        orgList.push({
-                                            id: orgRow.rows[i].org_id,
-                                            name: orgRow.rows[i].name,
-                                            about: orgRow.rows[i].about,
-                                            category: orgRow.rows[i].category,
-                                            city: orgRow.rows[i].city,
-                                            avatar: orgRow.rows[i].avatar
-                                        })
-                                        if (orgRow.rows[i].good_id != null) {
-                                            orgList[j].goods.push({
-                                                id: orgRow.rows[i].good_id,
-                                                name: orgRow.rows[i].good_name,
-                                                about: orgRow.rows[i].good_about,
-                                                sum: orgRow.rows[i].good_sum,
-                                                active: orgRow.rows[i].good_active,
-                                                picture: orgRow.rows[i].good_picture,
-                                                sold: orgRow.rows[i].good_sold
-                                            })
-                                        }
-                                        if (orgRow.rows[i].length == 1) {
-                                            return res.status(200).json({ orgs: orgList, count: count });
-                                        }
-                                    } else {
-                                        for (let j = 0; j < orgList.length; j++) {
-                                            if (orgRow.rows[i].org_id == orgList[j].org_id) {
-                                                orgList[j].goods.push({
-                                                    id: orgRow.rows[i].good_id,
-                                                    name: orgRow.rows[i].good_name,
-                                                    about: orgRow.rows[i].good_about,
-                                                    sum: orgRow.rows[i].good_sum,
-                                                    active: orgRow.rows[i].good_active,
-                                                    picture: orgRow.rows[i].good_picture,
-                                                    sold: orgRow.rows[i].good_sold
-                                                })
-                                                checkpoint = true;
-                                            } else if (j + 1 == orgList.length && !checkpoint) {
-                                                orgList.push({
-                                                    id: orgRow.rows[i].org_id,
-                                                    name: orgRow.rows[i].name,
-                                                    about: orgRow.rows[i].about,
-                                                    category: orgRow.rows[i].category,
-                                                    city: orgRow.rows[i].city,
-                                                    avatar: orgRow.rows[i].avatar,
-                                                    goods: []
-    
-                                                })
-                                                if (orgRow.rows[i].good_id != null) {
-                                                    orgList[j].goods.push({
-                                                        id: orgRow.rows[i].good_id,
-                                                        name: orgRow.rows[i].good_name,
-                                                        about: orgRow.rows[i].good_about,
-                                                        sum: orgRow.rows[i].good_sum,
-                                                        active: orgRow.rows[i].good_active,
-                                                        picture: orgRow.rows[i].good_picture,
-                                                        public: orgRow.rows[i].public,
-                                                        sold: orgRow.rows[i].good_sold
-                                                    })
-                                                }
-                                            }
-                                            if (i + 1 == orgRow.rows.length && j + 1 == orgList.length) {
-                                                return res.status(200).json({ orgs: orgList, count: count });
-                                            }
-                                        }
-                                    }
+                                const org = {
+                                    orgId: orgRow.rows[0].org_id,
+                                    name: orgRow.rows[0].name,
+                                    about: orgRow.rows[0].about,
+                                    owner: orgRow.rows[0].owner,
+                                    avatar: orgRow.rows[0].avatar,
+                                    category: orgRow.rows[0].category,
+                                    public: orgRow.rows[i].public,
+                                    city: orgRow.rows[0].city,
+                                    goods: []
                                 }
-                                if (orgRow.rows[0].owner == owner) {
-                                    return res.status(200).json({ org: org });
-                                } else {
-                                    return res.status(200).json({ org: org });
+                                for (let i = 0; i < orgRow.rows.length; i++) {
+                                    org.goods.push({
+                                        id: orgRow.rows[i].good_id,
+                                        name: orgRow.rows[i].good_name,
+                                        about: orgRow.rows[i].good_about,
+                                        sum: orgRow.rows[i].good_sum,
+                                        active: orgRow.rows[i].good_active,
+                                        picture: orgRow.rows[i].good_picture,
+                                        sold: orgRow.rows[i].good_sold
+                                    })
+                                    if (i + 1 == orgRow.rows.length) {
+                                        return res.status(200).json({ org: org });
+                                    }
                                 }
                             } else {
                                 return res.status(500).json({ error: true, message: 'Ошибка запроса' });
