@@ -23,6 +23,7 @@ exports.getOrgRequest = async (req, res) => {
                     o.avatar AS avatar, 
                     o.category AS category, 
                     o.city AS city, 
+                    o.moderator_comment AS moderator_comment,
                     u.email AS email, 
                     u.firstname AS firstname, 
                     u.surname AS surname, 
@@ -55,7 +56,8 @@ exports.getOrgRequest = async (req, res) => {
                                     email: orgRow.rows[0].email,
                                     firstname: orgRow.rows[0].firstname,
                                     surname: orgRow.rows[0].surname,
-                                    telegramUsername: orgRow.rows[0].t_username
+                                    telegramUsername: orgRow.rows[0].t_username,
+                                    moderatorComment:orgRow.rows[0].moderator_comment
                                 }
                                 if (orgRow.rows[0].owner == owner) {
                                     fs.readFile(__dirname + "/crypto_rates.json", async (err, data) => {
