@@ -2,17 +2,10 @@ const path = require("path")
 const pool = require("@service/db");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
+const minioClient = require("@service/minio");
 const validator = require('validator');
 const sharp = require('sharp');
 
-var Minio = require('minio');
-const minioClient = new Minio.Client({
-    endPoint: 'lm-minio',
-    port: 9000,
-    useSSL: false,
-    accessKey: process.env.MINIO_ACCESS_KEY,
-    secretKey: process.env.MINIO_SECRET_KEY
-});
 
 
 exports.newOrg = async (req, res) => {

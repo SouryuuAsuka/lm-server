@@ -1,17 +1,11 @@
 const pool = require("@service/db");
 const cbot = require("@service/cbot_axios");
+const minioClient = require("@service/minio");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 var Minio = require('minio');
 const tx = require("@service/tx");
 
-const minioClient = new Minio.Client({
-    endPoint: 'minio',
-    port: 9000,
-    useSSL: false,
-    accessKey: process.env.MINIO_ACCESS_KEY,
-    secretKey: process.env.MINIO_SECRET_KEY
-});
 
 exports.orgConfirm = async (req, res) => {
     try {//TODO: Модифицировать middleware функцию, чтобы не вызывать jwf.verify дважды за запрос
