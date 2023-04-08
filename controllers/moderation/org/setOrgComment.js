@@ -10,7 +10,7 @@ exports.setOrgComment = async (req, res) => {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
             } else if (req.body.orgId == undefined) {
                 return res.status(401).json({ error: true, message: 'Id организации не задан' });
-            } else if (decoded.userRole != 5 || decoded.userRole != 6) {
+            } else if (decoded.userRole != 5 && decoded.userRole != 6) {
                 return res.status(401).json({ error: true, message: 'Недостаточно прав для редактирования оранизации' });
             } else {
                 pool.query(`
