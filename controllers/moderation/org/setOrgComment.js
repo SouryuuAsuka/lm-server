@@ -22,11 +22,13 @@ exports.setOrgComment = async (req, res) => {
                     ON u.user_id = t.user.id
                     WHERE o.owner = $1`, [req.body.orgId], async (err, userRow) => {
                     if (err) {
+                        console.log(err)
                         return res.status(500).json({ error: "Ошибка при обработке запроса" });
                     } else {
                         pool.query(
                             `UPDATE organizations_request SET moderator_comment = $1 WHERE org_id = $2;`, [req.body.comment, req.body.orgId], (err, orgRow) => {
                                 if (err) {
+                                    console.log(err)
                                     return res.status(500).json({ error: "Ошибка при обработке запроса" });
                                 } else {
                                     if (req.body.comment != "") {
