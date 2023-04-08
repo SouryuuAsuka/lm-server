@@ -100,7 +100,7 @@ function dbOrgList(req, res, all) {
                                             sold: orgRow.rows[i].prod_sold
                                         })
                                     }
-                                    if(orgRow.rows[i].length == 1){
+                                    if(orgRow.rows.length == 1){
                                         return res.status(200).json({ orgs: orgList, count: count });
                                     }
                                 } else {
