@@ -38,7 +38,7 @@ exports.orgConfirm = async (req, res) => {
                                     WHERE organizations_request.org_id = $1
                                     RETURNING organizations.org_id, organizations.owner`, [req.body.requestId]);
                                 await client.query(`DELETE FROM organizations_request WHERE org_id = $1;`, [req.body.requestId]);
-                                await client.query(`UPDATE users SET user_role = 3 WHERE user_id = $1;`, [newOrgRow.rows[0].user_id]);
+                                await client.query(`UPDATE users SET user_role = 3 WHERE user_id = $1;`, [newOrgRow.rows[0].owner]);
                                 minioClient.copyObject('avatars-org', newOrgRow.rows[0].org_id + ".jpeg", '/avatars-org-request/' + req.body.requestId + ".jpeg", function (e, data) {
                                     if (e) {
                                         console.log(e);
