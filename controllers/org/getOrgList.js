@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 exports.getOrgList = async (req, res) => {
     try {
         if (req.cookies.accessToken != undefined){
-            jwt.verify(refreshToken, process.env.REFRESH_KEY_SECRET, async function (err, decoded) {
+            jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
                 if (err) {
                     return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
                 } else {
