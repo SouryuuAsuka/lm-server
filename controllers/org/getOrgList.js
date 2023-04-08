@@ -46,19 +46,19 @@ function dbOrgList(req, res, all) {
             org.category AS category, 
             org.avatar AS avatar, 
             org.city AS city, 
-            p.prod_id AS prod_id,
-            p.name AS prod_name,
-            p.about AS prod_about,
-            p.sum AS prod_sum,
-            p.active AS prod_active,
-            p.currency AS prod_currency,
-            p.picture AS prod_picture,
-            p.sold AS prod_sold
+            g.good_id AS good_id,
+            g.name AS good_name,
+            g.about AS good_about,
+            g.sum AS good_sum,
+            g.active AS good_active,
+            g.currency AS good_currency,
+            g.picture AS good_picture,
+            g.sold AS good_sold
             FROM organizations AS org 
-            LEFT JOIN goods AS p
-            ON p.prod_id = (
-                SELECT p1.prod_id FROM goods AS p1
-                WHERE p1.org_id = org.org_id AND p1.active = true
+            LEFT JOIN goods AS g
+            ON g.good_id = (
+                SELECT g1.good_id FROM goods AS g1
+                WHERE g1.org_id = org.org_id AND g1.active = true
                 ORDER BY created DESC
                 LIMIT 5)
             WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = ANY($3)
@@ -89,31 +89,31 @@ function dbOrgList(req, res, all) {
                                         city: orgRow.rows[i].city,
                                         avatar: orgRow.rows[i].avatar               
                                     })
-                                    if(orgRow.rows[i].prod_id != null){
+                                    if(orgRow.rows[i].good_id != null){
                                         orgList[j].goods.push({
-                                            id: orgRow.rows[i].prod_id,
-                                            name: orgRow.rows[i].prod_name,
-                                            about: orgRow.rows[i].prod_about,
-                                            sum: orgRow.rows[i].prod_sum,
-                                            active: orgRow.rows[i].prod_active,
-                                            picture: orgRow.rows[i].prod_picture,
-                                            sold: orgRow.rows[i].prod_sold
+                                            id: orgRow.rows[i].good_id,
+                                            name: orgRow.rows[i].good_name,
+                                            about: orgRow.rows[i].good_about,
+                                            sum: orgRow.rows[i].good_sum,
+                                            active: orgRow.rows[i].good_active,
+                                            picture: orgRow.rows[i].good_picture,
+                                            sold: orgRow.rows[i].good_sold
                                         })
                                     }
-                                    if(orgRow.rows.length == 1){
+                                    if(orgRow.rows[i].length == 1){
                                         return res.status(200).json({ orgs: orgList, count: count });
                                     }
                                 } else {
                                     for (let j = 0; j < orgList.length; j++) {
                                         if (orgRow.rows[i].org_id == orgList[j].org_id){
                                             orgList[j].goods.push({
-                                                id: orgRow.rows[i].prod_id,
-                                                name: orgRow.rows[i].prod_name,
-                                                about: orgRow.rows[i].prod_about,
-                                                sum: orgRow.rows[i].prod_sum,
-                                                active: orgRow.rows[i].prod_active,
-                                                picture: orgRow.rows[i].prod_picture,
-                                                sold: orgRow.rows[i].prod_sold
+                                                id: orgRow.rows[i].good_id,
+                                                name: orgRow.rows[i].good_name,
+                                                about: orgRow.rows[i].good_about,
+                                                sum: orgRow.rows[i].good_sum,
+                                                active: orgRow.rows[i].good_active,
+                                                picture: orgRow.rows[i].good_picture,
+                                                sold: orgRow.rows[i].good_sold
                                             })
                                             checkpoint = true;
                                         } else if(j+1 == orgList.length && !checkpoint) {
@@ -127,15 +127,15 @@ function dbOrgList(req, res, all) {
                                                 goods: []
                        
                                             })
-                                            if(orgRow.rows[i].prod_id != null){
+                                            if(orgRow.rows[i].good_id != null){
                                                 orgList[j].goods.push({
-                                                    id: orgRow.rows[i].prod_id,
-                                                    name: orgRow.rows[i].prod_name,
-                                                    about: orgRow.rows[i].prod_about,
-                                                    sum: orgRow.rows[i].prod_sum,
-                                                    active: orgRow.rows[i].prod_active,
-                                                    picture: orgRow.rows[i].prod_picture,
-                                                    sold: orgRow.rows[i].prod_sold
+                                                    id: orgRow.rows[i].good_id,
+                                                    name: orgRow.rows[i].good_name,
+                                                    about: orgRow.rows[i].good_about,
+                                                    sum: orgRow.rows[i].good_sum,
+                                                    active: orgRow.rows[i].good_active,
+                                                    picture: orgRow.rows[i].good_picture,
+                                                    sold: orgRow.rows[i].good_sold
                                                 })
                                             }
                                         }
