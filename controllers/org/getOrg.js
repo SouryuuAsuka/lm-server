@@ -26,7 +26,6 @@ exports.getOrg = async (req, res) => {
                     g.about AS good_about,
                     g.price AS good_price,
                     g.active AS good_active,
-                    g.currency AS good_currency,
                     g.picture AS good_picture,
                     g.sold AS good_sold,
                     g.created AS good_created,
