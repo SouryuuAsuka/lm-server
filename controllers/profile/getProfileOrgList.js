@@ -34,13 +34,26 @@ exports.getProfileOrgList = async (req, res) => {
                             console.log(err)
                             return res.status(500).json({ error: 'Ошибка поиска' });
                         } else {
-                            var count = pool.query("SELECT COUNT(*) FROM organizations WHERE org.city LIKE $1 AND org.category = ANY($2) AND u.username = $3", [sqlVar.city, sqlVar.category, req.query.username])
-                            if (orgRow.rows[0] != undefined) {
-                                return res.status(200).json({ orgs: orgRow.rows, count: count });
-                            } else {
-                                console.log("Организаций не найдено")
-                                return res.status(200).json({ orgs: [] });
-                            }
+                            pool.query(`
+                                SELECT COUNT(*) FROM organizations 
+                                FROM organizations AS org 
+                                LEFT JOIN users AS u
+                                ON org.owner = u.user_id
+                                WHERE org.city LIKE $1 AND org.category = ANY($2) AND u.username = $3`, [sqlVar.city, sqlVar.category, req.query.username], (err, orgCount) => {
+                                if (err) {
+                                    console.log(err)
+                                    return res.status(500).json({ error: 'Ошибка поиска' });
+                                } else {
+                                    console.log("orgCount - " + orgCount)
+                                    console.log("orgCount.count - " + orgCount.count)
+                                    if (orgRow.rows[0] != undefined) {
+                                        return res.status(200).json({ orgs: orgRow.rows, count: orgCount.count });
+                                    } else {
+                                        console.log("Организаций не найдено")
+                                        return res.status(200).json({ orgs: [] });
+                                    }
+                                }
+                            })
                         }
                     });
                 } else {
