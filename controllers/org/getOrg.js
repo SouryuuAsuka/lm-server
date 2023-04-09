@@ -19,6 +19,8 @@ exports.getOrg = async (req, res) => {
                     org.city AS city, 
                     org.public AS public, 
                     org.owner AS owner, 
+                    org.usd_total AS usd_total, 
+                    org.usd_received AS usd_received, 
                     g.good_id AS good_id,
                     g.name AS good_name,
                     g.about AS good_about,
@@ -26,7 +28,11 @@ exports.getOrg = async (req, res) => {
                     g.active AS good_active,
                     g.currency AS good_currency,
                     g.picture AS good_picture,
-                    g.sold AS good_sold
+                    g.sold AS good_sold,
+                    g.created AS good_created,
+                    g.orders AS good_orders,
+                    g.min_time AS good_min_time,
+                    g.max_time AS good_max_time
                     FROM organizations AS org 
                     LEFT JOIN goods AS g
                     ON g.good_id = (
@@ -74,6 +80,8 @@ function sendOrgData(res, orgRow, allGoods) {
         category: orgRow.rows[0].category,
         public: orgRow.rows[0].public,
         city: orgRow.rows[0].city,
+        usdTotal: orgRow.rows[0].usd_total,
+        usdReceived: orgRow.rows[0].usd_received,
         goods: []
     }
     for (let i = 0; i < orgRow.rows.length; i++) {
@@ -82,10 +90,13 @@ function sendOrgData(res, orgRow, allGoods) {
                 id: orgRow.rows[i].good_id,
                 name: orgRow.rows[i].good_name,
                 about: orgRow.rows[i].good_about,
-                sum: orgRow.rows[i].good_sum,
+                price: orgRow.rows[i].good_sum,
                 active: orgRow.rows[i].good_active,
                 picture: orgRow.rows[i].good_picture,
-                sold: orgRow.rows[i].good_sold
+                sold: orgRow.rows[i].good_sold,
+                created: orgRow.rows[i].good_created,
+                minTime: orgRow.rows[i].good_min_time,
+                maxTime: orgRow.rows[i].good_max_time
             })
         } else {
             if(orgRow.rows[i].good_active){
@@ -93,7 +104,7 @@ function sendOrgData(res, orgRow, allGoods) {
                     id: orgRow.rows[i].good_id,
                     name: orgRow.rows[i].good_name,
                     about: orgRow.rows[i].good_about,
-                    sum: orgRow.rows[i].good_sum,
+                    price: orgRow.rows[i].good_sum,
                     active: orgRow.rows[i].good_active,
                     picture: orgRow.rows[i].good_picture,
                     sold: orgRow.rows[i].good_sold
