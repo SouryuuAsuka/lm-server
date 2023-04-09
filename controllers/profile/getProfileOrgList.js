@@ -9,6 +9,7 @@ exports.getProfileOrgList = async (req, res) => {
                 return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
             } else {
                 if (decoded.userRole == 2 || decoded.userRole == 3 || decoded.userRole == 5 || decoded.userRole == 6) {
+                    var sqlVar = {};
                     if (req.query.p == undefined) sqlVar.page = '0';
                     else sqlVar.page = (req.query.p - 1) * 10;
                     if (req.query.c == undefined) sqlVar.city = '%';

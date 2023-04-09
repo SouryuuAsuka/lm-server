@@ -20,7 +20,7 @@ exports.getOrgList = async (req, res) => {
         } else {
             dbOrgList(req, res)
         }*/
-        
+
     }
     catch (err) {
         console.log(err);
@@ -31,15 +31,15 @@ exports.getOrgList = async (req, res) => {
 }
 function dbOrgList(req, res) {
     var sqlVar = {};
-        /*if(all) sqlVar.public = "{true, false}"
-        else sqlVar.public = "{true}"*/
-        if (req.query.p == undefined) sqlVar.page = '0';
-        else sqlVar.page = (req.query.p - 1) * 10;
-        if (req.query.c == undefined) sqlVar.city = '%';
-        else sqlVar.city = req.query.c;
-        if (req.query.t == undefined) sqlVar.category = '{0, 1, 2}';
-        else sqlVar.category = "{"+req.query.t+"}";
-        pool.query(`
+    /*if(all) sqlVar.public = "{true, false}"
+    else sqlVar.public = "{true}"*/
+    if (req.query.p == undefined) sqlVar.page = '0';
+    else sqlVar.page = (req.query.p - 1) * 10;
+    if (req.query.c == undefined) sqlVar.city = '%';
+    else sqlVar.city = req.query.c;
+    if (req.query.t == undefined) sqlVar.category = '{0, 1, 2}';
+    else sqlVar.category = "{" + req.query.t + "}";
+    pool.query(`
             SELECT 
             org.org_id AS org_id, 
             org.name AS name, 
@@ -65,33 +65,49 @@ function dbOrgList(req, res) {
                 LIMIT 5)
             WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
             OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page], (err, orgRow) => {
-            if (err) {
+        if (err) {
 
-                console.log(err)
-                return res.status(500).json({ error: 'Ошибка поиска' });
-            } else {
-                var count = pool.query("SELECT COUNT(*) FROM organizations  WHERE org.city LIKE $1 AND org.category = ANY($2)")
-                var orgList = [];
-                if (orgRow.rows[0] != undefined) {
-                    fs.readFile(__dirname + "/../../service/exchange_rates.json", "utf8", (err, data) => {
-                        console.log(data)
-                        parseData = JSON.parse(data);
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).json({ error: 'Неверный запрос' });
-                        } else {
-                            for (let i = 0; i < orgRow.rows.length; i++) {
-                                var checkpoint = false;
-                                if(orgList.length == 0){
-                                    orgList.push({
-                                        id: orgRow.rows[i].org_id,
-                                        name: orgRow.rows[i].name,
-                                        about: orgRow.rows[i].about,
-                                        category: orgRow.rows[i].category,
-                                        city: orgRow.rows[i].city,
-                                        avatar: orgRow.rows[i].avatar               
+            console.log(err)
+            return res.status(500).json({ error: 'Ошибка поиска' });
+        } else {
+            var count = pool.query("SELECT COUNT(*) FROM organizations  WHERE org.city LIKE $1 AND org.category = ANY($2)")
+            var orgList = [];
+            if (orgRow.rows[0] != undefined) {
+                fs.readFile(__dirname + "/../../service/exchange_rates.json", "utf8", (err, data) => {
+                    console.log(data)
+                    parseData = JSON.parse(data);
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).json({ error: 'Неверный запрос' });
+                    } else {
+                        for (let i = 0; i < orgRow.rows.length; i++) {
+                            var checkpoint = false;
+                            if (orgList.length == 0) {
+                                orgList.push({
+                                    id: orgRow.rows[i].org_id,
+                                    name: orgRow.rows[i].name,
+                                    about: orgRow.rows[i].about,
+                                    category: orgRow.rows[i].category,
+                                    city: orgRow.rows[i].city,
+                                    avatar: orgRow.rows[i].avatar
+                                })
+                                if (orgRow.rows[i].good_id != null) {
+                                    orgList[j].goods.push({
+                                        id: orgRow.rows[i].good_id,
+                                        name: orgRow.rows[i].good_name,
+                                        about: orgRow.rows[i].good_about,
+                                        sum: orgRow.rows[i].good_sum,
+                                        active: orgRow.rows[i].good_active,
+                                        picture: orgRow.rows[i].good_picture,
+                                        sold: orgRow.rows[i].good_sold
                                     })
-                                    if(orgRow.rows[i].good_id != null){
+                                }
+                                if (orgRow.rows[i].length == 1) {
+                                    return res.status(200).json({ orgs: orgList, count: count });
+                                }
+                            } else {
+                                for (let j = 0; j < orgList.length; j++) {
+                                    if (orgRow.rows[i].org_id == orgList[j].org_id) {
                                         orgList[j].goods.push({
                                             id: orgRow.rows[i].good_id,
                                             name: orgRow.rows[i].good_name,
@@ -101,13 +117,19 @@ function dbOrgList(req, res) {
                                             picture: orgRow.rows[i].good_picture,
                                             sold: orgRow.rows[i].good_sold
                                         })
-                                    }
-                                    if(orgRow.rows[i].length == 1){
-                                        return res.status(200).json({ orgs: orgList, count: count });
-                                    }
-                                } else {
-                                    for (let j = 0; j < orgList.length; j++) {
-                                        if (orgRow.rows[i].org_id == orgList[j].org_id){
+                                        checkpoint = true;
+                                    } else if (j + 1 == orgList.length && !checkpoint) {
+                                        orgList.push({
+                                            id: orgRow.rows[i].org_id,
+                                            name: orgRow.rows[i].name,
+                                            about: orgRow.rows[i].about,
+                                            category: orgRow.rows[i].category,
+                                            city: orgRow.rows[i].city,
+                                            avatar: orgRow.rows[i].avatar,
+                                            goods: []
+
+                                        })
+                                        if (orgRow.rows[i].good_id != null) {
                                             orgList[j].goods.push({
                                                 id: orgRow.rows[i].good_id,
                                                 name: orgRow.rows[i].good_name,
@@ -115,46 +137,24 @@ function dbOrgList(req, res) {
                                                 sum: orgRow.rows[i].good_sum,
                                                 active: orgRow.rows[i].good_active,
                                                 picture: orgRow.rows[i].good_picture,
+                                                public: orgRow.rows[i].public,
                                                 sold: orgRow.rows[i].good_sold
                                             })
-                                            checkpoint = true;
-                                        } else if(j+1 == orgList.length && !checkpoint) {
-                                            orgList.push({
-                                                id: orgRow.rows[i].org_id,
-                                                name: orgRow.rows[i].name,
-                                                about: orgRow.rows[i].about,
-                                                category: orgRow.rows[i].category,
-                                                city: orgRow.rows[i].city,
-                                                avatar: orgRow.rows[i].avatar,
-                                                goods: []
-                       
-                                            })
-                                            if(orgRow.rows[i].good_id != null){
-                                                orgList[j].goods.push({
-                                                    id: orgRow.rows[i].good_id,
-                                                    name: orgRow.rows[i].good_name,
-                                                    about: orgRow.rows[i].good_about,
-                                                    sum: orgRow.rows[i].good_sum,
-                                                    active: orgRow.rows[i].good_active,
-                                                    picture: orgRow.rows[i].good_picture,
-                                                    public: orgRow.rows[i].public,
-                                                    sold: orgRow.rows[i].good_sold
-                                                })
-                                            }
                                         }
-                                        if (i + 1 == orgRow.rows.length && j+1 == orgList.length) {
-                                            return res.status(200).json({ orgs: orgList, count: count });
-                                        }   
+                                    }
+                                    if (i + 1 == orgRow.rows.length && j + 1 == orgList.length) {
+                                        return res.status(200).json({ orgs: orgList, count: count });
                                     }
                                 }
                             }
                         }
-                    })
-                } else {
-                    console.log("Организаций не найдено")
-                    return res.status(200).json({ orgs: [] });
-                }
+                    }
+                })
+            } else {
+                console.log("Организаций не найдено")
+                return res.status(200).json({ orgs: [] });
             }
-        });
+        }
+    });
 
 }
