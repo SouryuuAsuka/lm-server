@@ -1,4 +1,5 @@
 const { getOrgFromDB } = require('@service/getOrgFromDB');
+const jwt = require('jsonwebtoken');
 
 exports.getOrg = async (req, res) => {
     try {

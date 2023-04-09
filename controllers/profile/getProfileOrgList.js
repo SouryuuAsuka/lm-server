@@ -1,5 +1,6 @@
 const pool = require("@service/db");
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
 
 exports.getProfileOrgList = async (req, res) => {
     try {
