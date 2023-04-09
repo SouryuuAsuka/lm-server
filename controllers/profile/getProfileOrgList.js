@@ -35,7 +35,7 @@ exports.getProfileOrgList = async (req, res) => {
                             return res.status(500).json({ error: 'Ошибка поиска' });
                         } else {
                             pool.query(`
-                                SELECT COUNT(*) FROM organizations 
+                                SELECT COUNT(*)  
                                 FROM organizations AS org 
                                 LEFT JOIN users AS u
                                 ON org.owner = u.user_id
