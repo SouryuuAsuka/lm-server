@@ -33,7 +33,7 @@ exports.getOrg = async (req, res) => {
                         WHERE g1.org_id = org.org_id
                         ORDER BY g1.created DESC
                     )
-                    WHERE org_id = $1`, [req.query.id], async (err, orgRow) => {
+                    WHERE org.org_id = $1`, [req.query.id], async (err, orgRow) => {
                     if (err) {
                         console.log(err)
                         return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
