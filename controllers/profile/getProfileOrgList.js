@@ -49,7 +49,7 @@ exports.getProfileOrgList = async (req, res) => {
                                 } else {
                                     console.log("orgCount - " + orgCount)
                                     console.log("orgCount.count - " + orgCount.count)
-                                    var orgList;
+                                    var orgList =[];
                                     for (let i = 0; i < orgRow.rows.length; i++) {
                                         orgList.push({
                                             id: orgRow.rows[i].org_id,
