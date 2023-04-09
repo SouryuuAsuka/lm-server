@@ -43,14 +43,24 @@ exports.getProfileOrgList = async (req, res) => {
                                 if (err) {
                                     console.log(err)
                                     return res.status(500).json({ error: 'Ошибка поиска' });
+                                } else if (orgRow.rows.length == 0){
+                                        console.log("Организаций не найдено")
+                                        return res.status(200).json({ orgs: [], count: 0 });
                                 } else {
                                     console.log("orgCount - " + orgCount)
                                     console.log("orgCount.count - " + orgCount.count)
-                                    if (orgRow.rows[0] != undefined) {
-                                        return res.status(200).json({ orgs: orgRow.rows, count: orgCount.count });
-                                    } else {
-                                        console.log("Организаций не найдено")
-                                        return res.status(200).json({ orgs: [], count: 0 });
+                                    for (let i = 0; i < orgRow.rows.length; i++) {
+                                        orgList.push({
+                                            id: orgRow.rows[i].org_id,
+                                            name: orgRow.rows[i].name,
+                                            about: orgRow.rows[i].about,
+                                            category: orgRow.rows[i].category,
+                                            city: orgRow.rows[i].city,
+                                            avatar: orgRow.rows[i].avatar
+                                        })
+                                        if (i + 1 == orgRow.rows.length) {
+                                            return res.status(200).json({ orgs: orgList });
+                                        }
                                     }
                                 }
                             })
