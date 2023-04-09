@@ -31,6 +31,7 @@ exports.getOrg = async (req, res) => {
                     g.sold AS good_sold,
                     g.created AS good_created,
                     g.orders AS good_orders,
+                    g.cat_id AS good_cat_id,
                     g.min_time AS good_min_time,
                     g.max_time AS good_max_time
                     FROM organizations AS org 
@@ -94,6 +95,8 @@ function sendOrgData(res, orgRow, allGoods) {
                 active: orgRow.rows[i].good_active,
                 picture: orgRow.rows[i].good_picture,
                 sold: orgRow.rows[i].good_sold,
+                cat_id: orgRow.rows[i].good_cat_id,
+                orders: orgRow.rows[i].good_orders,
                 created: orgRow.rows[i].good_created,
                 minTime: orgRow.rows[i].good_min_time,
                 maxTime: orgRow.rows[i].good_max_time
@@ -107,7 +110,10 @@ function sendOrgData(res, orgRow, allGoods) {
                     price: orgRow.rows[i].good_price,
                     active: orgRow.rows[i].good_active,
                     picture: orgRow.rows[i].good_picture,
-                    sold: orgRow.rows[i].good_sold
+                    sold: orgRow.rows[i].good_sold,
+                    cat_id: orgRow.rows[i].good_cat_id,
+                    minTime: orgRow.rows[i].good_min_time,
+                    maxTime: orgRow.rows[i].good_max_time
                 }) 
             }
         }
@@ -134,7 +140,9 @@ function notAythRequest(req, res){
         g.active AS good_active,
         g.currency AS good_currency,
         g.picture AS good_picture,
-        g.sold AS good_sold
+        g.sold AS good_sold,
+        g.min_time AS good_min_time,
+        g.max_time AS good_max_time
         FROM organizations AS org 
         LEFT JOIN goods AS g
         ON g.good_id = (
