@@ -50,7 +50,7 @@ exports.getProfileOrgList = async (req, res) => {
                                         return res.status(200).json({ orgs: orgRow.rows, count: orgCount.count });
                                     } else {
                                         console.log("Организаций не найдено")
-                                        return res.status(200).json({ orgs: [] });
+                                        return res.status(200).json({ orgs: [], count: 0 });
                                     }
                                 }
                             })
