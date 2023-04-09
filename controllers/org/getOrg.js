@@ -1,4 +1,4 @@
-const { getOrgFromDB } = require('@service/getOrgFromDB');
+const pool = require("@service/db");
 const jwt = require('jsonwebtoken');
 
 exports.getOrg = async (req, res) => {
