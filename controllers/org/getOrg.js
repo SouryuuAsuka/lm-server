@@ -18,6 +18,7 @@ exports.getOrg = async (req, res) => {
                     org.avatar AS avatar, 
                     org.city AS city, 
                     org.public AS public, 
+                    org.owner AS owner, 
                     g.good_id AS good_id,
                     g.name AS good_name,
                     g.about AS good_about,
@@ -44,7 +45,7 @@ exports.getOrg = async (req, res) => {
                             } else if(orgRow.rows[0].public == true) {
                                 sendOrgData(res, orgRow, false)
                             } else {
-                                return res.status(500).json({ error: true, message: 'Недостаточно прав получения информации' });
+                                return res.status(500).json({ error: true, message: 'Недостаточно прав для получения данных' });
                             }
                         } else {
                             return res.status(500).json({ error: true, message: 'Ошибка запроса' });
