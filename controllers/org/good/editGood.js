@@ -2,7 +2,7 @@ const pool = require("@service/db");
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 
-exports.editPurpose = async (req, res) => {
+exports.editGood = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {

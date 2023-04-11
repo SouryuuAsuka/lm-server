@@ -28,10 +28,10 @@ const { getOrg } = require("@controllers/org/getOrg");
 const { getOrgList } = require("@controllers/org/getOrgList");
 const { getOrgPayments } = require("@controllers/org/getOrgPayments");
 
-const { getPurposeList } = require("@controllers/org/purpose/getPurposeList");
-const { newPurpose } = require("@controllers/org/purpose/newPurpose");
-const { editPurpose } = require("@controllers/org/purpose/editPurpose");
-const { setActive } = require("@controllers/org/purpose/setActive");
+const { getPurposeList } = require("@controllers/org/good/getPurposeList");
+const { newGood } = require("@controllers/org/good/newGood");
+const { editGood } = require("@controllers/org/good/editGood");
+const { setActive } = require("@controllers/org/good/setActive");
 
 const { newOrg } = require("@controllers/org/newOrg");
 const { editOrg } = require("@controllers/org/editOrg");
@@ -83,9 +83,9 @@ app.use(require('./middleware/auth'));
 app.get('/api/profile', getProfile);
 app.get('/api/profile/orgs', getProfileOrgList);
 
-app.post('/api/org/purpose', newPurpose);
-app.post('/api/org/purpose/edit', editPurpose);
-app.post('/api/org/purpose/active', setActive);
+app.post('/api/org/good', newGood);
+app.post('/api/org/good/edit', editGood);
+app.post('/api/org/good/active', setActive);
 
 app.post('/api/org', uploadAvatar.single('avatar'), newOrg);
 app.post('/api/org/edit', uploadAvatar.single('avatar'), editOrg);
