@@ -135,11 +135,12 @@ function notAythRequest(req, res){
         g.good_id AS good_id,
         g.name AS good_name,
         g.about AS good_about,
-        g.sum AS good_sum,
+        g.price AS good_price,
         g.active AS good_active,
-        g.currency AS good_currency,
         g.picture AS good_picture,
         g.sold AS good_sold,
+        g.created AS good_created,
+        g.orders AS good_orders,
         g.min_time AS good_min_time,
         g.max_time AS good_max_time
         FROM organizations AS org 
