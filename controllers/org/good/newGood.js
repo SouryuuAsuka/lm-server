@@ -40,6 +40,8 @@ exports.newGood = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Ошибка при указании организации" })
                 } else if (req.body.minTime > req.body.maxTime) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовление превышает максимальное время" })
+                } else if (req.body.maxTime > 24*7) {
+                    return res.status(400).json({ success: false, error: "Максимальное время изготовление превышает неделю" })
                 } else if (!validator.matches(req.body.lang, '^[a-z]{3}$')) {
                     return res.status(400).json({ success: false, error: "Некорректно указан язык описания" })
                 } else {
@@ -50,7 +52,7 @@ exports.newGood = async (req, res) => {
                                 return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
                             } else {
                                 const orgInsertString = "INSERT INTO goods (name, about, org_id, price, min_time, max_time, created) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-                                pool.query(orgInsertString, [[{lang: req.body.lang, text: req.body.name}], [{lang: req.body.lang, text: req.body.about}], req.body.orgId, req.body.price, req.body.minTime, req.body.maxTime, "NOW()"], (err, orgRow) => {
+                                pool.query(orgInsertString, [[{lang: req.body.lang, text: req.body.name}], [{lang: req.body.lang, text: req.body.about}], req.body.orgId, req.body.price, req.body.minTime*24, req.body.maxTime*24, "NOW()"], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
