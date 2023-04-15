@@ -24,6 +24,10 @@ const { getProfileOrgList } = require("@controllers/profile/getProfileOrgList");
 const { getUser } = require("@controllers/getUser");
 const { confirmemail } = require("@controllers/confirmemail");
 
+const { newCart } = require("@controllers/cart/newCart");
+const { getCart } = require("@controllers/cart/getCart");
+const { addToCart } = require("@controllers/cart/addToCart");
+
 const { getOrg } = require("@controllers/org/getOrg");
 const { getOrgList } = require("@controllers/org/getOrgList");
 const { getOrgPayments } = require("@controllers/org/getOrgPayments");
@@ -77,6 +81,10 @@ app.get('/api/orglist', getOrgList);
 app.get('/api/org', getOrg);
 
 app.get('/api/org/purpose', getPurposeList);
+
+app.get('/api/cart', getCart);
+app.post('/api/cart', newCart);
+app.post('/api/cart/addtocart', addToCart);
 
 app.use(require('./middleware/auth'));
 
