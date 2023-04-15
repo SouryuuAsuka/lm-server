@@ -83,8 +83,8 @@ app.use(require('./middleware/auth'));
 app.get('/api/profile', getProfile);
 app.get('/api/profile/orgs', getProfileOrgList);
 
-app.post('/api/org/good', newGood);
-app.post('/api/org/good/edit', editGood);
+app.post('/api/org/good', uploadAvatar.single('avatar'), newGood);
+app.post('/api/org/good/edit', uploadAvatar.single('avatar'), editGood);
 app.post('/api/org/good/active', setActive);
 
 app.post('/api/org', uploadAvatar.single('avatar'), newOrg);
