@@ -40,7 +40,7 @@ exports.newGood = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Ошибка при указании организации" })
                 } else if (req.body.minTime > req.body.maxTime) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовление превышает максимальное время" })
-                } else if (req.body.maxTime > 24*7) {
+                } else if (req.body.maxTime > 7) {
                     return res.status(400).json({ success: false, error: "Максимальное время изготовление превышает неделю" })
                 } else if (!validator.matches(req.body.lang, '^[a-z]{3}$')) {
                     return res.status(400).json({ success: false, error: "Некорректно указан язык описания" })
