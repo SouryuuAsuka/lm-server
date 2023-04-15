@@ -10,6 +10,7 @@ exports.newGood = async (req, res) => {
             if (err) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
             } else {
+                console.log(JSON.stringify(req.body));
                 if (req.body.name == undefined) {
                     return res.status(400).json({ success: false, error: "Название товара должно быть отправлено" })
                 } else if (req.body.about == undefined) {
