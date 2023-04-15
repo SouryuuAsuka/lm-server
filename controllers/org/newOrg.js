@@ -1,7 +1,6 @@
 const path = require("path")
 const pool = require("@service/db");
 const jwt = require('jsonwebtoken');
-const bcrypt = require("bcrypt");
 const minioClient = require("@service/minio");
 const validator = require('validator');
 const sharp = require('sharp');
