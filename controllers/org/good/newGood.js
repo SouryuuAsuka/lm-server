@@ -18,8 +18,6 @@ exports.newGood = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Описание товара должно быть отправлено" })
                 } else if (req.body.price == undefined) {
                     return res.status(400).json({ success: false, error: "Цена товара должна быть отправлена" })
-                } else if (req.body.picture == undefined) {
-                    return res.status(400).json({ success: false, error: "Изображение товара должно быть отправлено" })
                 } else if (req.body.minTime == undefined) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовления товара должно быть отправлена" })
                 } else if (req.body.maxTime == undefined) {
