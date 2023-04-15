@@ -30,13 +30,13 @@ exports.newGood = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Название товара должно быть заполнено" })
                 } else if (validator.isEmpty(req.body.about)) {
                     return res.status(400).json({ success: false, error: "Описание товара должно быть заполнено" })
-                } else if (!Number.isInteger(req.body.price)) {
+                } else if (isNan(req.body.price)) {
                     return res.status(400).json({ success: false, error: "Цена товара должна быть заполнена" })
-                } else if (!Number.isInteger(req.body.minTime)) {
+                } else if (isNan(req.body.minTime)) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовления товара должно быть заполнено" })
-                } else if (!Number.isInteger(req.body.maxTime)) {
+                } else if (isNan(req.body.maxTime)) {
                     return res.status(400).json({ success: false, error: "Максимальное время изготовления товара должно быть заполнено" })
-                } else if (!Number.isInteger(req.body.orgId)) {
+                } else if (isNan(req.body.orgId)) {
                     return res.status(400).json({ success: false, error: "Ошибка при указании организации" })
                 } else if (req.body.minTime > req.body.maxTime) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовление превышает максимальное время" })
