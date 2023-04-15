@@ -1,7 +1,7 @@
 const pool = require("@service/db");
 const validator = require('validator');
 
-exports.newGood = async (req, res) => {
+exports.addToCart = async (req, res) => {
     try {
         if (req.body.cartId == undefined) {
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
