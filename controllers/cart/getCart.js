@@ -3,17 +3,17 @@ const validator = require('validator');
 
 exports.getCart = async (req, res) => {
     try {
-        if (req.query.cartId == undefined) {
+        if (req.cookies.cart_id == undefined) {
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
-        } else if (isNaN(req.query.cartId)) {
+        } else if (isNaN(req.cookies.cart_id )) {
             return res.status(400).json({ success: false, error: "ID корзины некорректен" })
-        } else if (req.query.token == undefined) {
+        } else if (req.cookies.cart_token  == undefined) {
             return res.status(400).json({ success: false, error: "Токен корзины должен быть отправлен" })
-        } else if (!validator.matches(req.query.token, '^[0-9a-zA-Z]{6}$')) {
+        } else if (!validator.matches(req.cookies.cart_token, '^[0-9a-zA-Z]{6}$')) {
             return res.status(400).json({ success: false, error: "Токен корзины некорректен" })
         } else {
             const orgInsertString = "SELECT order_array FROM carts WHERE token = $1 AND cart_id = $2"
-            pool.query(orgInsertString,[req.query.token, req.query.cartId], (err, cartRow) => {
+            pool.query(orgInsertString,[req.cookies.cart_token, req.cookies.cart_id], (err, cartRow) => {
                 if (err) {
                     console.log(err)
                     return res.status(400).json({ success: false, error: "Ошибка при сохранении корзины" })
