@@ -37,7 +37,7 @@ exports.getOrg = async (req, res) => {
                     LEFT JOIN goods AS g
                     ON g.org_id = org.org_id
                     WHERE org.org_id = $1
-                    ORDER BY g1.created DESC`,
+                    ORDER BY g.created DESC`,
                     [req.query.id], async (err, orgRow) => {
                     if (err) {
                         console.log(err)
