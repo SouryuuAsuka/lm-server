@@ -8,11 +8,11 @@ exports.setActive = async (req, res) => {
             if (err) {
                 return res.status(401).json({ success: false, error: 'Unauthorized access.' });
             } else {
-                if (req.body.purId == undefined) {
+                if (req.body.goodId == undefined) {
                     res.status(400).json({ success: false, error: "Ошибка при указании id цели" })
                 } else if (req.body.active == undefined) {
                     res.status(400).json({ success: false, error: "Ошибка при указании id цели" })
-                } else if (!Number.isInteger(req.body.purId)) {
+                } else if (!Number.isInteger(req.body.goodId)) {
                     res.status(400).json({ success: false, error: "Ошибка при указании id цели" })
                 } else if (!validator.isBoolean(req.body.active)) {
                     res.status(400).json({ success: false, error: "Ошибка при указании id цели" })
@@ -21,15 +21,15 @@ exports.setActive = async (req, res) => {
                     if(decoded.userRole == 5 || decoded.userRole == 6){
                         pool.query(`
                         SELECT * FROM organizations AS org
-                        JOIN purposes AS p 
-                        ON org.org_id = p.org_id
-                        WHERE p.pur_id = $1`, [req.body.purId], (err, user) => {
+                        JOIN goods AS g
+                        ON org.org_id = g.org_id
+                        WHERE g.good_id = $1`, [req.body.goodId], (err, user) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                             } else {
-                                const purUpdateString = "UPDATE purposes SET active = $1 WHERE pur_id = $2"
-                                pool.query(purUpdateString, [req.body.active, req.body.purId], (err, orgRow) => {
+                                const purUpdateString = "UPDATE goods SET active = $1 WHERE good_id = $2"
+                                pool.query(purUpdateString, [req.body.active, req.body.goodId], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
@@ -42,15 +42,15 @@ exports.setActive = async (req, res) => {
                     } else {
                         pool.query(`
                         SELECT * FROM organizations AS org
-                        JOIN purposes AS p 
-                        ON org.org_id = p.org_id
-                        WHERE p.pur_id = $1 AND org.owner = $2`, [req.body.purId, decoded.userId], (err, user) => {
+                        JOIN goods AS g
+                        ON org.org_id = g.org_id
+                        WHERE g.good_id = $1 AND org.owner = $2`, [req.body.goodId, decoded.userId], (err, user) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                             } else {
-                                const purUpdateString = "UPDATE purposes SET active = $1 WHERE pur_id = $2"
-                                pool.query(purUpdateString, [req.body.active, req.body.purId], (err, orgRow) => {
+                                const purUpdateString = "UPDATE goods SET active = $1 WHERE good_id = $2"
+                                pool.query(purUpdateString, [req.body.active, req.body.goodId], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
