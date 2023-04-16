@@ -51,8 +51,8 @@ exports.newGood = async (req, res) => {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
                             } else {
-                                const orgInsertString = "INSERT INTO goods (name, about, org_id, price, min_time, max_time, created) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-                                pool.query(orgInsertString, [[{lang: req.body.lang, text: req.body.name}], [{lang: req.body.lang, text: req.body.about}], req.body.orgId, req.body.price, req.body.minTime*24, req.body.maxTime*24, "NOW()"], (err, orgRow) => {
+                                const orgInsertString = "INSERT INTO goods (name, about, org_id, price, min_time, max_time, created) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING good_id"
+                                pool.query(orgInsertString, [[{lang: req.body.lang, text: req.body.name}], [{lang: req.body.lang, text: req.body.about}], req.body.orgId, req.body.price, req.body.minTime*24, req.body.maxTime*24, "NOW()"], (err, goodRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
@@ -68,7 +68,7 @@ exports.newGood = async (req, res) => {
                                                 }
                                                 minioClient.fPutObject(
                                                     "goods",
-                                                    req.body.orgId + ".jpeg",
+                                                    goodRow.rows[0].good_id + ".jpeg",
                                                     path.resolve(req.file.destination, 'resized', req.file.filename),
                                                     metaData,
                                                     (err, etag) => {
