@@ -35,12 +35,10 @@ exports.getOrg = async (req, res) => {
                     g.max_time AS good_max_time
                     FROM organizations AS org 
                     LEFT JOIN goods AS g
-                    ON g.good_id = (
-                        SELECT g1.good_id FROM goods AS g1
-                        WHERE g1.org_id = org.org_id
-                        ORDER BY g1.created DESC
-                    )
-                    WHERE org.org_id = $1`, [req.query.id], async (err, orgRow) => {
+                    ON g.org_id = org.org_id
+                    WHERE org.org_id = $1
+                    ORDER BY g1.created DESC`,
+                    [req.query.id], async (err, orgRow) => {
                     if (err) {
                         console.log(err)
                         return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
