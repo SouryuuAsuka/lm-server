@@ -40,8 +40,11 @@ exports.editGood = async (req, res) => {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Ошибка при создании товара" })
                             } else {
-                                return res.status(200).json({ success: true });
-                            }
+                                if (req.file) {
+                                    savePicture(req, res, orgRow);
+                                } else {
+                                    return res.status(200).json({ success: true });
+                                }                            }
                         });
                     } else {
                         pool.query(`
@@ -59,7 +62,11 @@ exports.editGood = async (req, res) => {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании товара" })
                                     } else {
-                                        return res.status(200).json({ success: true });
+                                        if (req.file) {
+                                            savePicture(req, res, orgRow);
+                                        } else {
+                                            return res.status(200).json({ success: true });
+                                        }
                                     }
                                 });
                             }
@@ -76,4 +83,26 @@ exports.editGood = async (req, res) => {
             error: "Ошибка при обработке запроса", //Database connection error
         });
     };
+}
+function savePicture(req, res, orgRow) {
+    var image = sharp(req.file.path); // path to the stored image
+    image.resize({ width: 720, height: 720 }).toFormat("jpeg", { mozjpeg: true }).toFile(
+        path.resolve(req.file.destination, 'resized', req.file.filename)
+    ).then(function () {
+        var metaData = {
+            'Content-Type': 'image/jpeg',
+        }
+        minioClient.fPutObject(
+            "picture",
+            orgRow.rows[0].good_id + ".jpeg",
+            path.resolve(req.file.destination, 'resized', req.file.filename),
+            metaData,
+            (err, etag) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).json({ success: false, error: "Ошибка при сохранении изображения" })
+                } else return res.status(200).json({ success: true });
+            }
+        );
+    })
 }
