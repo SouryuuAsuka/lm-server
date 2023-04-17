@@ -23,7 +23,7 @@ exports.getCart = async (req, res) => {
                     g.active AS active,
                     g.picture AS picture,
                     g.min_time AS min_time,
-                    g.max_time AS max_time,
+                    g.max_time AS max_time
                     FROM carts AS c
                     JOIN goods AS g
                     ON c.order_array ->> 'id' = g.good_id
