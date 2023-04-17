@@ -35,7 +35,7 @@ exports.editGood = async (req, res) => {
                 } else {
                     if (decoded.userRole == 5 || decoded.userRole == 6) {
                         const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, min_time = $4, max_time = $5 WHERE good_id = $6"
-                        pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price, req.body.minTime, req.body.maxTime, req.body.goodId], (err, orgRow) => {
+                        pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price.toFixed(2), req.body.minTime, req.body.maxTime, req.body.goodId], (err, orgRow) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Ошибка при создании товара" })
@@ -57,7 +57,7 @@ exports.editGood = async (req, res) => {
                                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                             } else {
                                 const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, min_time = $4, max_time = $5 WHERE good_id = $6 AND org_id = $7"
-                                pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price, req.body.minTime, req.body.maxTime, req.body.goodId, user.rows[0].org_id], (err, orgRow) => {
+                                pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price.toFixed(2), req.body.minTime, req.body.maxTime, req.body.goodId, user.rows[0].org_id], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании товара" })
