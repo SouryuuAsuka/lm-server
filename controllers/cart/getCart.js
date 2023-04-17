@@ -16,8 +16,8 @@ exports.getCart = async (req, res) => {
             if (req.query.type == "full") {
                 cartInsertString =
                     `SELECT 
-                    c.order_array ->> 'num' AS num,
-                    c.order_array ->> 'id' AS id,
+                    elem ->> 'num' AS num,
+                    elem ->> 'id' AS id,
                     g.price AS price,
                     g.name AS name,
                     g.active AS active,
@@ -25,8 +25,9 @@ exports.getCart = async (req, res) => {
                     g.min_time AS min_time,
                     g.max_time AS max_time
                     FROM carts AS c
+                    CROSS JOIN LATERAL jsonb_array_elements(с.order_array) AS elem
                     JOIN goods AS g
-                    ON c.order_array ->> 'id' = g.good_id
+                    ON elem ->> 'id' = g.good_id
                     WHERE c.token = $1 AND c.cart_id = $2`
                 pool.query(cartInsertString, [req.cookies.cart_token, req.cookies.cart_id], (err, cartRow) => {
                     if (err) {
