@@ -97,8 +97,8 @@ app.post('/api/org/good/active', setActive);
 
 app.post('/api/org', uploadAvatar.single('avatar'), newOrg);
 app.post('/api/org/edit', uploadAvatar.single('avatar'), editOrg);
+app.post('/api/org/public', setPublic);
 app.get('/api/org/paylist', getOrgPayments);
-
 
 app.get('/api/moderation/org', getOrgRequest);
 app.post('/api/moderation/org/confirm', orgConfirm);
