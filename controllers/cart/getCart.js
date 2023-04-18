@@ -44,7 +44,7 @@ exports.getCart = async (req, res) => {
                         console.log(err)
                         return res.status(400).json({ success: false, error: "Ошибка при сохранении корзины" })
                     } else {
-                        if (cartRow.rows.length ==0) {
+                        if (cartRow.rows.length==0) {
                             return res.status(200).json({ success: true, cart:[] })
                         } else {
                             return res.status(200).json({ success: true, cart: cartRow.rows[0].order_array })
