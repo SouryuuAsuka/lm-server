@@ -35,7 +35,7 @@ const { getOrgPayments } = require("@controllers/org/getOrgPayments");
 const { getPurposeList } = require("@controllers/org/good/getPurposeList");
 const { newGood } = require("@controllers/org/good/newGood");
 const { editGood } = require("@controllers/org/good/editGood");
-const { setActive } = require("@controllers/org/good/setActive");
+const { setPublic } = require("@controllers/org/good/setPublic");
 
 const { newOrg } = require("@controllers/org/newOrg");
 const { editOrg } = require("@controllers/org/editOrg");
