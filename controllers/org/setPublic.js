@@ -13,20 +13,32 @@ exports.editOrg = async (req, res) => {
             } else {
                 if (req.body.orgId == undefined) {
                     return res.status(400).json({ success: false, error: "ID организации должно быть заполнено" })
-                } else if (req.body.active == undefined) {
+                } else if (req.body.public == undefined) {
                     return res.status(400).json({ success: false, error: "Статус организации должен быть заполнено" })
                 } else if (isNaN(req.body.orgId)) {
                     return res.status(400).json({ success: false, error: "ID организации заполнено некорректно" })
                 } else {
-                    const orgInsertString = "UPDATE organizations SET active = $1, about = $2, type = $3, avatar = $4, country = $5 WHERE owner = $6 AND org_id = $7 RETURNING org_id"
-                    pool.query(orgInsertString, [req.body.name, req.body.about, req.body.type, avatar, req.body.country, decoded.userId, req.body.orgId], (err, orgRow) => {
-                        if (err) {
-                            console.log(err)
-                            return res.status(400).json({ success: false, error: "Ошибка при редактировании организации" })
-                        } else {
-                            return res.status(200).json({ success: true });
-                        }
-                    });
+                    if (decoded.userRole == 5 || decoded.userRole == 6) {
+                        const orgInsertString = "UPDATE organizations SET public = $1 WHERE org_id = $2"
+                        pool.query(orgInsertString, [req.body.public, req.body.orgId], (err, orgRow) => {
+                            if (err) {
+                                console.log(err)
+                                return res.status(400).json({ success: false, error: "Ошибка при редактировании организации" })
+                            } else {
+                                return res.status(200).json({ success: true });
+                            }
+                        });
+                    } else {
+                        const orgInsertString = "UPDATE organizations SET public = $1 WHERE owner = $2 AND org_id = $3"
+                        pool.query(orgInsertString, [req.body.public, decoded.userId, req.body.orgId], (err, orgRow) => {
+                            if (err) {
+                                console.log(err)
+                                return res.status(400).json({ success: false, error: "Ошибка при редактировании организации" })
+                            } else {
+                                return res.status(200).json({ success: true });
+                            }
+                        });
+                    }
                 }
             }
         })
