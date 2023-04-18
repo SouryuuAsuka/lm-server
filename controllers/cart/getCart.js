@@ -27,7 +27,7 @@ exports.getCart = async (req, res) => {
                     FROM carts AS c
                     CROSS JOIN LATERAL unnest(c.order_array) AS elem
                     JOIN goods AS g
-                    ON elem ->> 'id' = g.good_id
+                    ON elem ->> 'id'::INT = g.good_id
                     WHERE c.token = $1 AND c.cart_id = $2`
                 pool.query(cartInsertString, [req.cookies.cart_token, req.cookies.cart_id], (err, cartRow) => {
                     if (err) {
