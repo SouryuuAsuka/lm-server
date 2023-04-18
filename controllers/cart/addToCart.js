@@ -13,7 +13,7 @@ exports.addToCart = async (req, res) => {
             return res.status(400).json({ success: false, error: "Токен корзины некорректен" })
         } else {
             const orgInsertString = "UPDATE carts SET order_array = $1, last_update = $2 WHERE token = $3 AND cart_id = $4"
-            pool.query(orgInsertString,[req.body.cart, "NOW()", req.body.token, req.body.cartId], (err, cartRow) => {
+            pool.query(orgInsertString,[req.body.cart, "NOW()", req.cookies.cart_token, req.cookies.cart_id], (err, cartRow) => {
                 if (err) {
                     console.log(err)
                     return res.status(400).json({ success: false, error: "Ошибка при сохранении корзины" })
