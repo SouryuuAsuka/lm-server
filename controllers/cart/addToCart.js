@@ -3,13 +3,13 @@ const validator = require('validator');
 
 exports.addToCart = async (req, res) => {
     try {
-        if (req.body.cartId == undefined) {
+        if (req.cookies.cart_id == undefined) {
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
-        } else if (isNaN(req.body.cartId)) {
+        } else if (isNaN(req.cookies.cart_id)) {
             return res.status(400).json({ success: false, error: "ID корзины некорректен" })
-        } else if (req.body.token == undefined) {
+        } else if (req.cookies.cart_token == undefined) {
             return res.status(400).json({ success: false, error: "Токен корзины должен быть отправлен" })
-        } else if (!validator.matches(req.body.token, '^[0-9a-zA-Z]{6}$')) {
+        } else if (!validator.matches(req.cookies.cart_token, '^[0-9a-zA-Z]{6}$')) {
             return res.status(400).json({ success: false, error: "Токен корзины некорректен" })
         } else {
             const orgInsertString = "UPDATE carts SET order_array = $1, last_update = $2 WHERE token = $3 AND cart_id = $4"
