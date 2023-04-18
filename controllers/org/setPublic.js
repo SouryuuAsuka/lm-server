@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const validator = require('validator');
 const sharp = require('sharp');
 
-exports.editOrg = async (req, res) => {
+exports.setPublic = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
