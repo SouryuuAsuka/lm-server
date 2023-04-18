@@ -35,10 +35,11 @@ const { getOrgPayments } = require("@controllers/org/getOrgPayments");
 const { getPurposeList } = require("@controllers/org/good/getPurposeList");
 const { newGood } = require("@controllers/org/good/newGood");
 const { editGood } = require("@controllers/org/good/editGood");
-const { setPublic } = require("@controllers/org/good/setPublic");
+const { setActive } = require("@controllers/org/good/setActive");
 
 const { newOrg } = require("@controllers/org/newOrg");
 const { editOrg } = require("@controllers/org/editOrg");
+const { setPublic } = require("@controllers/org/setPublic");
 const { orgConfirm } = require("@controllers/moderation/org/confirm");
 const { setOrgComment } = require("@controllers/moderation/org/setOrgComment");
 const { getOrgRequest } = require("@controllers/moderation/org/getOrgRequest");
