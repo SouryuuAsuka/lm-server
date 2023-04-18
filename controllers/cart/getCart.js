@@ -25,7 +25,7 @@ exports.getCart = async (req, res) => {
                     g.min_time AS min_time,
                     g.max_time AS max_time
                     FROM carts AS c
-                    CROSS JOIN LATERAL jsonb_array_elements(c.order_array :: json) AS elem
+                    CROSS JOIN LATERAL unnest(c.order_array) AS elem
                     JOIN goods AS g
                     ON elem ->> 'id' = g.good_id
                     WHERE c.token = $1 AND c.cart_id = $2`
