@@ -35,13 +35,13 @@ exports.editOrg = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Название организации должно быть заполнено" })
                 } else if (!Array.isArray(req.body.about)) {
                     return res.status(400).json({ success: false, error: "Описание организации должно быть заполнено" })
-                } else if (validator.isEmpty(req.body.type)) {
+                } else if (validator.isEmpty(req.body.category)) {
                     return res.status(400).json({ success: false, error: "Тип организации должен быть указан" })
-                } else if (validator.isEmpty(req.body.country)) {
+                } else if (validator.isEmpty(req.body.city)) {
                     return res.status(400).json({ success: false, error: "Страна должна быть указана" })
-                } else if (!validator.matches(req.body.type, '^[012]{1}$')) {
+                } else if (!validator.matches(req.body.category, '^[012]{1,2}$')) {
                     return res.status(400).json({ success: false, error: "Некорректный тип организации" })
-                } else if (!validator.matches(req.body.country, '^[a-z]{2}$')) {
+                } else if (!validator.matches(req.body.city, '^[a-z]{3,4}$')) {
                     return res.status(400).json({ success: false, error: "Некорректное значение страны" })
                 } else {
                     pool.query(`
