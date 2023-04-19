@@ -62,8 +62,8 @@ exports.editOrg = async (req, res) => {
                                 } else {
                                     avatar = orgRow1.rows[0].avatar;
                                 }
-                                const orgInsertString = "UPDATE organizations SET name = $1, about = $2, type = $3, avatar = $4, country = $5 WHERE owner = $6 AND org_id = $7 RETURNING org_id"
-                                pool.query(orgInsertString, [req.body.name, req.body.about, req.body.type, avatar, req.body.country, decoded.userId, req.body.orgId], (err, orgRow) => {
+                                const orgInsertString = "UPDATE organizations SET name = $1, about = $2, category = $3, avatar = $4, city = $5 WHERE owner = $6 AND org_id = $7 RETURNING org_id"
+                                pool.query(orgInsertString, [req.body.name, req.body.about, req.body.category, avatar, req.body.city, decoded.userId, req.body.orgId], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при редактировании организации" })
