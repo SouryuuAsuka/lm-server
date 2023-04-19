@@ -15,69 +15,50 @@ exports.newOrg = async (req, res) => {
             } else {
                 if (req.body.name == undefined) {
                     return res.status(400).json({ success: false, error: "Название организации должно быть заполнено" })
-                }
-                else if (req.body.about == undefined) {
+                } else if (req.body.about == undefined) {
                     return res.status(400).json({ success: false, error: "Описание организации должно быть заполнено" })
-                }
-                else if (req.body.category == undefined) {
+                } else if (req.body.category == undefined) {
                     return res.status(400).json({ success: false, error: "Категория организации должно быть заполнено" })
-                }
-                else if (req.file.path == undefined) {
+                } else if (req.file.path == undefined) {
                     return res.status(400).json({ success: false, error: "Аватар организации должен быть прикреплен" })
-                }
-                else if (req.body.city == undefined) {
+                } else if (req.body.city == undefined) {
                     return res.status(400).json({ success: false, error: "Город организации должно быть заполнено" })
-                }
-                else if (req.body.lang == undefined) {
+                } else if (req.body.lang == undefined) {
                     return res.status(400).json({ success: false, error: "Язык организации должен быть заполнен" })
-                }
-                else if (validator.isEmpty(req.body.name)) {
+                } else if (validator.isEmpty(req.body.name)) {
                     return res.status(400).json({ success: false, error: "Название организации должно быть заполнено" })
-                }
-                else if (validator.isEmpty(req.body.about)) {
+                } else if (validator.isEmpty(req.body.about)) {
                     return res.status(400).json({ success: false, error: "Описание организации должно быть заполнено" })
-                }
-                else if (validator.isEmpty(req.body.category)) {
+                } else if (validator.isEmpty(req.body.category)) {
                     return res.status(400).json({ success: false, error: "Тип организации должен быть указан" })
-                }
-                else if (validator.isEmpty(req.body.city)) {
+                } else if (validator.isEmpty(req.body.city)) {
                     return res.status(400).json({ success: false, error: "Город организации должен быть указан" })
-                }
-                else if (validator.isEmpty(req.body.lang)) {
+                } else if (validator.isEmpty(req.body.lang)) {
                     return res.status(400).json({ success: false, error: "Язык организации должен быть указан" })
                 }
                 /*
                 else if (req.body.preparTimeMin == undefined) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовления товаров организации должно быть заполнено" })
-                }
-                else if (req.body.preparTimeMax == undefined) {
+                } else if (req.body.preparTimeMax == undefined) {
                     return res.status(400).json({ success: false, error: "Максимальное время изготовления товаров организации должно быть заполнено" })
-                }
-                else if (validator.isEmpty(req.body.preparTimeMin)) {
+                } else if (validator.isEmpty(req.body.preparTimeMin)) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовления товаров организации должен быть указано" })
-                }
-                else if (validator.isEmpty(req.body.preparTimeMax)) {
+                } else if (validator.isEmpty(req.body.preparTimeMax)) {
                     return res.status(400).json({ success: false, error: "Максимальное время изготовления товаров организации должен быть указано" })
-                }
-                else if (!validator.matches(req.body.preparTimeMin, '^[0-9]{1,3}$')) {
+                } else if (!validator.matches(req.body.preparTimeMin, '^[0-9]{1,3}$')) {
                     return res.status(400).json({ success: false, error: "Некорректо указано минимальное время изготовления товаров" })
-                }
-                else if (!validator.matches(req.body.preparTimeMax, '^[0-9]{1,3}$')) {
+                } else if (!validator.matches(req.body.preparTimeMax, '^[0-9]{1,3}$')) {
                     return res.status(400).json({ success: false, error: "Некорректо указано максимальное время изготовления товаров" })
-                }
-                else if (Number(req.body.preparTimeMax) < Number(req.body.preparTimeMin)) {
+                } else if (Number(req.body.preparTimeMax) < Number(req.body.preparTimeMin)) {
                     return res.status(400).json({ success: false, error: "Минимальное время доставки превышает максимальное время изготовления" })
                 }*/
                 else if (!validator.matches(req.body.category, '^[012]{1,2}$')) {
                     return res.status(400).json({ success: false, error: "Некорректный тип организации" })
-                }
-                else if (!validator.matches(req.body.city, '^[a-z]{3,4}$')) {
+                } else if (!validator.matches(req.body.city, '^[a-z]{3,4}$')) {
                     return res.status(400).json({ success: false, error: "Некорректное значение города" })
-                }
-                else if (validator.isEmpty(req.file.path)) {
+                } else if (validator.isEmpty(req.file.path)) {
                     return res.status(400).json({ success: false, error: "Аватар организации должен быть загружен" })
-                }
-                else {
+                } else {
                     pool.query(`SELECT * FROM users WHERE user_id = $1`, [decoded.userId], (err, user) => {
                         if (user.rows[0].user_role != 0 || user.rows[0].telegram ==true) {
                             var avatar = 0;

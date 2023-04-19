@@ -23,27 +23,27 @@ exports.editOrg = async (req, res) => {
             } else {
                 console.log(JSON.stringify(req.body));
 
-                if (validator.isEmpty(req.body.name)) {
+                if (req.body.name == undefined) {
+                    return res.status(400).json({ success: false, error: "Название организации должно быть заполнено" })
+                } else if (req.body.about == undefined) {
+                    return res.status(400).json({ success: false, error: "Описание организации должно быть заполнено" })
+                } else if (req.body.category == undefined) {
+                    return res.status(400).json({ success: false, error: "Категория организации должно быть заполнено" })
+                } else if (req.body.city == undefined) {
+                    return res.status(400).json({ success: false, error: "Город организации должно быть заполнено" })
+                } else if (Array.isArray(req.body.name)) {
                     res.status(400).json({ success: false, error: "Название организации должно быть заполнено" })
-                } else if (validator.isEmpty(req.body.name)) {
-                    res.status(400).json({ success: false, error: "Название организации должно быть заполнено" })
-                }
-                else if (validator.isEmpty(req.body.about)) {
+                } else if (Array.isArray(req.body.about)) {
                     res.status(400).json({ success: false, error: "Описание организации должно быть заполнено" })
-                }
-                else if (validator.isEmpty(req.body.type)) {
+                } else if (validator.isEmpty(req.body.type)) {
                     res.status(400).json({ success: false, error: "Тип организации должен быть указан" })
-                }
-                else if (validator.isEmpty(req.body.country)) {
+                } else if (validator.isEmpty(req.body.country)) {
                     res.status(400).json({ success: false, error: "Страна должна быть указана" })
-                }
-                else if (!validator.matches(req.body.type, '^[012]{1}$')) {
+                } else if (!validator.matches(req.body.type, '^[012]{1}$')) {
                     res.status(400).json({ success: false, error: "Некорректный тип организации" })
-                }
-                else if (!validator.matches(req.body.country, '^[a-z]{2}$')) {
+                } else if (!validator.matches(req.body.country, '^[a-z]{2}$')) {
                     res.status(400).json({ success: false, error: "Некорректное значение страны" })
-                }
-                else {
+                } else {
                     pool.query(`
                     SELECT org.org_id, org.avatar
                     FROM users AS u 
