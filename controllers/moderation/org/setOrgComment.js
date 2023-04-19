@@ -34,7 +34,7 @@ exports.setOrgComment = async (req, res) => {
                                     if (req.body.comment != "") {
                                         var msgText = "Ваша заявка на создание организации обновлена!\nПолучен комментарий от модератора:\n" + req.body.comment;
                                         tbot.post('sendmsg', {
-                                            key: process.env.CBOT_ACCESS_KEY,
+                                            key: process.env.TBOT_ACCESS_KEY,
                                             id: userRow.rows[0].app_id,
                                             text: msgText
                                         })
