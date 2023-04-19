@@ -68,7 +68,7 @@ exports.newOrg = async (req, res) => {
                 else if (Number(req.body.preparTimeMax) < Number(req.body.preparTimeMin)) {
                     return res.status(400).json({ success: false, error: "Минимальное время доставки превышает максимальное время изготовления" })
                 }*/
-                else if (!validator.matches(req.body.category, '^[012]{1}$')) {
+                else if (!validator.matches(req.body.category, '^[012]{1,2}$')) {
                     return res.status(400).json({ success: false, error: "Некорректный тип организации" })
                 }
                 else if (!validator.matches(req.body.city, '^[a-z]{3,4}$')) {
