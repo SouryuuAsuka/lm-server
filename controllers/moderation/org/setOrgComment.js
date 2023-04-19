@@ -1,5 +1,5 @@
 const pool = require("@service/db");
-const cbot = require("@service/cbot_axios");
+const tbot = require("@service/tbot_axios");
 const jwt = require('jsonwebtoken');
 
 exports.setOrgComment = async (req, res) => {
@@ -18,7 +18,7 @@ exports.setOrgComment = async (req, res) => {
                     FROM organizations_request AS o
                     LEFT JOIN users AS u
                     ON o.owner = u.user_id
-                    LEFT JOIN tg_users AS t
+                    LEFT JOIN tg_tech_users AS t
                     ON u.user_id = t.user_id
                     WHERE o.org_id = $1`, [req.body.orgId], async (err, userRow) => {
                     if (err) {
@@ -33,7 +33,7 @@ exports.setOrgComment = async (req, res) => {
                                 } else {
                                     if (req.body.comment != "") {
                                         var msgText = "Ваша заявка на создание организации обновлена!\nПолучен комментарий от модератора:\n" + req.body.comment;
-                                        cbot.post('sendmsg', {
+                                        tbot.post('sendmsg', {
                                             key: process.env.CBOT_ACCESS_KEY,
                                             id: userRow.rows[0].app_id,
                                             text: msgText
