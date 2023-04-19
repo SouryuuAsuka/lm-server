@@ -31,9 +31,9 @@ exports.editOrg = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Категория организации должно быть заполнено" })
                 } else if (req.body.city == undefined) {
                     return res.status(400).json({ success: false, error: "Город организации должно быть заполнено" })
-                } else if (Array.isArray(req.body.name)) {
+                } else if (!Array.isArray(req.body.name)) {
                     return res.status(400).json({ success: false, error: "Название организации должно быть заполнено" })
-                } else if (Array.isArray(req.body.about)) {
+                } else if (!Array.isArray(req.body.about)) {
                     return res.status(400).json({ success: false, error: "Описание организации должно быть заполнено" })
                 } else if (validator.isEmpty(req.body.type)) {
                     return res.status(400).json({ success: false, error: "Тип организации должен быть указан" })
