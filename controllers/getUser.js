@@ -20,7 +20,7 @@ exports.getUser = async (req, res) => {
                         surname: userRow.rows[0].surname,
                         userRole: userRow.rows[0].user_role,                    
                         regtime: userRow.rows[0].regtime,
-                        techTelegram: userRow.rows[0].techTelegram,
+                        techTelegram: userRow.rows[0].tech_telegram,
                         telegram: userRow.rows[0].telegram
                     }
                     if (userRow.rows[0].avatar != null){
