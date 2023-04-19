@@ -25,6 +25,9 @@ exports.newOrg = async (req, res) => {
                 else if (req.body.city == undefined) {
                     return res.status(400).json({ success: false, error: "Город организации должно быть заполнено" })
                 }
+                else if (req.body.lang == undefined) {
+                    return res.status(400).json({ success: false, error: "Язык организации должен быть заполнен" })
+                }
                 else if (validator.isEmpty(req.body.name)) {
                     return res.status(400).json({ success: false, error: "Название организации должно быть заполнено" })
                 }
@@ -36,6 +39,9 @@ exports.newOrg = async (req, res) => {
                 }
                 else if (validator.isEmpty(req.body.city)) {
                     return res.status(400).json({ success: false, error: "Город организации должен быть указан" })
+                }
+                else if (validator.isEmpty(req.body.lang)) {
+                    return res.status(400).json({ success: false, error: "Язык организации должен быть указан" })
                 }
                 /*
                 else if (req.body.preparTimeMin == undefined) {
@@ -81,7 +87,7 @@ exports.newOrg = async (req, res) => {
                             )  // get image metadata for size
                                 .then(function (metadata) { //TODO: Потом надо будет как-то нормально обрабатывать    изображения
                                     const orgInsertString = "INSERT INTO organizations_request (name, about, owner, category, avatar, city, created) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING org_id"
-                                    pool.query(orgInsertString, [req.body.name, req.body.about, decoded.userId, req.body.category, avatar, req.body.city, "NOW()"], (err, orgRow) => {
+                                    pool.query(orgInsertString, [[{lang: req.body.lang, text:req.body.name}], [{lang: req.body.lang, text:req.body.about}], decoded.userId, req.body.category, avatar, req.body.city, "NOW()"], (err, orgRow) => {
                                         if (err) {
                                             console.log(err)
                                             return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
