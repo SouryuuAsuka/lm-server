@@ -1,5 +1,5 @@
 const pool = require("@service/db");
-const cbot = require("@service/cbot_axios");
+const tbot = require("@service/tbot_axios");
 const minioClient = require("@service/minio");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
