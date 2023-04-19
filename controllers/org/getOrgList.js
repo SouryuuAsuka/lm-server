@@ -72,9 +72,9 @@ function dbOrgList(req, res) {
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
         } else {
-            var count = pool.query("SELECT COUNT(*) FROM organizations  WHERE org.city LIKE $1 AND org.category = ANY($2)")
             var orgList = [];
-            if (orgRow.rows[0] != undefined) {
+            if (orgRow.rows.length != 0) {
+                var count = pool.query("SELECT COUNT(*) FROM organizations  WHERE org.city LIKE $1 AND org.category = ANY($2)")
                 fs.readFile(__dirname + "/../../service/exchange_rates.json", "utf8", (err, data) => {
                     console.log(data)
                     parseData = JSON.parse(data);
