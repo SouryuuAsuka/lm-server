@@ -22,6 +22,9 @@ exports.newOrg = async (req, res) => {
                 else if (req.body.category == undefined) {
                     return res.status(400).json({ success: false, error: "Категория организации должно быть заполнено" })
                 }
+                else if (req.file.path == undefined) {
+                    return res.status(400).json({ success: false, error: "Аватар организации должен быть прикреплен" })
+                }
                 else if (req.body.city == undefined) {
                     return res.status(400).json({ success: false, error: "Город организации должно быть заполнено" })
                 }
