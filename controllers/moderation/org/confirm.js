@@ -22,7 +22,7 @@ exports.orgConfirm = async (req, res) => {
                     FROM organizations_request AS o
                     LEFT JOIN users AS u
                     ON o.owner = u.user_id
-                    LEFT JOIN tg_users AS t
+                    LEFT JOIN tg_tech_users AS t
                     ON u.user_id = t.user_id
                     WHERE o.org_id = $1`, [req.body.requestId], (err, userRow) => {
                     if (err) {
@@ -50,8 +50,8 @@ exports.orgConfirm = async (req, res) => {
                                                 return res.status(500).json({ error: "Ошибка при сохранении аватара" });
                                             } else {
                                                 var msgText = "Ваша заявка принята!\nПерейдите на сайт lampymarket.com и войдите в свой аккаунт. В разделе \"Мои огранизации\" мы можете выбрать созданную организацию и добавить туда ваши товары.\nПосле заполнения организации свяжитесь с модераторми для того, чтобы ее сделали доступной для клиентов";
-                                                cbot.post('sendmsg', {
-                                                    key: process.env.CBOT_ACCESS_KEY,
+                                                tbot.post('sendmsg', {
+                                                    key: process.env.TBOT_ACCESS_KEY,
                                                     id: userRow.rows[0].app_id,
                                                     text: msgText
                                                 })
