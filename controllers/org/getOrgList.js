@@ -48,7 +48,7 @@ function dbOrgList(req, res) {
             org.avatar AS avatar, 
             org.city AS city, 
             org.public AS public, 
-                json_agg(
+            array_agg(row_to_json
                     ROW(
                         g.good_id,
                         g.name,
@@ -61,7 +61,7 @@ function dbOrgList(req, res) {
                         g.min_time,
                         g.max_time
                     )
-                
+                )
                 ORDER BY g.created DESC
             ) AS goods
             FROM organizations AS org 
