@@ -48,19 +48,7 @@ function dbOrgList(req, res) {
             org.avatar AS avatar, 
             org.city AS city, 
             org.public AS public, 
-                json_object_agg(
-                    'good_id', g.good_id,
-                    'name', g.name,
-                    'about', g.about,
-                    'price', g.price,
-                    'active', g.active,
-                    'picture', g.picture,
-                    'sold', g.sold,
-                    'orders', g.orders,
-                    'min_time', g.min_time,
-                    'max_time', g.max_time
-                
-            ) AS goods
+            json_agg(g) AS goods
             FROM organizations AS org 
                 JOIN goods AS g
             ON g.good_id = (
