@@ -48,7 +48,6 @@ function dbOrgList(req, res) {
             org.avatar AS avatar, 
             org.city AS city, 
             org.public AS public, 
-            json_arrayagg(
                 json_object(
                     'good_id', g.good_id,
                     'name', g.name,
@@ -60,7 +59,7 @@ function dbOrgList(req, res) {
                     'orders', g.orders,
                     'min_time', g.min_time,
                     'max_time', g.max_time
-                )
+                
             ) AS goods
             FROM organizations AS org 
                 JOIN goods AS g
