@@ -61,6 +61,7 @@ function dbOrgList(req, res) {
                     g.min_time,
                     g.max_time
                 )
+                ORDER BY g.created DESC
                 LIMIT 5
             ) AS goods
             FROM organizations AS org 
