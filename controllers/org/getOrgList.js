@@ -49,16 +49,18 @@ function dbOrgList(req, res) {
             org.city AS city, 
             org.public AS public, 
             array_agg(
-                g.good_id AS good_id,
-                g.name AS good_name,
-                g.about AS good_about,
-                g.price AS good_price,
-                g.active AS good_active,
-                g.picture AS good_picture,
-                g.sold AS good_sold,
-                g.orders AS good_orders,
-                g.min_time AS good_min_time,
-                g.max_time AS good_max_time
+                ROW(
+                    g.good_id,
+                    g.name,
+                    g.about,
+                    g.price,
+                    g.active,
+                    g.picture,
+                    g.sold,
+                    g.orders,
+                    g.min_time,
+                    g.max_time
+                )
                 LIMIT 5
             ) AS goods
             FROM organizations AS org 
