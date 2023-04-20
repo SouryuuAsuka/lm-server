@@ -50,16 +50,16 @@ function dbOrgList(req, res) {
             org.public AS public, 
             json_arrayagg(
                 json_object(
-                    "good_id", g.good_id,
-                    "name", g.name,
-                    "about", g.about,
-                    "price", g.price,
-                    "active", g.active,
-                    "picture", g.picture,
-                    "sold", g.sold,
-                    "orders", g.orders,
-                    "min_time", g.min_time,
-                    "max_time", g.max_time
+                    'good_id', g.good_id,
+                    'name', g.name,
+                    'about', g.about,
+                    'price', g.price,
+                    'active', g.active,
+                    'picture', g.picture,
+                    'sold', g.sold,
+                    'orders', g.orders,
+                    'min_time', g.min_time,
+                    'max_time', g.max_time
                 )
             ) AS goods
             FROM organizations AS org 
