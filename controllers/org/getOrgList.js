@@ -60,7 +60,7 @@ function dbOrgList(req, res) {
                 g.min_time AS good_min_time,
                 g.max_time AS good_max_time
                 LIMIT 5
-            )
+            ) AS goods
             FROM organizations AS org 
             LEFT JOIN goods AS g
             ON g.org_id = org.org_id
