@@ -88,74 +88,36 @@ function dbOrgList(req, res) {
                         console.log(err);
                         return res.status(500).json({ error: 'Неверный запрос' });
                     } else {
-                        for (let i = 0; i < orgRow.rows.length; i++) {
-                            var checkpoint = false;
-                            if (orgList.length == 0) {
+                        if (orgRow.rows.length == 0) {
+                            return res.status(200).json({ orgs: [], count: 0 });
+                        } else {
+                            for (let i = 0; i < orgRow.rows.length; i++) {
                                 orgList.push({
                                     id: orgRow.rows[i].org_id,
                                     name: orgRow.rows[i].name,
                                     about: orgRow.rows[i].about,
                                     category: orgRow.rows[i].category,
                                     city: orgRow.rows[i].city,
-                                    avatar: orgRow.rows[i].avatar
+                                    avatar: orgRow.rows[i].avatar,
+                                    goods: []
                                 })
-                                if (orgRow.rows[i].good_id != null) {
-                                    orgList[j].goods.push({
-                                        id: orgRow.rows[i].good_id,
-                                        name: orgRow.rows[i].good_name,
-                                        about: orgRow.rows[i].good_about,
-                                        sum: orgRow.rows[i].good_sum,
-                                        active: orgRow.rows[i].good_active,
-                                        picture: orgRow.rows[i].good_picture,
-                                        sold: orgRow.rows[i].good_sold
+                                for (let j = 0; j < orgRow.rows[i].goods.length; j++) {
+                                    orgList[i].goods.push({
+                                        id: orgRow.rows[i].goods.good_id,
+                                        name: orgRow.rows[i].goods.good_name,
+                                        about: orgRow.rows[i].goods.good_about,
+                                        sum: orgRow.rows[i].goods.good_sum,
+                                        active: orgRow.rows[i].goods.good_active,
+                                        picture: orgRow.rows[i].goods.good_picture,
+                                        sold: orgRow.rows[i].goods.good_sold
                                     })
-                                }
-                                if (orgRow.rows[i].length == 1) {
-                                    return res.status(200).json({ orgs: orgList, count: count });
-                                }
-                            } else {
-                                for (let j = 0; j < orgList.length; j++) {
-                                    if (orgRow.rows[i].org_id == orgList[j].org_id) {
-                                        orgList[j].goods.push({
-                                            id: orgRow.rows[i].good_id,
-                                            name: orgRow.rows[i].good_name,
-                                            about: orgRow.rows[i].good_about,
-                                            sum: orgRow.rows[i].good_sum,
-                                            active: orgRow.rows[i].good_active,
-                                            picture: orgRow.rows[i].good_picture,
-                                            sold: orgRow.rows[i].good_sold
-                                        })
-                                        checkpoint = true;
-                                    } else if (j + 1 == orgList.length && !checkpoint) {
-                                        orgList.push({
-                                            id: orgRow.rows[i].org_id,
-                                            name: orgRow.rows[i].name,
-                                            about: orgRow.rows[i].about,
-                                            category: orgRow.rows[i].category,
-                                            city: orgRow.rows[i].city,
-                                            avatar: orgRow.rows[i].avatar,
-                                            goods: []
-
-                                        })
-                                        if (orgRow.rows[i].good_id != null) {
-                                            orgList[j].goods.push({
-                                                id: orgRow.rows[i].good_id,
-                                                name: orgRow.rows[i].good_name,
-                                                about: orgRow.rows[i].good_about,
-                                                sum: orgRow.rows[i].good_sum,
-                                                active: orgRow.rows[i].good_active,
-                                                picture: orgRow.rows[i].good_picture,
-                                                public: orgRow.rows[i].public,
-                                                sold: orgRow.rows[i].good_sold
-                                            })
-                                        }
-                                    }
-                                    if (i + 1 == orgRow.rows.length && j + 1 == orgList.length) {
+                                    if (i + 1 == orgRow.rows.length && j + 1 ==  orgRow.rows[i].goods.length) {
                                         return res.status(200).json({ orgs: orgList, count: count });
                                     }
                                 }
                             }
                         }
+                        
                     }
                 })
             } else {
