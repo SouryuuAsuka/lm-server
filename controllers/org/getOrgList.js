@@ -48,21 +48,7 @@ function dbOrgList(req, res) {
             org.avatar AS avatar, 
             org.city AS city, 
             org.public AS public, 
-            array_agg(
-                ROW(
-                    g.good_id,
-                    g.name,
-                    g.about,
-                    g.price,
-                    g.active,
-                    g.picture,
-                    g.sold,
-                    g.orders,
-                    g.min_time,
-                    g.max_time
-                )
-                ORDER BY g.created DESC
-            ) AS goods
+            array_agg(g) AS goods
             FROM organizations AS org 
             LEFT JOIN goods AS g
             ON g.good_id = (
