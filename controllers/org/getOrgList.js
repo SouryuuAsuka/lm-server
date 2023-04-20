@@ -54,6 +54,7 @@ function dbOrgList(req, res) {
             ON g.good_id = (
                 SELECT g1.good_id FROM goods AS g1
                 WHERE g1.org_id = org.org_id AND g1.active = true
+                LIMIT 4
                 ORDER BY g1.created DESC
             )
             WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
