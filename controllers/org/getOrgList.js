@@ -48,24 +48,24 @@ function dbOrgList(req, res) {
             org.avatar AS avatar, 
             org.city AS city, 
             org.public AS public, 
-            g.good_id AS good_id,
-            g.name AS good_name,
-            g.about AS good_about,
-            g.price AS good_price,
-            g.active AS good_active,
-            g.picture AS good_picture,
-            g.sold AS good_sold,
-            g.orders AS good_orders,
-            g.min_time AS good_min_time,
-            g.max_time AS good_max_time
+            array_agg(
+                g.good_id AS good_id,
+                g.name AS good_name,
+                g.about AS good_about,
+                g.price AS good_price,
+                g.active AS good_active,
+                g.picture AS good_picture,
+                g.sold AS good_sold,
+                g.orders AS good_orders,
+                g.min_time AS good_min_time,
+                g.max_time AS good_max_time
+                LIMIT 5
+            )
             FROM organizations AS org 
             LEFT JOIN goods AS g
-            ON g.good_id = (
-                SELECT g1.good_id FROM goods AS g1
-                WHERE g1.org_id = org.org_id AND g1.active = true
-                ORDER BY g1.created DESC
-                LIMIT 5)
+            ON g.org_id = org.org_id
             WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
+            GROUP BY org.org_id
             OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page], (err, orgRow) => {
         if (err) {
 
@@ -74,7 +74,7 @@ function dbOrgList(req, res) {
         } else {
             var orgList = [];
             if (orgRow.rows.length != 0) {
-                var count = pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)")
+                var count = pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
                 fs.readFile(__dirname + "/../../service/exchange_rates.json", "utf8", (err, data) => {
                     console.log(data)
                     parseData = JSON.parse(data);
