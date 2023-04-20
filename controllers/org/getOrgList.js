@@ -91,6 +91,7 @@ function dbOrgList(req, res) {
                         if (orgRow.rows.length == 0) {
                             return res.status(200).json({ orgs: [], count: 0 });
                         } else {
+                            console.log(JSON.stringify(orgRow.rows))
                             for (let i = 0; i < orgRow.rows.length; i++) {
                                 orgList.push({
                                     id: orgRow.rows[i].org_id,
