@@ -60,11 +60,7 @@ function dbOrgList(req, res) {
             g.max_time AS good_max_time
             FROM organizations AS org 
             LEFT JOIN goods AS g
-            ON g.good_id = (
-                SELECT g1.good_id FROM goods AS g1
-                WHERE g1.org_id = org.org_id AND g1.active = true
-                ORDER BY created DESC
-                LIMIT 5)
+            ON g.org_id = org.org_id
             WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
             OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page], (err, orgRow) => {
         if (err) {
