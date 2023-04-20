@@ -103,13 +103,15 @@ function dbOrgList(req, res) {
                                 })
                                 for (let j = 0; j < orgRow.rows[i].goods.length; j++) {
                                     orgList[i].goods.push({
-                                        id: orgRow.rows[i].goods.good_id,
-                                        name: orgRow.rows[i].goods.good_name,
-                                        about: orgRow.rows[i].goods.good_about,
-                                        sum: orgRow.rows[i].goods.good_sum,
-                                        active: orgRow.rows[i].goods.good_active,
-                                        picture: orgRow.rows[i].goods.good_picture,
-                                        sold: orgRow.rows[i].goods.good_sold
+                                        id: orgRow.rows[i].goods[j].good_id,
+                                        name: orgRow.rows[i].goods[j].name,
+                                        about: orgRow.rows[i].goods[j].about,
+                                        sum: orgRow.rows[i].goods[j].sum,
+                                        active: orgRow.rows[i].goods[j].active,
+                                        picture: orgRow.rows[i].goods[j].picture,
+                                        sold: orgRow.rows[i].goods[j].sold,
+                                        min_time: orgRow.rows[i].goods[j].min_time,
+                                        max_time: orgRow.rows[i].goods[j].max_time
                                     })
                                     if (i + 1 == orgRow.rows.length && j + 1 ==  orgRow.rows[i].goods.length) {
                                         return res.status(200).json({ orgs: orgList, count: count });
