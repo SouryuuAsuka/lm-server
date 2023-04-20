@@ -48,20 +48,18 @@ function dbOrgList(req, res) {
             org.avatar AS avatar, 
             org.city AS city, 
             org.public AS public, 
-            array_agg(
-                row_to_json(
-                    ROW(
-                        g.good_id,
-                        g.name,
-                        g.about,
-                        g.price,
-                        g.active,
-                        g.picture,
-                        g.sold,
-                        g.orders,
-                        g.min_time,
-                        g.max_time
-                    )
+            json_arrayagg(
+                json_object(
+                    "good_id", g.good_id,
+                    "name", g.name,
+                    "about", g.about,
+                    "price", g.price,
+                    "active", g.active,
+                    "picture", g.picture,
+                    "sold", g.sold,
+                    "orders", g.orders,
+                    "min_time", g.min_time,
+                    "max_time", g.max_time
                 )
             ) AS goods
             FROM organizations AS org 
