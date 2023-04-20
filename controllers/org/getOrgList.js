@@ -48,9 +48,25 @@ function dbOrgList(req, res) {
             org.avatar AS avatar, 
             org.city AS city, 
             org.public AS public, 
-            array_agg(g) AS goods
+            array_agg(
+                json_agg(
+                    ROW(
+                        g.good_id,
+                        g.name,
+                        g.about,
+                        g.price,
+                        g.active,
+                        g.picture,
+                        g.sold,
+                        g.orders,
+                        g.min_time,
+                        g.max_time
+                    )
+                )
+                ORDER BY g.created DESC
+            ) AS goods
             FROM organizations AS org 
-            JOIN goods AS g
+                JOIN goods AS g
             ON g.good_id = (
                 SELECT g1.good_id FROM goods AS g1
                 WHERE g1.org_id = org.org_id AND g1.active = true
@@ -100,13 +116,13 @@ function dbOrgList(req, res) {
                                         min_time: orgRow.rows[i].goods[j].min_time,
                                         max_time: orgRow.rows[i].goods[j].max_time
                                     })
-                                    if (i + 1 == orgRow.rows.length && j + 1 ==  orgRow.rows[i].goods.length) {
+                                    if (i + 1 == orgRow.rows.length && j + 1 == orgRow.rows[i].goods.length) {
                                         return res.status(200).json({ orgs: orgList, count: count });
                                     }
                                 }
                             }
                         }
-                        
+
                     }
                 })
             } else {
