@@ -87,6 +87,7 @@ function dbOrgList(req, res) {
                                     category: orgRow.rows[i].category,
                                     city: orgRow.rows[i].city,
                                     avatar: orgRow.rows[i].avatar,
+                                    public: orgRow.rows[i].public,
                                     goods: []
                                 })
                                 for (let j = 0; j < orgRow.rows[i].goods.length; j++) {
