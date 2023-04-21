@@ -55,7 +55,7 @@ function dbOrgList(req, res) {
                 SELECT g1.good_id FROM goods AS g1
                 WHERE g1.org_id = org.org_id AND g1.active = true
                 ORDER BY g1.created DESC
-                LIMIT 4
+                LIMIT 6
             )
             WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
             GROUP BY org.org_id
@@ -94,7 +94,7 @@ function dbOrgList(req, res) {
                                         id: orgRow.rows[i].goods[j].good_id,
                                         name: orgRow.rows[i].goods[j].name,
                                         about: orgRow.rows[i].goods[j].about,
-                                        sum: orgRow.rows[i].goods[j].sum,
+                                        price: orgRow.rows[i].goods[j].price,
                                         active: orgRow.rows[i].goods[j].active,
                                         picture: orgRow.rows[i].goods[j].picture,
                                         sold: orgRow.rows[i].goods[j].sold,
