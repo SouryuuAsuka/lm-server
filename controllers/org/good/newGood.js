@@ -18,10 +18,8 @@ exports.newGood = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Описание товара должно быть отправлено" })
                 } else if (req.body.price == undefined) {
                     return res.status(400).json({ success: false, error: "Цена товара должна быть отправлена" })
-                } else if (req.body.minTime == undefined) {
-                    return res.status(400).json({ success: false, error: "Минимальное время изготовления товара должно быть отправлена" })
-                } else if (req.body.maxTime == undefined) {
-                    return res.status(400).json({ success: false, error: "Максимальное время изготовления товара должно быть отправлена" })
+                } else if (req.body.preparationTime == undefined) {
+                    return res.status(400).json({ success: false, error: "Время изготовления товара должно быть отправлена" })
                 } else if (req.body.orgId == undefined) {
                     return res.status(400).json({ success: false, error: "ID организации должно быть отправлено" })
                 } else if (req.body.lang == undefined) {
@@ -32,16 +30,12 @@ exports.newGood = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Описание товара должно быть заполнено" })
                 } else if (isNaN(req.body.price)) {
                     return res.status(400).json({ success: false, error: "Цена товара должна быть заполнена" })
-                } else if (isNaN(req.body.minTime)) {
-                    return res.status(400).json({ success: false, error: "Минимальное время изготовления товара должно быть заполнено" })
-                } else if (isNaN(req.body.maxTime)) {
-                    return res.status(400).json({ success: false, error: "Максимальное время изготовления товара должно быть заполнено" })
+                } else if (isNaN(req.body.preparationTime)) {
+                    return res.status(400).json({ success: false, error: "Время изготовления товара должно быть заполнено" })
                 } else if (isNaN(req.body.orgId)) {
                     return res.status(400).json({ success: false, error: "Ошибка при указании организации" })
-                } else if (req.body.minTime > req.body.maxTime) {
-                    return res.status(400).json({ success: false, error: "Минимальное время изготовление превышает максимальное время" })
-                } else if (req.body.maxTime > 7) {
-                    return res.status(400).json({ success: false, error: "Максимальное время изготовление превышает неделю" })
+                } else if (req.body.preparationTime > 7) {
+                    return res.status(400).json({ success: false, error: "Время изготовление превышает неделю" })
                 } else if (!validator.matches(req.body.lang, '^[a-z]{3}$')) {
                     return res.status(400).json({ success: false, error: "Некорректно указан язык описания" })
                 } else {
@@ -51,8 +45,8 @@ exports.newGood = async (req, res) => {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
                             } else {
-                                const orgInsertString = "INSERT INTO goods (name, about, org_id, price, min_time, max_time, created) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING good_id"
-                                pool.query(orgInsertString, [[{lang: req.body.lang, text: req.body.name}], [{lang: req.body.lang, text: req.body.about}], req.body.orgId, req.body.price, req.body.minTime*24, req.body.maxTime*24, "NOW()"], (err, goodRow) => {
+                                const orgInsertString = "INSERT INTO goods (name, about, org_id, price, preparation_time, created) VALUES ($1, $2, $3, $4, $5, $6) RETURNING good_id"
+                                pool.query(orgInsertString, [[{lang: req.body.lang, text: req.body.name}], [{lang: req.body.lang, text: req.body.about}], req.body.orgId, req.body.price, req.body.preparationTime*24, "NOW()"], (err, goodRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании организации" })

@@ -31,8 +31,7 @@ exports.getOrg = async (req, res) => {
                     g.created AS good_created,
                     g.orders AS good_orders,
                     g.cat_id AS good_cat_id,
-                    g.min_time AS good_min_time,
-                    g.max_time AS good_max_time
+                    g.preparation_time AS good_preparation_time
                     FROM organizations AS org 
                     LEFT JOIN goods AS g
                     ON g.org_id = org.org_id
@@ -95,8 +94,7 @@ function sendOrgData(res, orgRow, allGoods) {
                 cat_id: orgRow.rows[i].good_cat_id,
                 orders: orgRow.rows[i].good_orders,
                 created: orgRow.rows[i].good_created,
-                minTime: orgRow.rows[i].good_min_time,
-                maxTime: orgRow.rows[i].good_max_time
+                preparationTime: orgRow.rows[i].good_preparation_time
             })
         } else {
             if(orgRow.rows[i].good_active){
@@ -109,8 +107,7 @@ function sendOrgData(res, orgRow, allGoods) {
                     picture: orgRow.rows[i].good_picture,
                     sold: orgRow.rows[i].good_sold,
                     cat_id: orgRow.rows[i].good_cat_id,
-                    minTime: orgRow.rows[i].good_min_time,
-                    maxTime: orgRow.rows[i].good_max_time
+                    preparationTime: orgRow.rows[i].good_preparation_time
                 }) 
             }
         }
@@ -139,8 +136,7 @@ function notAythRequest(req, res){
         g.sold AS good_sold,
         g.created AS good_created,
         g.orders AS good_orders,
-        g.min_time AS good_min_time,
-        g.max_time AS good_max_time
+        g.preparation_time AS good_preparation_time
         FROM organizations AS org 
         LEFT JOIN goods AS g
         ON g.good_id = (

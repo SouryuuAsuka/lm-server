@@ -22,8 +22,7 @@ exports.getCart = async (req, res) => {
                     g.name AS name,
                     g.active AS active,
                     g.picture AS picture,
-                    g.min_time AS min_time,
-                    g.max_time AS max_time
+                    g.preparation_time AS preparation_time
                     FROM carts AS c
                     CROSS JOIN LATERAL unnest(c.order_array) AS elem
                     JOIN goods AS g

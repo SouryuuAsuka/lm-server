@@ -16,26 +16,20 @@ exports.editGood = async (req, res) => {
                     return res.status(400).json({ success: false, error: "ID товара должно быть заполнено" })
                 } else if (req.body.price == undefined) {
                     return res.status(400).json({ success: false, error: "Цена товара должно быть заполнено" })
-                } else if (req.body.minTime == undefined) {
+                } else if (req.body.preparationTime == undefined) {
                     return res.status(400).json({ success: false, error: "Минимальное время доставки товара должно быть заполнено" })
-                } else if (req.body.maxTime == undefined) {
-                    return res.status(400).json({ success: false, error: "Максимальное время доставки товара должно быть заполнено" })
                 } else if (isNaN(req.body.goodId)) {
                     return res.status(400).json({ success: false, error: "Ошибка при указании ID товара" })
-                } else if (isNaN(req.body.minTime)) {
+                } else if (isNaN(req.body.preparationTime)) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовления товара должно быть заполнено" })
-                } else if (isNaN(req.body.maxTime)) {
-                    return res.status(400).json({ success: false, error: "Максимальное время изготовления товара должно быть заполнено" })
                 } else if (isNaN(req.body.price)) {
                     return res.status(400).json({ success: false, error: "Ошибка при указании цены товара" })
-                } else if (req.body.minTime > req.body.maxTime) {
-                    return res.status(400).json({ success: false, error: "Минимальное время изготовление превышает максимальное время" })
-                } else if (req.body.maxTime > 7) {
-                    return res.status(400).json({ success: false, error: "Максимальное время изготовление превышает неделю" })
+                } else if (req.body.preparationTime > 7) {
+                    return res.status(400).json({ success: false, error: "Время изготовление превышает неделю" })
                 } else {
                     if (decoded.userRole == 5 || decoded.userRole == 6) {
-                        const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, min_time = $4, max_time = $5 WHERE good_id = $6"
-                        pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price.toFixed(2), req.body.minTime, req.body.maxTime, req.body.goodId], (err, orgRow) => {
+                        const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, preparation_time = $4 WHERE good_id = $5"
+                        pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price.toFixed(2), req.body.preparationTime, req.body.goodId], (err, orgRow) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Ошибка при создании товара" })
@@ -56,8 +50,8 @@ exports.editGood = async (req, res) => {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                             } else {
-                                const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, min_time = $4, max_time = $5 WHERE good_id = $6 AND org_id = $7"
-                                pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price.toFixed(2), req.body.minTime, req.body.maxTime, req.body.goodId, user.rows[0].org_id], (err, orgRow) => {
+                                const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, preparation_time = $4 WHERE good_id = $5 AND org_id = $6"
+                                pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price.toFixed(2), req.body.preparationTime, req.body.goodId, user.rows[0].org_id], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании товара" })
