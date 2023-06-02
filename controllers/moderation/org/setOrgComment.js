@@ -38,15 +38,14 @@ exports.setOrgComment = async (req, res) => {
                                             id: userRow.rows[0].app_id,
                                             text: msgText
                                         })
-                                            .then(() => {
-                                                console.log('Removed the object')
-                                                return res.status(200).json({});
-                                            })
-                                            .catch(function (error) {
-                                                console.log(error)
-                                                return res.status(500).json({ error: "Ошибка при отправке сообщения в бот" });
-                                            })
-
+                                        .then(() => {
+                                            console.log('Removed the object')
+                                            return res.status(200).json({});
+                                        })
+                                        .catch(function (error) {
+                                            console.log(error)
+                                            return res.status(500).json({ error: "Ошибка при отправке сообщения в бот" });
+                                        })
                                     } else {
                                         return res.status(200).json({});
                                     }

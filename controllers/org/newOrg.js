@@ -21,8 +21,16 @@ exports.newOrg = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Категория организации должно быть заполнено" })
                 } else if (req.file.path == undefined) {
                     return res.status(400).json({ success: false, error: "Аватар организации должен быть прикреплен" })
+                } else if (req.body.country == undefined) {
+                    return res.status(400).json({ success: false, error: "Страна организации должна быть заполнена" })
                 } else if (req.body.city == undefined) {
                     return res.status(400).json({ success: false, error: "Город организации должно быть заполнено" })
+                } else if (req.body.street == undefined) {
+                    return res.status(400).json({ success: false, error: "Улица организации должна быть заполнена" })
+                } else if (req.body.house == undefined) {
+                    return res.status(400).json({ success: false, error: "Дом организации должно быть заполнено" })
+                } else if (req.body.flat == undefined) {
+                    return res.status(400).json({ success: false, error: "Квартира/офис организации должно быть заполнено" })
                 } else if (req.body.lang == undefined) {
                     return res.status(400).json({ success: false, error: "Язык организации должен быть заполнен" })
                 } else if (validator.isEmpty(req.body.name)) {
@@ -33,6 +41,14 @@ exports.newOrg = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Тип организации должен быть указан" })
                 } else if (validator.isEmpty(req.body.city)) {
                     return res.status(400).json({ success: false, error: "Город организации должен быть указан" })
+                } else if (validator.isEmpty(req.body.street)) {
+                    return res.status(400).json({ success: false, error: "Улица организации должна быть указана" })
+                } else if (validator.isEmpty(req.body.house)) {
+                    return res.status(400).json({ success: false, error: "Дом организации должен быть указан" })
+                } else if (validator.isEmpty(req.body.flat)) {
+                    return res.status(400).json({ success: false, error: "Квартира/офис организации должен быть указан" })
+                } else if (validator.isEmpty(req.body.country)) {
+                    return res.status(400).json({ success: false, error: "Страна организации должна быть указана" })
                 } else if (validator.isEmpty(req.body.lang)) {
                     return res.status(400).json({ success: false, error: "Язык организации должен быть указан" })
                 }
@@ -70,8 +86,8 @@ exports.newOrg = async (req, res) => {
                                 path.resolve(req.file.destination, 'resized', req.file.filename)
                             )  // get image metadata for size
                                 .then(function (metadata) { //TODO: Потом надо будет как-то нормально обрабатывать    изображения
-                                    const orgInsertString = "INSERT INTO organizations_request (name, about, owner, category, avatar, city, created) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING org_id"
-                                    pool.query(orgInsertString, [[{lang: req.body.lang, text:req.body.name}], [{lang: req.body.lang, text:req.body.about}], decoded.userId, req.body.category, avatar, req.body.city, "NOW()"], (err, orgRow) => {
+                                    const orgInsertString = "INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, country, street, house, flat) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING org_id"
+                                    pool.query(orgInsertString, [[{lang: req.body.lang, text:req.body.name}], [{lang: req.body.lang, text:req.body.about}], decoded.userId, req.body.category, avatar, req.body.city, "NOW()", req.body.street, req.body.house, req.body.flat], (err, orgRow) => {
                                         if (err) {
                                             console.log(err)
                                             return res.status(400).json({ success: false, error: "Ошибка при создании организации" })

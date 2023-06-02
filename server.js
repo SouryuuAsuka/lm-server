@@ -40,6 +40,8 @@ const { setActive } = require("@controllers/org/good/setActive");
 const { newOrg } = require("@controllers/org/newOrg");
 const { editOrg } = require("@controllers/org/editOrg");
 const { setPublic } = require("@controllers/org/setPublic");
+const { getCouriers } = require("@controllers/moderation/couriers/getCouriers");
+const { confirmCourier } = require("@controllers/moderation/couriers/confirmCourier");
 const { orgConfirm } = require("@controllers/moderation/org/confirm");
 const { setOrgComment } = require("@controllers/moderation/org/setOrgComment");
 const { getOrgRequest } = require("@controllers/moderation/org/getOrgRequest");
@@ -101,6 +103,8 @@ app.post('/api/org/edit', uploadAvatar.single('avatar'), editOrg);
 app.post('/api/org/public', setPublic);
 app.get('/api/org/paylist', getOrgPayments);
 
+app.get('/api/moderation/couriers', getCouriers);
+app.post('/api/moderation/couriers', confirmCourier);
 app.get('/api/moderation/org', getOrgRequest);
 app.post('/api/moderation/org/confirm', orgConfirm);
 app.post('/api/moderation/org/setcomment', setOrgComment);
