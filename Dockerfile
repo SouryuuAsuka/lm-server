@@ -1,7 +1,7 @@
 FROM node:18
 
 # создание директории приложения
-WORKDIR /usr/src/docker/projector-panel
+WORKDIR /usr/src/docker/lampymarket-server
 
 COPY package*.json ./
 
