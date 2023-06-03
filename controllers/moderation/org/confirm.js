@@ -33,9 +33,9 @@ exports.orgConfirm = async (req, res) => {
                             async (client) => {
                                 var newOrgRow = await client.query(
                                     `INSERT INTO organizations AS o (owner, name, about, category, created, avatar, country, city, street, house, flat) 
-                                    SELECT or.owner, or.name, or.about, or.category, or.created, or.avatar, or.country, or.city, or.street, or.house, or.flat
-                                    FROM organizations_request AS or
-                                    WHERE or.org_id = $1
+                                    SELECT org_r.owner, org_r.name, org_r.about, org_r.category, org_r.created, org_r.avatar, org_r.country, org_r.city, org_r.street, org_r.house, org_r.flat
+                                    FROM organizations_request AS org_r
+                                    WHERE org_r.org_id = $1
                                     RETURNING o.org_id, o.owner`, [req.body.requestId]);
                                 await client.query(`DELETE FROM organizations_request WHERE org_id = $1;`, [req.body.requestId]);
                                 await client.query(`UPDATE users SET user_role = 3 WHERE user_id = $1;`, [newOrgRow.rows[0].owner]);
