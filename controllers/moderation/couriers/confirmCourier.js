@@ -1,5 +1,6 @@
 const pool = require("@service/db");
 const dbot = require("@service/dbot_axios");
+const jwt = require('jsonwebtoken');
 
 exports.confirmCourier = async (req, res) => {
     try {

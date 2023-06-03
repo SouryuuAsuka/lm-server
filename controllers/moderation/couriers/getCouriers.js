@@ -1,4 +1,5 @@
 const pool = require("@service/db");
+const jwt = require('jsonwebtoken');
 
 exports.getCouriers = async (req, res) => {
     try {
