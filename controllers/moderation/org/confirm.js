@@ -32,11 +32,11 @@ exports.orgConfirm = async (req, res) => {
                         tx(res, "Ошибка подключения к базе данных",
                             async (client) => {
                                 var newOrgRow = await client.query(
-                                    `INSERT INTO organizations (owner, name, about, category, created, avatar, city) 
-                                    SELECT organizations_request.owner, organizations_request.name, organizations_request.about, organizations_request.category, organizations_request.created, organizations_request.avatar, organizations_request.city
-                                    FROM organizations_request
-                                    WHERE organizations_request.org_id = $1
-                                    RETURNING organizations.org_id, organizations.owner`, [req.body.requestId]);
+                                    `INSERT INTO organizations AS o (owner, name, about, category, created, avatar, country, city, street, house, flat) 
+                                    SELECT or.owner, or.name, or.about, or.category, or.created, or.avatar, or.country, or.city, or.street, or.house, or.flat
+                                    FROM organizations_request AS or
+                                    WHERE or.org_id = $1
+                                    RETURNING o.org_id, o.owner`, [req.body.requestId]);
                                 await client.query(`DELETE FROM organizations_request WHERE org_id = $1;`, [req.body.requestId]);
                                 await client.query(`UPDATE users SET user_role = 3 WHERE user_id = $1;`, [newOrgRow.rows[0].owner]);
                                 minioClient.copyObject('avatars-org', newOrgRow.rows[0].org_id + ".jpeg", '/avatars-org-request/' + req.body.requestId + ".jpeg", function (e, data) {
