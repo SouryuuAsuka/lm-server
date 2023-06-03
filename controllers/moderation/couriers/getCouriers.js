@@ -38,7 +38,7 @@ exports.getCouriers = async (req, res) => {
                                     country: country,
                                     city: city
                                 })
-                                if (i + 1 == couriersRow.rows.length && j + 1 == couriersRow.rows[i].goods.length) {
+                                if (i + 1 == couriersRow.rows.length) {
                                     return res.status(200).json({ couriers: couriersList, count: count });
                                 }
 
