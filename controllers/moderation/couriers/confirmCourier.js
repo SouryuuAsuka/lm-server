@@ -17,7 +17,7 @@ exports.confirmCourier = async (req, res) => {
                     UPDATE tg_couriers
                     SET confirm = true
                     WHERE tg_id = $1
-                    RETERNING app_id`, [req.body.tgId], (err, tgRow) => {
+                    RETURNING app_id`, [req.body.tgId], (err, tgRow) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({ error: 'Ошибка поиска' });
