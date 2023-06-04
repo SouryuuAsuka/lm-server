@@ -11,6 +11,7 @@ exports.getCouriers = async (req, res) => {
                 return res.status(401).json({ error: true, message: 'Недостаточно прав для редактирования оранизации' });
             } else {
                 var count = pool.query("SELECT COUNT(*) FROM tg_couriers WHERE confirm = false", [])
+                console.log(JSON.stringify(count))
                 if (count != 0) {
                     pool.query(`
                         SELECT 
