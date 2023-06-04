@@ -15,6 +15,7 @@ exports.getCouriers = async (req, res) => {
                         return res.status(401).json({ error: true, message: 'Unauthorized access.' });
                     } else {
                         if (count.rows[0].count != 0) {
+                            console.log(count.rows[0])
                             pool.query(`
                                 SELECT 
                                 tg_id, username, country, city, firstname, lastname
