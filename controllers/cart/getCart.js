@@ -22,18 +22,26 @@ exports.getCart = async (req, res) => {
                     g.name AS name,
                     g.active AS active,
                     g.picture AS picture,
-                    g.preparation_time AS preparation_time
+                    g.preparation_time AS preparation_time,
+                    o.org_id AS org_id,
+                    o.name AS org_name
                     FROM carts AS c
                     CROSS JOIN LATERAL unnest(c.order_array) AS elem
                     JOIN goods AS g
                     ON (elem ->> 'id')::INT = g.good_id
+                    JOIN organizations AS o
+                    ON o.org_id = g.org_id
                     WHERE c.token = $1 AND c.cart_id = $2`
                 pool.query(cartInsertString, [req.cookies.cart_token, req.cookies.cart_id], (err, cartRow) => {
                     if (err) {
                         console.log(err)
-                        return res.status(400).json({ success: false, error: "Ошибка при сохранении корзины" })
+                        return res.status(400).jsons({ success: false, error: "Ошибка при сохранении корзины" })
+                    } else if(cartRow.rows.length ==0 ){
+                        return res.status(200).json({ success: true, cart: [] })
                     } else {
-                        return res.status(200).json({ success: true, cart: cartRow.rows})
+                        sortCart(cartRow.rows, (cartArray, prTime)=>{
+                            return res.status(200).json({ success: true, cart: cartArray, prTime: prTime })
+                        })
                     }
                 })
             } else {
@@ -43,8 +51,8 @@ exports.getCart = async (req, res) => {
                         console.log(err)
                         return res.status(400).json({ success: false, error: "Ошибка при сохранении корзины" })
                     } else {
-                        if (cartRow.rows.length==0) {
-                            return res.status(200).json({ success: true, cart:[] })
+                        if (cartRow.rows.length == 0) {
+                            return res.status(200).json({ success: true, cart: [] })
                         } else {
                             return res.status(200).json({ success: true, cart: cartRow.rows[0].order_array })
                         }
@@ -59,4 +67,33 @@ exports.getCart = async (req, res) => {
             error: "Ошибка при обработке запроса", //Database connection error
         });
     };
+}
+function sortCart(cart, callback) {
+    var cartArray = [];
+    var prTime = 0;
+    for (let i = 0; i < cart.length; i++) {
+        if (cart[0].preparation_time > prTime) {
+            prTime = cart[0].preparation_time;
+        }
+        if (cartArray.length == 0) {
+            cartArray.push({ org_id: orderRow.rows[i].org_id, org_name: orgName, app_id: orderRow.rows[i].app_id, date: data.d, order: [{ id: orderRow.rows[i].good_id, num: orderRow.rows[i].cart_num, price: orderRow.rows[i].good_price, name: goodName }] })
+        } else {
+            for (let j = 0; j < cartArray.length; j++) {
+                if (cartArray[j].org_id == orderRow.rows[i].org_id) {
+                    cartArray[j].order.push({ id: orderRow.rows[i].good_id, num: orderRow.rows[i].cart_num, name: goodName })
+                    if(cart.length == i+1 ){
+                        callback(cartArray, prTime)
+                    } else {
+                        break;
+                    }
+                }
+                else if (cartArray.length == j + 1) {
+                    cartArray.push({ org_id: orderRow.rows[i].org_id, org_name: orgName, app_id: orderRow.rows[i].app_id, date: data.d, order: [{ id: orderRow.rows[i].good_id, num: orderRow.rows[i].cart_num, price: orderRow.rows[i].good_price, name: goodName }] })
+                    if(cart.length == i+1 ){
+                        callback(cartArray, prTime)
+                    }
+                }
+            }
+        }
+    }
 }

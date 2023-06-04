@@ -36,7 +36,7 @@ exports.newGood = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Ошибка при указании организации" })
                 } else if (req.body.preparationTime > 7) {
                     return res.status(400).json({ success: false, error: "Время изготовление превышает неделю" })
-                } else if (!validator.matches(req.body.lang, '^[a-z]{3}$')) {
+                } else if (!validator.matches(req.body.lang, '^[a-z]{2}$')) {
                     return res.status(400).json({ success: false, error: "Некорректно указан язык описания" })
                 } else {
                     pool.query(`SELECT * FROM organizations WHERE org_id = $1`, [req.body.orgId], (err, user) => {
