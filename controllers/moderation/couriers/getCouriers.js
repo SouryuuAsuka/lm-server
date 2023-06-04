@@ -14,19 +14,17 @@ exports.getCouriers = async (req, res) => {
                     if (err) {
                         return res.status(401).json({ error: true, message: 'Unauthorized access.' });
                     } else {
-                        console.log(JSON.stringify(count))
-                        if (count != 0) {
+                        if (count.rows[0].count != 0) {
                             pool.query(`
-                        SELECT 
-                        tg_id, username, country, city, firstname, lastname
-                        FROM tg_couriers
-                        WHERE confirm = false`, [], (err, couriersRow) => {
+                                SELECT 
+                                tg_id, username, country, city, firstname, lastname
+                                FROM tg_couriers
+                                WHERE confirm = false`, [], (err, couriersRow) => {
                                 if (err) {
                                     console.log(err)
                                     return res.status(500).json({ error: 'Ошибка поиска' });
                                 } else {
                                     var couriersList = [];
-
                                     for (let i = 0; i < couriersRow.rows.length; i++) {
                                         var country;
                                         var city;
