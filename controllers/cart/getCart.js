@@ -16,10 +16,10 @@ exports.getCart = async (req, res) => {
             if (req.query.type == "full") {
                 cartInsertString =
                     `SELECT 
-                    elem ->> 'num' AS num,
-                    elem ->> 'id' AS id,
-                    g.price AS price,
-                    g.name AS name,
+                    elem ->> 'num' AS good_num,
+                    elem ->> 'id' AS good_id,
+                    g.price AS good_price,
+                    g.name AS good_name,
                     g.active AS active,
                     g.picture AS picture,
                     g.preparation_time AS preparation_time,
@@ -76,11 +76,11 @@ function sortCart(cart, callback) {
             prTime = cart[0].preparation_time;
         }
         if (cartArray.length == 0) {
-            cartArray.push({ org_id: cart[i].org_id, orgName: cart[i].org_name, app_id: cart[i].app_id, order: [{ id: cart[i].good_id, num: cart[i].cart_num, price: cart[i].good_price, name: goodName }] })
+            cartArray.push({ org_id: cart[i].org_id, org_name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: cart[i].good_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
         } else {
             for (let j = 0; j < cartArray.length; j++) {
                 if (cartArray[j].org_id == cart[i].org_id) {
-                    cartArray[j].order.push({ id: cart[i].good_id, num: cart[i].cart_num, name: goodName })
+                    cartArray[j].order.push({ id: cart[i].good_id, num: cart[i].good_num, name: cart[i].good_name, price: cart[i].good_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture,  })
                     if(cart.length == i+1 ){
                         callback(cartArray, prTime/24)
                     } else {
@@ -88,7 +88,7 @@ function sortCart(cart, callback) {
                     }
                 }
                 else if (cartArray.length == j + 1) {
-                    cartArray.push({ org_id: cart[i].org_id, org_name: orgName, app_id: cart[i].app_id, order: [{ id: cart[i].good_id, num: cart[i].cart_num, price: cart[i].good_price, name: goodName }] })
+                    cartArray.push({ org_id: cart[i].org_id, org_name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: cart[i].good_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
                     if(cart.length == i+1 ){
                         callback(cartArray, prTime/24)
                     }
