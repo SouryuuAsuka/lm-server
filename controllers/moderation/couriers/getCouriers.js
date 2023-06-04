@@ -10,7 +10,7 @@ exports.getCouriers = async (req, res) => {
             } else if (decoded.userRole != 5 && decoded.userRole != 6) {
                 return res.status(401).json({ error: true, message: 'Недостаточно прав для редактирования оранизации' });
             } else {
-                pool.query("SELECT COUNT(*) FROM tg_couriers WHERE confirm = false", [], (err, couriersRow) => {
+                pool.query("SELECT COUNT(*) FROM tg_couriers WHERE confirm = false", [], (err, count) => {
                     if (err) {
                         return res.status(401).json({ error: true, message: 'Unauthorized access.' });
                     } else {
