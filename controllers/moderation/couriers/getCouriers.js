@@ -14,7 +14,7 @@ exports.getCouriers = async (req, res) => {
                 if (count != 0) {
                     pool.query(`
                         SELECT 
-                        tg_id, username, country, city
+                        tg_id, username, country, city, firstname, lastname
                         FROM tg_couriers
                         WHERE confirm = false`, [], (err, couriersRow) => {
                         if (err) {
@@ -35,6 +35,8 @@ exports.getCouriers = async (req, res) => {
                                 couriersList.push({
                                     tgId: couriersRow.rows[i].tg_id,
                                     username: couriersRow.rows[i].username,
+                                    firstname: couriersRow.rows[i].firstname,
+                                    lastname: couriersRow.rows[i].lastname,
                                     country: country,
                                     city: city
                                 })
