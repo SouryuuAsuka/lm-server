@@ -76,7 +76,7 @@ function sortCart(cart, callback) {
             prTime = cart[0].preparation_time;
         }
         if (cartArray.length == 0) {
-            cartArray.push({ org_id: cart[i].org_id, orgName: cart[i].org_name, app_id: cart[i].app_id, date: data.d, order: [{ id: cart[i].good_id, num: cart[i].cart_num, price: cart[i].good_price, name: goodName }] })
+            cartArray.push({ org_id: cart[i].org_id, orgName: cart[i].org_name, app_id: cart[i].app_id, order: [{ id: cart[i].good_id, num: cart[i].cart_num, price: cart[i].good_price, name: goodName }] })
         } else {
             for (let j = 0; j < cartArray.length; j++) {
                 if (cartArray[j].org_id == cart[i].org_id) {
@@ -88,7 +88,7 @@ function sortCart(cart, callback) {
                     }
                 }
                 else if (cartArray.length == j + 1) {
-                    cartArray.push({ org_id: cart[i].org_id, org_name: orgName, app_id: cart[i].app_id, date: data.d, order: [{ id: cart[i].good_id, num: cart[i].cart_num, price: cart[i].good_price, name: goodName }] })
+                    cartArray.push({ org_id: cart[i].org_id, org_name: orgName, app_id: cart[i].app_id, order: [{ id: cart[i].good_id, num: cart[i].cart_num, price: cart[i].good_price, name: goodName }] })
                     if(cart.length == i+1 ){
                         callback(cartArray, prTime/24)
                     }
