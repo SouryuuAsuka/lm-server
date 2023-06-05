@@ -36,10 +36,13 @@ exports.getCart = async (req, res) => {
                     if (err) {
                         console.log(err)
                         return res.status(400).jsons({ success: false, error: "Ошибка при сохранении корзины" })
-                    } else if(cartRow.rows.length ==0 ){
+                    } else if(cartRow.rows.length == 0 ){
                         return res.status(200).json({ success: true, cart: [] })
                     } else {
+                        console.log("start-col ")
+
                         sortCart(cartRow.rows, (cartArray, prTime)=>{
+                            console.log("start-col3")
                             return res.status(200).json({ success: true, cart: cartArray, prTime: prTime })
                         })
                     }
@@ -71,6 +74,7 @@ exports.getCart = async (req, res) => {
 function sortCart(cart, callback) {
     var cartArray = [];
     var prTime = 0;
+    console.log("start-col2")
     for (let i = 0; i < cart.length; i++) {
         if (cart[0].preparation_time > prTime) {
             prTime = cart[0].preparation_time;
