@@ -74,13 +74,16 @@ exports.getCart = async (req, res) => {
 function sortCart(cart, callback) {
     var cartArray = [];
     var prTime = 0;
-    console.log("start-col2")
+    console.log("start-col1")
     for (let i = 0; i < cart.length; i++) {
         if (cart[0].preparation_time > prTime) {
             prTime = cart[0].preparation_time;
         }
         if (cartArray.length == 0) {
             cartArray.push({ org_id: cart[i].org_id, org_name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: cart[i].good_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
+            if(cart.length == i+1 ){
+                callback(cartArray, prTime/24)
+            }
         } else {
             for (let j = 0; j < cartArray.length; j++) {
                 if (cartArray[j].org_id == cart[i].org_id) {
