@@ -39,8 +39,6 @@ exports.getCart = async (req, res) => {
                     } else if(cartRow.rows.length == 0 ){
                         return res.status(200).json({ success: true, cart: [] })
                     } else {
-                        console.log("start-col ")
-
                         sortCart(cartRow.rows, (cartArray, prTime)=>{
                             console.log("start-col3")
                             return res.status(200).json({ success: true, cart: cartArray, prTime: prTime })
@@ -87,7 +85,7 @@ function sortCart(cart, callback) {
         } else {
             for (let j = 0; j < cartArray.length; j++) {
                 if (cartArray[j].org_id == cart[i].org_id) {
-                    cartArray[j].order.push({ id: cart[i].good_id, num: cart[i].good_num, name: cart[i].good_name, price: cart[i].good_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture,  })
+                    cartArray[j].order.push({ id: cart[i].good_id, num: cart[i].good_num, name: cart[i].good_name, price: cart[i].good_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture })
                     if(cart.length == i+1 ){
                         callback(cartArray, prTime/24)
                     } else {
