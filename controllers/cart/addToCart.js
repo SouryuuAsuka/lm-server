@@ -4,22 +4,53 @@ const validator = require('validator');
 exports.addToCart = async (req, res) => {
     try {
         console.log("req.cookies - " + JSON.stringify(req.cookies))
-        if (req.cookies.cart_id == undefined) {
+        var cartId = null;
+        if (req.cookies.cart_id != undefined) {
+            if (isNaN(req.cookies.cart_id)) {
+                return res.status(400).json({ success: false, error: "ID корзины некорректен" })
+            } else {
+                cartId = req.cookies.cart_id;
+            }
+        } else if (req.body.cart_id != undefined) {
+            if (isNaN(req.body.cart_id)) {
+                return res.status(400).json({ success: false, error: "ID корзины некорректен" })
+            } else {
+                cartId = req.body.cart_id;
+            }
+        } else {
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
-        } else if (isNaN(req.cookies.cart_id)) {
-            return res.status(400).json({ success: false, error: "ID корзины некорректен" })
+        }
+        var cartToken = null;
+        if (req.cookies.cart_token != undefined) {
+            if (isNaN(req.cookies.cart_token)) {
+                return res.status(400).json({ success: false, error: "ID корзины некорректен" })
+            } else {
+                cartId = req.cookies.cart_token;
+            }
+        } else if (req.body.cart_token != undefined) {
+            if (isNaN(req.body.cart_token)) {
+                return res.status(400).json({ success: false, error: "ID корзины некорректен" })
+            } else {
+                cartId = req.body.cart_token;
+            }
+        } else {
+            return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
+        }
+
+        if (cartToken == null || cartId == null) {
+            return res.status(400).json({ success: false, error: "Ошибка чтения" })
         } else if (req.cookies.cart_token == undefined) {
             return res.status(400).json({ success: false, error: "Токен корзины должен быть отправлен" })
         } else if (!validator.matches(req.cookies.cart_token, '^[0-9a-zA-Z]{6}$')) {
             return res.status(400).json({ success: false, error: "Токен корзины некорректен" })
         } else {
             const orgInsertString = "UPDATE carts SET order_array = $1, last_update = $2 WHERE token = $3 AND cart_id = $4"
-            pool.query(orgInsertString,[req.body.cart, "NOW()", req.cookies.cart_token, req.cookies.cart_id], (err, cartRow) => {
+            pool.query(orgInsertString, [req.body.cart, "NOW()", cartToken, cartId], (err, cartRow) => {
                 if (err) {
                     console.log(err)
                     return res.status(400).json({ success: false, error: "Ошибка при сохранении корзины" })
                 } else {
-                    return res.status(200).json({ success: true})
+                    return res.status(200).json({ success: true })
                 }
             })
         }
