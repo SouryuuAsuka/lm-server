@@ -25,13 +25,13 @@ exports.addToCart = async (req, res) => {
             if (isNaN(req.cookies.cart_token)) {
                 return res.status(400).json({ success: false, error: "ID корзины некорректен" })
             } else {
-                cartId = req.cookies.cart_token;
+                cartToken = req.cookies.cart_token;
             }
         } else if (req.body.cart_token != undefined) {
             if (isNaN(req.body.cart_token)) {
                 return res.status(400).json({ success: false, error: "ID корзины некорректен" })
             } else {
-                cartId = req.body.cart_token;
+                cartToken = req.body.cart_token;
             }
         } else {
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
