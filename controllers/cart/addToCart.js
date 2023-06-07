@@ -3,6 +3,7 @@ const validator = require('validator');
 
 exports.addToCart = async (req, res) => {
     try {
+        console.log("req.cookies - " + JSON.stringify(req.cookies))
         if (req.cookies.cart_id == undefined) {
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
         } else if (isNaN(req.cookies.cart_id)) {
