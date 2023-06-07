@@ -4,6 +4,7 @@ const validator = require('validator');
 exports.addToCart = async (req, res) => {
     try {
         console.log("req.cookies - " + JSON.stringify(req.cookies))
+        console.log("req.body - " + JSON.stringify(req.body))
         var cartId = null;
         if (req.cookies.cart_id != undefined) {
             if (isNaN(req.cookies.cart_id)) {
