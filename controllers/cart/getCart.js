@@ -10,11 +10,11 @@ exports.getCart = async (req, res) => {
             } else {
                 cartId = req.cookies.cart_id;
             }
-        } else if (req.body.cart_id != undefined) {
-            if (isNaN(req.body.cart_id)) {
+        } else if (req.query.cart_id != undefined) {
+            if (isNaN(req.query.cart_id)) {
                 return res.status(400).json({ success: false, error: "ID корзины некорректен" })
             } else {
-                cartId = req.body.cart_id;
+                cartId = req.query.cart_id;
             }
         } else {
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
@@ -22,8 +22,8 @@ exports.getCart = async (req, res) => {
         var cartToken = null;
         if (req.cookies.cart_token != undefined) {
                 cartToken = req.cookies.cart_token;
-        } else if (req.body.cart_token != undefined) {
-                cartToken = req.body.cart_token;
+        } else if (req.query.cart_token != undefined) {
+                cartToken = req.query.cart_token;
         } else {
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
         }
