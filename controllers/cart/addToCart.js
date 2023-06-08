@@ -24,17 +24,9 @@ exports.addToCart = async (req, res) => {
         }
         var cartToken = null;
         if (req.cookies.cart_token != undefined) {
-            if (isNaN(req.cookies.cart_token)) {
-                return res.status(400).json({ success: false, error: "ID корзины некорректен" })
-            } else {
                 cartToken = req.cookies.cart_token;
-            }
         } else if (req.body.cart_token != undefined) {
-            if (isNaN(req.body.cart_token)) {
-                return res.status(400).json({ success: false, error: "ID корзины некорректен" })
-            } else {
                 cartToken = req.body.cart_token;
-            }
         } else {
             console.log("who2")
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
