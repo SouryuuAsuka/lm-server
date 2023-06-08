@@ -25,11 +25,11 @@ exports.newCart = async (req, res) => {
                 } else {
                     res.cookie('cart_id', cartRow.rows[0].cart_id, {
                         httpOnly: true,
-                        domain: "lampymarket.com"
+                        domain: ".lampymarket.com"
                     })                    
                     res.cookie('cart_token', token, {
                         httpOnly: true,
-                        domain: "lampymarket.com"
+                        domain: ".lampymarket.com"
                     })
                     return res.status(200).json({ success: true, cartId:cartRow.rows[0].cart_id, token:token})
                 }
