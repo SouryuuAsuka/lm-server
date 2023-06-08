@@ -3,12 +3,33 @@ const validator = require('validator');
 
 exports.getCart = async (req, res) => {
     try {
-        if (req.cookies.cart_id == undefined) {
+        var cartId = null;
+        if (req.cookies.cart_id != undefined) {
+            if (isNaN(req.cookies.cart_id)) {
+                return res.status(400).json({ success: false, error: "ID корзины некорректен" })
+            } else {
+                cartId = req.cookies.cart_id;
+            }
+        } else if (req.body.cart_id != undefined) {
+            if (isNaN(req.body.cart_id)) {
+                return res.status(400).json({ success: false, error: "ID корзины некорректен" })
+            } else {
+                cartId = req.body.cart_id;
+            }
+        } else {
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
-        } else if (isNaN(req.cookies.cart_id)) {
-            return res.status(400).json({ success: false, error: "ID корзины некорректен" })
-        } else if (req.cookies.cart_token == undefined) {
-            return res.status(400).json({ success: false, error: "Токен корзины должен быть отправлен" })
+        }
+        var cartToken = null;
+        if (req.cookies.cart_token != undefined) {
+                cartToken = req.cookies.cart_token;
+        } else if (req.body.cart_token != undefined) {
+                cartToken = req.body.cart_token;
+        } else {
+            return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
+        }
+
+        if (cartToken == null || cartId == null) {
+            return res.status(400).json({ success: false, error: "Ошибка чтения" })
         } else if (!validator.matches(req.cookies.cart_token, '^[0-9a-zA-Z]{6}$')) {
             return res.status(400).json({ success: false, error: "Токен корзины некорректен" })
         } else {
