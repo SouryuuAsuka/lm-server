@@ -69,45 +69,45 @@ exports.getOrg = async (req, res) => {
 
 function sendOrgData(res, orgRow, allGoods) {
     const org = {
-        orgId: orgRow.rows[0].org_id,
+        orgId: Number(orgRow.rows[0].org_id),
         name: orgRow.rows[0].name,
         about: orgRow.rows[0].about,
-        owner: orgRow.rows[0].owner,
+        owner: Number(orgRow.rows[0].owner),
         avatar: orgRow.rows[0].avatar,
         category: orgRow.rows[0].category,
         public: orgRow.rows[0].public,
         city: orgRow.rows[0].city,
-        usdTotal: orgRow.rows[0].usd_total,
-        usdReceived: orgRow.rows[0].usd_received,
+        usdTotal: Number(orgRow.rows[0].usd_total),
+        usdReceived: Number(orgRow.rows[0].usd_received),
         goods: []
     }
     for (let i = 0; i < orgRow.rows.length; i++) {
         if(allGoods){
             org.goods.push({
-                id: orgRow.rows[i].good_id,
+                id: Number(orgRow.rows[i].good_id),
                 name: orgRow.rows[i].good_name,
                 about: orgRow.rows[i].good_about,
-                price: orgRow.rows[i].good_price,
+                price: Number(orgRow.rows[i].good_price),
                 active: orgRow.rows[i].good_active,
                 picture: orgRow.rows[i].good_picture,
-                sold: orgRow.rows[i].good_sold,
-                cat_id: orgRow.rows[i].good_cat_id,
-                orders: orgRow.rows[i].good_orders,
+                sold: Number(orgRow.rows[i].good_sold),
+                cat_id: Number(orgRow.rows[i].good_cat_id),
+                orders: Number(orgRow.rows[i].good_orders),
                 created: orgRow.rows[i].good_created,
-                preparationTime: orgRow.rows[i].good_preparation_time
+                preparationTime: Number(orgRow.rows[i].good_preparation_time)
             })
         } else {
             if(orgRow.rows[i].good_active){
                 org.goods.push({
-                    id: orgRow.rows[i].good_id,
+                    id: Number(orgRow.rows[i].good_id),
                     name: orgRow.rows[i].good_name,
                     about: orgRow.rows[i].good_about,
-                    price: orgRow.rows[i].good_price,
+                    price: Number(orgRow.rows[i].good_price),
                     active: orgRow.rows[i].good_active,
                     picture: orgRow.rows[i].good_picture,
-                    sold: orgRow.rows[i].good_sold,
-                    cat_id: orgRow.rows[i].good_cat_id,
-                    preparationTime: orgRow.rows[i].good_preparation_time
+                    sold: Number(orgRow.rows[i].good_sold),
+                    cat_id: Number(orgRow.rows[i].good_cat_id),
+                    preparation_time: Number(orgRow.rows[i].good_preparation_time)
                 }) 
             }
         }
