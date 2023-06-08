@@ -32,7 +32,7 @@ exports.addToCart = async (req, res) => {
 
         if (cartToken == null || cartId == null) {
             return res.status(400).json({ success: false, error: "Ошибка чтения" })
-        } else if (!validator.matches(req.cookies.cart_token, '^[0-9a-zA-Z]{6}$')) {
+        } else if (!validator.matches(cartToken, '^[0-9a-zA-Z]{6}$')) {
             return res.status(400).json({ success: false, error: "Токен корзины некорректен" })
         } else {
             const orgInsertString = "UPDATE carts SET order_array = $1, last_update = $2 WHERE token = $3 AND cart_id = $4"
