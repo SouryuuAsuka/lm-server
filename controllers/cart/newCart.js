@@ -23,16 +23,6 @@ exports.newCart = async (req, res) => {
                     console.log(err)
                     return res.status(400).json({ success: false, error: "Ошибка при сохранении корзины" })
                 } else {
-                    res.cookie('cart_id', cartRow.rows[0].cart_id, {
-                        httpOnly: false,
-                        maxAge: 60*60*24*30*1000,
-                        secure: true
-                    })                    
-                    res.cookie('cart_token', token, {
-                        httpOnly: false,
-                        maxAge: 60*60*24*30*1000,
-                        secure: true
-                    })
                     return res.status(200).json({ success: true, cartId:cartRow.rows[0].cart_id, token:token})
                 }
             })

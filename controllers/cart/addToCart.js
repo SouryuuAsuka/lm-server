@@ -3,8 +3,6 @@ const validator = require('validator');
 
 exports.addToCart = async (req, res) => {
     try {
-        console.log("req.cookies - " + JSON.stringify(req.cookies))
-        console.log("req.body - " + JSON.stringify(req.body))
         var cartId = null;
         if (req.cookies.cart_id != undefined) {
             if (isNaN(req.cookies.cart_id)) {
@@ -34,8 +32,6 @@ exports.addToCart = async (req, res) => {
 
         if (cartToken == null || cartId == null) {
             return res.status(400).json({ success: false, error: "Ошибка чтения" })
-        } else if (req.cookies.cart_token == undefined) {
-            return res.status(400).json({ success: false, error: "Токен корзины должен быть отправлен" })
         } else if (!validator.matches(req.cookies.cart_token, '^[0-9a-zA-Z]{6}$')) {
             return res.status(400).json({ success: false, error: "Токен корзины некорректен" })
         } else {
