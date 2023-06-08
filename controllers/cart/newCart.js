@@ -26,7 +26,7 @@ exports.newCart = async (req, res) => {
                     res.cookie('cart_id', cartRow.rows[0].cart_id, {
                         httpOnly: true
                     })                    
-                    res.cookie('cart_token', cartRow.rows[0].cart_token, {
+                    res.cookie('cart_token', token, {
                         httpOnly: true
                     })
                     return res.status(200).json({ success: true, cartId:cartRow.rows[0].cart_id, token:token})
