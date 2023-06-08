@@ -53,7 +53,7 @@ exports.getCart = async (req, res) => {
                     JOIN organizations AS o
                     ON o.org_id = g.org_id
                     WHERE c.token = $1 AND c.cart_id = $2`
-                pool.query(cartInsertString, [req.cookies.cart_token, req.cookies.cart_id], (err, cartRow) => {
+                pool.query(cartInsertString, [cartToken, cartId], (err, cartRow) => {
                     if (err) {
                         console.log(err)
                         return res.status(400).jsons({ success: false, error: "Ошибка при сохранении корзины" })
@@ -68,7 +68,7 @@ exports.getCart = async (req, res) => {
                 })
             } else {
                 cartInsertString = "SELECT order_array FROM carts WHERE token = $1 AND cart_id = $2"
-                pool.query(cartInsertString, [req.cookies.cart_token, req.cookies.cart_id], (err, cartRow) => {
+                pool.query(cartInsertString, [cartToken, cartId], (err, cartRow) => {
                     if (err) {
                         console.log(err)
                         return res.status(400).json({ success: false, error: "Ошибка при сохранении корзины" })
