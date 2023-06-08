@@ -25,12 +25,14 @@ exports.newCart = async (req, res) => {
                 } else {
                     res.cookie('cart_id', cartRow.rows[0].cart_id, {
                         httpOnly: false,
+                        domain: ".lampymarket.com",
                         sameSite: "none",
                         maxAge: 60*60*24*30*1000,
                         secure: false
                     })                    
                     res.cookie('cart_token', token, {
                         httpOnly: false,
+                        domain: ".lampymarket.com",
                         sameSite: "none",
                         maxAge: 60*60*24*30*1000,
                         secure: false
