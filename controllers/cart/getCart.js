@@ -98,14 +98,14 @@ function sortCart(cart, callback) {
             prTime = cart[0].preparation_time;
         }
         if (cartArray.length == 0) {
-            cartArray.push({ org_id: cart[i].org_id, name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: cart[i].good_price, saved_price: cart[i].good_saved_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
+            cartArray.push({ org_id: cart[i].org_id, name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: Number(cart[i].good_price).toFixed(2), saved_price: Number(cart[i].good_saved_price).toFixed(2), preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
             if(cart.length == i+1 ){
                 callback(cartArray, prTime/24)
             }
         } else {
             for (let j = 0; j < cartArray.length; j++) {
                 if (cartArray[j].org_id == cart[i].org_id) {
-                    cartArray[j].order.push({ id: cart[i].good_id, num: cart[i].good_num, name: cart[i].good_name, price: cart[i].good_price, saved_price: cart[i].good_saved_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture })
+                    cartArray[j].order.push({ id: cart[i].good_id, num: cart[i].good_num, name: cart[i].good_name, price: Number(cart[i].good_price).toFixed(2), saved_price: Number(cart[i].good_saved_price).toFixed(2), preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture })
                     if(cart.length == i+1 ){
                         callback(cartArray, prTime/24)
                     } else {
@@ -113,7 +113,7 @@ function sortCart(cart, callback) {
                     }
                 }
                 else if (cartArray.length == j + 1) {
-                    cartArray.push({ org_id: cart[i].org_id, name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: cart[i].good_price, saved_price: cart[i].good_saved_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
+                    cartArray.push({ org_id: cart[i].org_id, name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: Number(cart[i].good_price).toFixed(2), saved_price: Number(cart[i].good_saved_price).toFixed(2), preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
                     if(cart.length == i+1 ){
                         callback(cartArray, prTime/24)
                     }
