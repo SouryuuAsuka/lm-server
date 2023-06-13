@@ -29,7 +29,7 @@ exports.editGood = async (req, res) => {
                 } else {
                     if (decoded.userRole == 5 || decoded.userRole == 6) {
                         const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, preparation_time = $4 WHERE good_id = $5"
-                        pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price.toFixed(2), req.body.preparationTime, req.body.goodId], (err, orgRow) => {
+                        pool.query(orgInsertString, [req.body.name, req.body.about, Number(req.body.price).toFixed(2), req.body.preparationTime, req.body.goodId], (err, orgRow) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Ошибка при создании товара" })
