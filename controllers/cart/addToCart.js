@@ -17,7 +17,6 @@ exports.addToCart = async (req, res) => {
                 cartId = req.body.cart_id;
             }
         } else {
-            console.log("who1")
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
         }
         var cartToken = null;
@@ -26,7 +25,6 @@ exports.addToCart = async (req, res) => {
         } else if (req.body.cart_token != undefined) {
                 cartToken = req.body.cart_token;
         } else {
-            console.log("who2")
             return res.status(400).json({ success: false, error: "ID корзины должен быть отправлен" })
         }
 

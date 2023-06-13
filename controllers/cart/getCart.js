@@ -39,6 +39,7 @@ exports.getCart = async (req, res) => {
                     `SELECT 
                     elem ->> 'num' AS good_num,
                     elem ->> 'id' AS good_id,
+                    elem ->> 'price' AS good_saved_price,
                     g.price AS good_price,
                     g.name AS good_name,
                     g.active AS active,
@@ -61,7 +62,6 @@ exports.getCart = async (req, res) => {
                         return res.status(200).json({ success: true, cart: [] })
                     } else {
                         sortCart(cartRow.rows, (cartArray, prTime)=>{
-                            console.log("start-col3")
                             return res.status(200).json({ success: true, cart: cartArray, prTime: prTime })
                         })
                     }
@@ -93,20 +93,19 @@ exports.getCart = async (req, res) => {
 function sortCart(cart, callback) {
     var cartArray = [];
     var prTime = 0;
-    console.log("start-col1")
     for (let i = 0; i < cart.length; i++) {
         if (cart[0].preparation_time > prTime) {
             prTime = cart[0].preparation_time;
         }
         if (cartArray.length == 0) {
-            cartArray.push({ org_id: cart[i].org_id, name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: cart[i].good_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
+            cartArray.push({ org_id: cart[i].org_id, name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: cart[i].good_price, saved_price: cart[i].good_saved_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
             if(cart.length == i+1 ){
                 callback(cartArray, prTime/24)
             }
         } else {
             for (let j = 0; j < cartArray.length; j++) {
                 if (cartArray[j].org_id == cart[i].org_id) {
-                    cartArray[j].order.push({ id: cart[i].good_id, num: cart[i].good_num, name: cart[i].good_name, price: cart[i].good_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture })
+                    cartArray[j].order.push({ id: cart[i].good_id, num: cart[i].good_num, name: cart[i].good_name, price: cart[i].good_price, saved_price: cart[i].good_saved_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture })
                     if(cart.length == i+1 ){
                         callback(cartArray, prTime/24)
                     } else {
@@ -114,7 +113,7 @@ function sortCart(cart, callback) {
                     }
                 }
                 else if (cartArray.length == j + 1) {
-                    cartArray.push({ org_id: cart[i].org_id, name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: cart[i].good_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
+                    cartArray.push({ org_id: cart[i].org_id, name: cart[i].org_name, order: [{ id: cart[i].good_id, num: cart[i].good_num, price: cart[i].good_price, saved_price: cart[i].good_saved_price, preparation_time: cart[i].preparation_time, active: cart[i].active, picture: cart[i].picture, name: cart[i].good_name }] })
                     if(cart.length == i+1 ){
                         callback(cartArray, prTime/24)
                     }
