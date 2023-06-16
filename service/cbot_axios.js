@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const cbot = axios.create({
-  baseURL: 'http://lm-cbot:3000/webhooks/',
+  baseURL: 'http://lm-cbot:3000/webhook/',
   timeout: 1000
 });
 
