@@ -48,7 +48,7 @@ exports.getOrg = async (req, res) => {
                     ON g.org_id = org.org_id
                     WHERE org.org_id = $1 AND (qu.status_code = 5 AND qu.paid = false)
                     GROUP BY org.org_id
-                    ORDER BY g.created, org.created DESC`,
+                    ORDER BY org.created DESC`,
                     [req.query.id], async (err, orgRow) => {
                         if (err) {
                             console.log(err)
