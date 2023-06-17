@@ -51,7 +51,7 @@ exports.getOrg = async (req, res) => {
                     ORDER BY g.created, org.created DESC`,
                     [req.query.id], async (err, orgRow) => {
                         if (err) {
-                            consoe.log(err)
+                            console.log(err)
                             return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                         } else {
                             if (orgRow.rows.length != 0) {
