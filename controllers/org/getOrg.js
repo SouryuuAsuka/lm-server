@@ -127,9 +127,10 @@ function sendOrgData(res, org, owner) {
                 var totalSum = 0 
                 for (let j = 0; j < org.quests.length; j++) {
                     const quest = org.quests[j];
-                    totalSum +=quest.goods_array.map(()=>{
-                        return Number(quest.num) * Number(quest.price)
-                    })
+                    for (let p = 0; p < quest.goods_array.length; p++) {
+                        const good = quest.goods_array[p];
+                        totalSum += Number(good.num) * Number(good.price)
+                    }
                 }
                 if (org.quests.length == j + 1) {
                     newOrg.usd_total = totalSum;
