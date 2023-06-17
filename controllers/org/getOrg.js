@@ -51,7 +51,6 @@ exports.getOrg = async (req, res) => {
                     ORDER BY org.created DESC`,
                     [req.query.id], async (err, orgRow) => {
                         if (err) {
-                            console.log(err)
                             return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                         } else {
                             if (orgRow.rows.length != 0) {
@@ -128,8 +127,8 @@ function sendOrgData(res, org, owner) {
                 var totalSum = 0 
                 for (let j = 0; j < org.quests.length; j++) {
                     const quest = org.quests[j];
-                    for (let p = 0; p < quest.goods_array.length; p++) {
-                        const good = quest.goods_array[p];
+                    for (let p = 0; p < quest.goods.length; p++) {
+                        const good = quest.goods[p];
                         totalSum += Number(good.num) * Number(good.price)
                     }
                 }
