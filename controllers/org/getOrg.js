@@ -43,12 +43,12 @@ exports.getOrg = async (req, res) => {
                     ) AS goods
                     FROM organizations AS org 
                     LEFT JOIN org_quests AS qu
-                    ON g.org_id = org.org_id
+                    ON qu.org_id = org.org_id
                     LEFT JOIN goods AS g
                     ON g.org_id = org.org_id
                     WHERE org.org_id = $1 AND (qu.status_code = 5 AND qu.paid = false)
                     GROUP BY org.org_id
-                    ORDER BY org.created DESC`,
+                    ORDER BY g.created, org.created DESC`,
                     [req.query.id], async (err, orgRow) => {
                         if (err) {
                             consoe.log(err)
