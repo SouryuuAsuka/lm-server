@@ -132,7 +132,7 @@ function sendOrgData(res, orgRow, owner) {
                     })
                 }
                 if (org.quests.length == j + 1) {
-                    newOrg.total_sum = totalSum;
+                    newOrg.usd_total = totalSum;
                     return res.status(200).json({ org: newOrg });
 
                 }
