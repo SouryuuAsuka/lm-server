@@ -80,7 +80,7 @@ exports.getOrg = async (req, res) => {
     };
 }
 
-function sendOrgData(res, orgRow, owner) {
+function sendOrgData(res, org, owner) {
     const newOrg = {
         orgId: Number(org.org_id),
         name: org.name,
