@@ -57,9 +57,9 @@ exports.getOrg = async (req, res) => {
                             if (orgRow.rows.length != 0) {
                                 var org = orgRow.rows[0];
                                 if (decoded.userRole == 5 || decoded.userRole == 6 || org.owner == decoded.userId) {
-                                    sendOrgData(res, orgRow, true);
+                                    sendOrgData(res, org, true);
                                 } else if (org.public == true) {
-                                    sendOrgData(res, orgRow, false)
+                                    sendOrgData(res, org, false)
                                 } else {
                                     return res.status(500).json({ error: true, message: 'Недостаточно прав для получения данных' });
                                 }
