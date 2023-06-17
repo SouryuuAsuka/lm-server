@@ -131,7 +131,6 @@ function sendOrgData(res, org, owner) {
                     })
                 }))
                 newOrg.usd_total = totalSum;
-                console.log(JSO)
                 return res.status(200).json({ org: newOrg });
             } else {
                 return res.status(200).json({ org: newOrg });
