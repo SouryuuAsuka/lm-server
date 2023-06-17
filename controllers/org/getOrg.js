@@ -19,42 +19,55 @@ exports.getOrg = async (req, res) => {
                     org.city AS city, 
                     org.public AS public, 
                     org.owner AS owner, 
-                    org.usd_total AS usd_total, 
-                    org.usd_received AS usd_received, 
-                    g.good_id AS good_id,
-                    g.name AS good_name,
-                    g.about AS good_about,
-                    g.price AS good_price,
-                    g.active AS good_active,
-                    g.picture AS good_picture,
-                    g.sold AS good_sold,
-                    g.created AS good_created,
-                    g.orders AS good_orders,
-                    g.cat_id AS good_cat_id,
-                    g.preparation_time AS good_preparation_time
+                    json_agg( 
+                        json_build_object(
+                        'qu_id', qu.qu_id,
+                        'status_code', qu.status_code,
+                        'goods', qu.goods_array
+                        )
+                    ) AS quests, 
+                    json_agg( 
+                        json_build_object(
+                            'good_id', g.good_id, 
+                            'good_name', g.name, 
+                            'good_about',  g.about, 
+                            'good_price',  g.price, 
+                            'good_active', g.active, 
+                            'good_picture', g.picture, 
+                            'good_sold', g.sold, 
+                            'good_created', g.created, 
+                            'good_orders', g.orders, 
+                            'good_cat_id', g.cat_id, 
+                            'good_preparation_time', g.preparation_time
+                        )
+                    ) AS goods
                     FROM organizations AS org 
+                    LEFT JOIN org_quests AS qu
+                    ON g.org_id = org.org_id
                     LEFT JOIN goods AS g
                     ON g.org_id = org.org_id
-                    WHERE org.org_id = $1
-                    ORDER BY g.created DESC`,
+                    WHERE org.org_id = g.org_id
+                    ORDER BY g.created DESC
+                    GROUP BY org.org_id`,
                     [req.query.id], async (err, orgRow) => {
-                    if (err) {
-                        console.log(err)
-                        return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
-                    } else {
-                        if (orgRow.rows[0] != undefined) {
-                            if (decoded.userRole == 5 || decoded.userRole == 6 || orgRow.rows[0].owner == decoded.userId ) {
-                                sendOrgData(res, orgRow, true);
-                            } else if(orgRow.rows[0].public == true) {
-                                sendOrgData(res, orgRow, false)
-                            } else {
-                                return res.status(500).json({ error: true, message: 'Недостаточно прав для получения данных' });
-                            }
+                        if (err) {
+                            console.log(err)
+                            return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                         } else {
-                            return res.status(500).json({ error: true, message: 'Ошибка запроса' });
+                            if (orgRow.rows.length != 0) {
+                                var org = orgRow.rows[0];
+                                if (decoded.userRole == 5 || decoded.userRole == 6 || org.owner == decoded.userId) {
+                                    sendOrgData(res, orgRow, true);
+                                } else if (org.public == true) {
+                                    sendOrgData(res, orgRow, false)
+                                } else {
+                                    return res.status(500).json({ error: true, message: 'Недостаточно прав для получения данных' });
+                                }
+                            } else {
+                                return res.status(500).json({ error: true, message: 'Ошибка запроса' });
+                            }
                         }
-                    }
-                });
+                    });
             }
 
         })
@@ -67,57 +80,73 @@ exports.getOrg = async (req, res) => {
     };
 }
 
-function sendOrgData(res, orgRow, allGoods) {
-    const org = {
-        orgId: Number(orgRow.rows[0].org_id),
-        name: orgRow.rows[0].name,
-        about: orgRow.rows[0].about,
-        owner: Number(orgRow.rows[0].owner),
-        avatar: orgRow.rows[0].avatar,
-        category: orgRow.rows[0].category,
-        public: orgRow.rows[0].public,
-        city: orgRow.rows[0].city,
-        usdTotal: Number(orgRow.rows[0].usd_total),
-        usdReceived: Number(orgRow.rows[0].usd_received),
+function sendOrgData(res, orgRow, owner) {
+    const newOrg = {
+        orgId: Number(org.org_id),
+        name: org.name,
+        about: org.about,
+        owner: Number(org.owner),
+        avatar: org.avatar,
+        category: org.category,
+        public: org.public,
+        city: org.city,
         goods: []
     }
-    for (let i = 0; i < orgRow.rows.length; i++) {
-        if(allGoods){
-            org.goods.push({
-                id: Number(orgRow.rows[i].good_id),
-                name: orgRow.rows[i].good_name,
-                about: orgRow.rows[i].good_about,
-                price: Number(orgRow.rows[i].good_price),
-                active: orgRow.rows[i].good_active,
-                picture: orgRow.rows[i].good_picture,
-                sold: Number(orgRow.rows[i].good_sold),
-                cat_id: Number(orgRow.rows[i].good_cat_id),
-                orders: Number(orgRow.rows[i].good_orders),
-                created: orgRow.rows[i].good_created,
-                preparationTime: Number(orgRow.rows[i].good_preparation_time)
+    for (let i = 0; i < org.goods.length; i++) {
+        if (owner) {
+            newOrg.goods.push({
+                id: Number(org.goods[i].good_id),
+                name: org.goods[i].good_name,
+                about: org.goods[i].good_about,
+                price: Number(org.goods[i].good_price),
+                active: org.goods[i].good_active,
+                picture: org.goods[i].good_picture,
+                sold: Number(org.goods[i].good_sold),
+                cat_id: Number(org.goods[i].good_cat_id),
+                orders: Number(org.goods[i].good_orders),
+                created: org.goods[i].good_created,
+                preparation_time: Number(org.goods[i].good_preparation_time)
             })
         } else {
-            if(orgRow.rows[i].good_active){
-                org.goods.push({
-                    id: Number(orgRow.rows[i].good_id),
-                    name: orgRow.rows[i].good_name,
-                    about: orgRow.rows[i].good_about,
-                    price: Number(orgRow.rows[i].good_price),
-                    active: orgRow.rows[i].good_active,
-                    picture: orgRow.rows[i].good_picture,
-                    sold: Number(orgRow.rows[i].good_sold),
-                    cat_id: Number(orgRow.rows[i].good_cat_id),
-                    preparation_time: Number(orgRow.rows[i].good_preparation_time)
-                }) 
+            if (org.goods[i].good_active) {
+                newOrg.goods.push({
+                    id: Number(org.goods[i].good_id),
+                    name: org.goods[i].good_name,
+                    about: org.goods[i].good_about,
+                    price: Number(org.goods[i].good_price),
+                    active: org.goods[i].good_active,
+                    picture: org.goods[i].good_picture,
+                    sold: Number(org.goods[i].good_sold),
+                    cat_id: Number(org.goods[i].good_cat_id),
+                    preparation_time: Number(org.goods[i].good_preparation_time)
+                })
             }
         }
-        if (i + 1 == orgRow.rows.length) {
-            return res.status(200).json({ org: org });
+        if (i + 1 == org.goods.length) {
+            if(owner){
+                var totalSum = 0 
+                for (let j = 0; j < org.quests.length; j++) {
+                    const quest = org.quests[j];
+                    totalSum +=quest.goods_array.map(()=>{
+                        return Number(quest.num) * Number(quest.price)
+                    })
+                }
+                if (org.quests.length == j + 1) {
+                    newOrg.total_sum = totalSum;
+                    return res.status(200).json({ org: newOrg });
+
+                }
+                return res.status(200).json({ org: newOrg });
+
+            } else {
+                return res.status(200).json({ org: newOrg });
+
+            }
         }
     }
 }
 
-function notAythRequest(req, res){
+function notAythRequest(req, res) {
     pool.query(`
         SELECT 
         org.org_id AS org_id, 
