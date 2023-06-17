@@ -8,68 +8,21 @@ exports.getOrg = async (req, res) => {
                 notAythRequest(req, res);
             } else if (req.query.id == undefined) {
                 return res.status(500).json({ error: true, message: 'Пустой запрос' });
+            } else if (decoded.userRole == 5 || decoded.userRole == 6) {
+                aythRequest(req, res)
             } else {
-                pool.query(`
-                    SELECT 
-                    org.org_id AS org_id, 
-                    org.name AS name, 
-                    org.about AS about, 
-                    org.category AS category, 
-                    org.avatar AS avatar, 
-                    org.city AS city, 
-                    org.public AS public, 
-                    org.owner AS owner, 
-                    json_agg( 
-                        json_build_object(
-                        'qu_id', qu.qu_id,
-                        'status_code', qu.status_code,
-                        'goods', qu.goods_array
-                        )
-                    ) AS quests, 
-                    json_agg( 
-                        json_build_object(
-                            'good_id', g.good_id, 
-                            'good_name', g.name, 
-                            'good_about',  g.about, 
-                            'good_price',  g.price, 
-                            'good_active', g.active, 
-                            'good_picture', g.picture, 
-                            'good_sold', g.sold, 
-                            'good_created', g.created, 
-                            'good_orders', g.orders, 
-                            'good_cat_id', g.cat_id, 
-                            'good_preparation_time', g.preparation_time
-                        )
-                    ) AS goods
-                    FROM organizations AS org 
-                    LEFT JOIN org_quests AS qu
-                    ON qu.org_id = org.org_id
-                    LEFT JOIN goods AS g
-                    ON g.org_id = org.org_id
-                    WHERE org.org_id = $1 AND (qu.status_code = 5 AND qu.paid = false)
-                    GROUP BY org.org_id
-                    ORDER BY org.created DESC`,
-                    [req.query.id], async (err, orgRow) => {
-                        if (err) {
-                            return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
-                        } else {
-                            if (orgRow.rows.length != 0) {
-                                var org = orgRow.rows[0];
-                                console.log(JSON.stringify(org))
-                                if (decoded.userRole == 5 || decoded.userRole == 6 || org.owner == decoded.userId) {
-                                    sendOrgData(res, org, true);
-                                } else if (org.public == true) {
-                                    sendOrgData(res, org, false)
-                                } else {
-                                    return res.status(500).json({ error: true, message: 'Недостаточно прав для получения данных' });
-                                }
-                            } else {
-                                return res.status(500).json({ error: true, message: 'Ошибка запроса' });
-                            }
-                        }
-                    });
+                pool.query(`SELECT owner FROM organizations WHERE org_id = $1`, [req.query.id], async (err, selOrgRow) => {
+                    if (err) {
+                        return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
+                    } else if (selOrgRow.rows.length == 0) {
+                        return res.status(400).json({ success: false, error: "Произошла ошибка поиске организации" })
+                    } else if (selOrgRow.rows[0].owner == decoded.userId) {
+                        aythRequest(req, res)
+                    } else {
+                        notAythRequest(req, res);
+                    }
+                })
             }
-
         })
     }
     catch (err) {
@@ -139,7 +92,61 @@ function sendOrgData(res, org, owner) {
         }
     }
 }
+function aythRequest(req, res) {
+    pool.query(`
+    SELECT 
+    org.org_id AS org_id, 
+    org.name AS name, 
+    org.about AS about, 
+    org.category AS category, 
+    org.avatar AS avatar, 
+    org.city AS city, 
+    org.public AS public, 
+    org.owner AS owner, 
+    json_agg( 
+        json_build_object(
+        'qu_id', qu.qu_id,
+        'status_code', qu.status_code,
+        'goods', qu.goods_array
+        )
+    ) AS quests, 
+    json_agg( 
+        json_build_object(
+            'good_id', g.good_id, 
+            'good_name', g.name, 
+            'good_about',  g.about, 
+            'good_price',  g.price, 
+            'good_active', g.active, 
+            'good_picture', g.picture, 
+            'good_sold', g.sold, 
+            'good_created', g.created, 
+            'good_orders', g.orders, 
+            'good_cat_id', g.cat_id, 
+            'good_preparation_time', g.preparation_time
+        )
+    ) AS goods
+    FROM organizations AS org 
+    LEFT JOIN org_quests AS qu
+    ON qu.org_id = org.org_id
+    LEFT JOIN goods AS g
+    ON g.org_id = org.org_id
+    WHERE org.org_id = $1 AND (qu.status_code = 5 AND qu.paid = false)
+    GROUP BY org.org_id
+    ORDER BY org.created DESC`,
+        [req.query.id], async (err, orgRow) => {
+            if (err) {
+                return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
+            } else {
+                if (orgRow.rows.length != 0) {
+                    var org = orgRow.rows[0];
+                    sendOrgData(res, org, true);
 
+                } else {
+                    return res.status(500).json({ error: true, message: 'Ошибка запроса' });
+                }
+            }
+        });
+}
 function notAythRequest(req, res) {
     pool.query(`
         SELECT 
@@ -150,30 +157,33 @@ function notAythRequest(req, res) {
         org.avatar AS avatar, 
         org.city AS city, 
         org.public AS public, 
-        g.good_id AS good_id,
-        g.name AS good_name,
-        g.about AS good_about,
-        g.price AS good_price,
-        g.active AS good_active,
-        g.picture AS good_picture,
-        g.sold AS good_sold,
-        g.created AS good_created,
-        g.orders AS good_orders,
-        g.preparation_time AS good_preparation_time
+        json_agg( 
+            json_build_object(
+                'good_id', g.good_id, 
+                'good_name', g.name, 
+                'good_about',  g.about, 
+                'good_price',  g.price, 
+                'good_active', g.active, 
+                'good_picture', g.picture, 
+                'good_sold', g.sold, 
+                'good_created', g.created, 
+                'good_orders', g.orders, 
+                'good_cat_id', g.cat_id, 
+                'good_preparation_time', g.preparation_time
+            )
+        ) AS goods
         FROM organizations AS org 
         LEFT JOIN goods AS g
-        ON g.good_id = (
-            SELECT g1.good_id FROM goods AS g1
-            WHERE g1.org_id = org.org_id AND g1.active = true
-            ORDER BY g1.created DESC
-        )
-        WHERE org.org_id = $1 AND org.public = true`, [req.query.id], async (err, orgRow) => {
+        ON g.org_id = org.org_id 
+        WHERE org.org_id = $1 AND org.public = true AND g.active = true
+        GROUP BY org.org_id`, [req.query.id], async (err, orgRow) => {
         if (err) {
             console.log(err)
             return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
         } else {
-            if (orgRow.rows[0] != undefined) {
-                sendOrgData(res, orgRow);
+            if (orgRow.rows.length != 0) {
+                var org = orgRow.rows[0];
+                sendOrgData(res, org);
             } else {
                 return res.status(500).json({ error: true, message: 'Ошибка запроса' });
             }
