@@ -56,6 +56,7 @@ exports.getOrg = async (req, res) => {
                         } else {
                             if (orgRow.rows.length != 0) {
                                 var org = orgRow.rows[0];
+                                console.log(JSON.stringify(org))
                                 if (decoded.userRole == 5 || decoded.userRole == 6 || org.owner == decoded.userId) {
                                     sendOrgData(res, org, true);
                                 } else if (org.public == true) {
