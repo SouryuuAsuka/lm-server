@@ -16,11 +16,11 @@ exports.getOrgPayments = async (req, res) => {
                     else page = (req.query.p - 1) * 10;
                     pool.query(`
                         SELECT 
-                        COUNT(p.*) AS count,
-                        u.username AS payername,
-                        p.pay_id AS pay_id,
-                        p.usd_sum AS usd_sum,
-                        p.created AS created
+                            COUNT(*) AS count,
+                            u.username AS payername,
+                            p.pay_id AS pay_id,
+                            p.usd_sum AS usd_sum,
+                            p.created AS created
                         FROM org_payments AS p
                         LEFT JOIN users AS u                            
                         ON p.payer_id = u.user_id
@@ -48,12 +48,13 @@ exports.getOrgPayments = async (req, res) => {
                             if (orgRow.rows[0].owner == decoded.userId){
                                 pool.query(`
                                 SELECT 
-                                COUNT(p.*) AS count,
-                                p.pay_id AS pay_id,
-                                p.usd_sum AS usd_sum,
-                                p.created AS created
+                                    COUNT(*) AS count,
+                                    p.pay_id AS pay_id,
+                                    p.usd_sum AS usd_sum,
+                                    p.created AS created
                                 FROM org_payments AS p
                                 WHERE p.org_id = $1
+                                GRP
                                 OFFSET $2 LIMIT 10`, [req.query.id, page], (err, orgRow) => {
                                 if (err) {
                                     console.log(err)
