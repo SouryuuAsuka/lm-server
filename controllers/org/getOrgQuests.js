@@ -23,7 +23,7 @@ exports.getOrgQuests = async (req, res) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(500).json({ error: 'Ошибка поиска' });
-                            } else if (orgRow.rows[0].length == 0) {
+                            } else if (orgRow.rows.length == 0) {
                                 console.log(err)
                                 return res.status(500).json({ error: 'Ошибка поиска' });
                             } else {
@@ -45,7 +45,7 @@ function dbOrgQuests(req, res) {
     var sclVar={};
     if (typeof req.query.p == "undefined") sclVar.page = '0';
     else sclVar.page = (req.query.p - 1) * 10;
-    if (req.query.st == undefined) sqlVar.status_code = '{1, 2, 3, 4, 5}';
+    if (typeof req.query.st == "undefined") sqlVar.status_code = '{1, 2, 3, 4, 5}';
     else sqlVar.status_code = "{" + req.query.st + "}";
     pool.query(`
         SELECT 
@@ -61,6 +61,7 @@ function dbOrgQuests(req, res) {
         JOIN orders AS o
         ON o.order_id = qu.order_id
         WHERE qu.org_id = $1 AND qu.status_code = ANY($2)
+        GROUP BY qu.qu_id
         OFFSET $3 LIMIT 10`, [req.query.id, sclVar.status_code, sclVar.page], (err, orgRow) => {
         if (err) {
             console.log(err)
