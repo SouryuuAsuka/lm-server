@@ -1,11 +1,19 @@
 {
-    "compilerOptions": {
-      "baseUrl": "./",
-      "paths": {
-        "@service/*": ["service/*"],
-        "@controllers/*": ["controllers/*"],
-        "@middleware/*": ["middleware/*"],
-        "@routes/*": ["routes/*"]
-      }
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@service/*": [
+        "services/*"
+      ],
+      "@controllers/*": [
+        "controllers/*"
+      ],
+      "@middleware/*": [
+        "middleware/*"
+      ],
+      "@routes/*": [
+        "routes/*"
+      ]
     }
   }
+}

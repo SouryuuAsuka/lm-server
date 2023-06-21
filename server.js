@@ -31,6 +31,7 @@ const { addToCart } = require("@controllers/cart/addToCart");
 const { getOrg } = require("@controllers/org/getOrg");
 const { getOrgList } = require("@controllers/org/getOrgList");
 const { getOrgPayments } = require("@controllers/org/getOrgPayments");
+const { getOrgQuests } = require("@controllers/org/getOrgQuests");
 
 const { getPurposeList } = require("@controllers/org/good/getPurposeList");
 const { newGood } = require("@controllers/org/good/newGood");
@@ -102,7 +103,8 @@ app.post('/api/org/good/active', setActive);
 app.post('/api/org', uploadAvatar.single('avatar'), newOrg);
 app.post('/api/org/edit', uploadAvatar.single('avatar'), editOrg);
 app.post('/api/org/public', setPublic);
-app.get('/api/org/paylist', getOrgPayments);
+app.get('/api/org/pays', getOrgPayments);
+app.get('/api/org/quests', getOrgQuests);
 
 app.get('/api/moderation/couriers', getCouriers);
 app.post('/api/moderation/couriers', confirmCourier);
