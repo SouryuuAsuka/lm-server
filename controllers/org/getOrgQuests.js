@@ -61,7 +61,7 @@ function dbOrgQuests(req, res) {
         JOIN orders AS o
         ON o.order_id = qu.order_id
         WHERE qu.org_id = $1 AND qu.status_code = ANY($2)
-        OFFSET $2 LIMIT 10`, [req.query.id, sclVar.status_code, sclVar.page], (err, orgRow) => {
+        OFFSET $3 LIMIT 10`, [req.query.id, sclVar.status_code, sclVar.page], (err, orgRow) => {
         if (err) {
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
