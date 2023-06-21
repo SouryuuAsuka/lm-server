@@ -54,7 +54,6 @@ exports.getOrgPayments = async (req, res) => {
                                     p.created AS created
                                 FROM org_payments AS p
                                 WHERE p.org_id = $1
-                                GRP
                                 OFFSET $2 LIMIT 10`, [req.query.id, page], (err, orgRow) => {
                                 if (err) {
                                     console.log(err)
