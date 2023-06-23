@@ -51,6 +51,7 @@ function dbOrgQuests(req, res) {
     else sclVar.page = (req.query.p - 1) * 10;
     if (typeof req.query.st == "undefined") sqlVar.status_code = '{1, 2, 3, 4, 5}';
     else sqlVar.status_code = "{" + req.query.st + "}";
+    console.log(JSON.stringify(sqlVar))
     pool.query(`
         SELECT 
             COUNT(qu.qu_id) AS count,
