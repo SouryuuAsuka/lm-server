@@ -51,7 +51,7 @@ function dbOrgQuests(req, res) {
     else sclPage = (Number(req.query.p) - 1) * 10;
     if (typeof req.query.st == "undefined") sclSt = '{0, 1, 2, 3, 4, 5}';
     else sclSt = "{" + req.query.st + "}";
-    pool.query(`SELECT COUNT(*) FROM org_quests  WHERE org_id = $1 AND status_code = ANY($2)`, [req.query.id, sclSt],  (err, count) => {
+    pool.query(`SELECT COUNT(*) AS count FROM org_quests WHERE org_id = $1 AND status_code = ANY($2)`, [req.query.id, sclSt],  (err, count) => {
         if (err) {
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
@@ -88,7 +88,7 @@ function dbOrgQuests(req, res) {
                         }))
                         return quest
                     })
-                    return res.status(200).json({ quests: newQuests, count: count.rows[0] });
+                    return res.status(200).json({ quests: newQuests, count: count.rows[0].count });
                 }
             });
         }
