@@ -45,19 +45,13 @@ exports.getOrgQuests = async (req, res) => {
     };
 }
 function dbOrgQuests(req, res) {
-    var sclVar={};
+    var sclPage;
+    var sclSt;
     console.log(JSON.stringify(req.query))
-    if (typeof req.query.p == "undefined") sclVar.page = '0';
-    else{
-        var wat = (Number(req.query.p) - 1) * 10;
-        console.log(Number(req.query.p))
-        console.log(Number(req.query.p)-1)
-        console.log(wat)
-        sclVar.page = wat
-    } 
-    if (typeof req.query.st == "undefined") sqlVar.status_code = '{1, 2, 3, 4, 5}';
-    else sqlVar.status_code = "{" + req.query.st + "}";
-    console.log(JSON.stringify(sqlVar))
+    if (typeof req.query.p == "undefined") sclPage = 0;
+    else sclPage = (Number(req.query.p) - 1) * 10;
+    if (typeof req.query.st == "undefined") sclSt = '{1, 2, 3, 4, 5}';
+    else sclSt = "{" + req.query.st + "}";
     pool.query(`
         SELECT 
             COUNT(qu.qu_id) AS count,
@@ -73,7 +67,7 @@ function dbOrgQuests(req, res) {
         ON o.order_id = qu.order_id
         WHERE qu.org_id = $1 AND qu.status_code = ANY($2)
         GROUP BY qu.qu_id, o.order_id
-        OFFSET $3 LIMIT 10`, [req.query.id, sclVar.status_code, sclVar.page], (err, orgRow) => {
+        OFFSET $3 LIMIT 10`, [req.query.id, sclSt, sclPage], (err, orgRow) => {
         if (err) {
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
