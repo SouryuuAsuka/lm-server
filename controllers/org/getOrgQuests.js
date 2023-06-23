@@ -48,7 +48,13 @@ function dbOrgQuests(req, res) {
     var sclVar={};
     console.log(JSON.stringify(req.query))
     if (typeof req.query.p == "undefined") sclVar.page = '0';
-    else sclVar.page = (Number(req.query.p) - 1) * 10;
+    else{
+        var wat = (Number(req.query.p) - 1) * 10;
+        console.log(Number(req.query.p))
+        console.log(Number(req.query.p)-1)
+        console.log(wat)
+        sclVar.page = wat
+    } 
     if (typeof req.query.st == "undefined") sqlVar.status_code = '{1, 2, 3, 4, 5}';
     else sqlVar.status_code = "{" + req.query.st + "}";
     console.log(JSON.stringify(sqlVar))
