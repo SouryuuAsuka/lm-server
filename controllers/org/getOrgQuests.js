@@ -83,7 +83,7 @@ function dbOrgQuests(req, res) {
                 }))
                 return quest
             })
-            return res.status(200).json({ quests: newQuests, count: count });
+            return res.status(200).json({ quests: newQuests, count: count.rows[0] });
         }
     });
 }
