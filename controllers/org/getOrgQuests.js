@@ -15,6 +15,7 @@ exports.getOrgQuests = async (req, res) => {
                 if (decoded.userRole == 5 || decoded.userRole == 6) {
                     dbOrgQuests(req, res)
                 } else {
+                    console.log(req.query.id)
                     pool.query(`
                         SELECT owner
                         FROM organizations 
