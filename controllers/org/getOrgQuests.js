@@ -15,21 +15,18 @@ exports.getOrgQuests = async (req, res) => {
                 if (decoded.userRole == 5 || decoded.userRole == 6) {
                     dbOrgQuests(req, res)
                 } else {
-                    console.log(req.query.id)
                     pool.query(`
                         SELECT owner
                         FROM organizations 
                         WHERE org_id = $1`,
                         [req.query.id], (err, orgRow) => {
-                            console.log(JSON.stringify(orgRow))
-                            console.log(decoded.user_id + " = " + orgRow.rows[0].owner)
                             if (err) {
                                 console.log(err)
                                 return res.status(500).json({ error: 'Ошибка поиска' });
                             } else if (orgRow.rows.length == 0) {
                                 console.log('Огранизация не найдена')
                                 return res.status(500).json({ error: 'Огранизация не найдена' });
-                            } else if (orgRow.rows[0].owner == decoded.user_id) {
+                            } else if (orgRow.rows[0].owner == decoded.userId) {
                                 dbOrgQuests(req, res)
                             } else {
                                 console.log('Огранизация не найдена')
