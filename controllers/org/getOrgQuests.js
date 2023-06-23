@@ -51,40 +51,47 @@ function dbOrgQuests(req, res) {
     else sclPage = (Number(req.query.p) - 1) * 10;
     if (typeof req.query.st == "undefined") sclSt = '{0, 1, 2, 3, 4, 5}';
     else sclSt = "{" + req.query.st + "}";
-    var count = pool.query(`SELECT COUNT(*) FROM org_quests  WHERE org_id = $1 AND status_code = ANY($2)`, [req.query.id, sclSt])
-    console.log(JSON.stringify(count))
-    pool.query(`
-        SELECT 
-            qu.qu_id AS qu_id,
-            qu.order_id AS order_id,
-            qu.goods_array AS goods,
-            qu.paid AS paid,
-            qu.status_code AS status_code,
-            o.created AS created,
-            o.date AS date
-        FROM org_quests AS qu
-        JOIN orders AS o
-        ON o.order_id = qu.order_id
-        WHERE qu.org_id = $1 AND qu.status_code = ANY($2)
-        GROUP BY qu.qu_id, qu.order_id, qu.goods_array, qu.paid, qu.status_code, o.created, o.date
-        OFFSET $3 LIMIT 10`, [req.query.id, sclSt, sclPage], (err, orgRow) => {
+    pool.query(`SELECT COUNT(*) FROM org_quests  WHERE org_id = $1 AND status_code = ANY($2)`, [req.query.id, sclSt],  (err, count) => {
         if (err) {
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
-        } else if (orgRow.rows.length == 0) {
-            console.log("Организаций не найдено")
-            return res.status(200).json({ orgs: [] });
         } else {
-            var quests = orgRow.rows;
-            var newQuests
-            newQuests = quests.map((quest) => {
-                quest.sum = 0;
-                quest.sum += Number(quest.goods.map((good) => {
-                    return Number(good.num) * Number(good.price)
-                }))
-                return quest
-            })
-            return res.status(200).json({ quests: newQuests, count: count.rows[0] });
+            console.log(JSON.stringify(count))
+            pool.query(`
+                SELECT 
+                    qu.qu_id AS qu_id,
+                    qu.order_id AS order_id,
+                    qu.goods_array AS goods,
+                    qu.paid AS paid,
+                    qu.status_code AS status_code,
+                    o.created AS created,
+                    o.date AS date
+                FROM org_quests AS qu
+                JOIN orders AS o
+                ON o.order_id = qu.order_id
+                WHERE qu.org_id = $1 AND qu.status_code = ANY($2)
+                GROUP BY qu.qu_id, qu.order_id, qu.goods_array, qu.paid, qu.status_code, o.created, o.date
+                OFFSET $3 LIMIT 10`, [req.query.id, sclSt, sclPage], (err, orgRow) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).json({ error: 'Ошибка поиска' });
+                } else if (orgRow.rows.length == 0) {
+                    console.log("Организаций не найдено")
+                    return res.status(200).json({ orgs: [] });
+                } else {
+                    var quests = orgRow.rows;
+                    var newQuests
+                    newQuests = quests.map((quest) => {
+                        quest.sum = 0;
+                        quest.sum += Number(quest.goods.map((good) => {
+                            return Number(good.num) * Number(good.price)
+                        }))
+                        return quest
+                    })
+                    return res.status(200).json({ quests: newQuests, count: count.rows[0] });
+                }
+            });
         }
-    });
+    })
+
 }
