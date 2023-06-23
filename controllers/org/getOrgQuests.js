@@ -51,7 +51,7 @@ function dbOrgQuests(req, res) {
     else sclPage = (Number(req.query.p) - 1) * 10;
     if (typeof req.query.st == "undefined") sclSt = '{0, 1, 2, 3, 4, 5}';
     else sclSt = "{" + req.query.st + "}";
-    var count = pool.query(`SELECT COUNT(*) FROM org_quests  WHERE org_id = $1 AND status_code = ANY($2)`)
+    var count = pool.query(`SELECT COUNT(*) FROM org_quests  WHERE org_id = $1 AND status_code = ANY($2)`, [req.query.id, sclSt])
     pool.query(`
         SELECT 
             qu.qu_id AS qu_id,
