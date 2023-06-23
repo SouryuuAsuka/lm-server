@@ -24,10 +24,13 @@ exports.getOrgQuests = async (req, res) => {
                                 console.log(err)
                                 return res.status(500).json({ error: 'Ошибка поиска' });
                             } else if (orgRow.rows.length == 0) {
-                                console.log(err)
-                                return res.status(500).json({ error: 'Ошибка поиска' });
-                            } else {
+                                console.log('Огранизация не найдена')
+                                return res.status(500).json({ error: 'Огранизация не найдена' });
+                            } else if (orgRow.rows[0].owner == decoded.user_id) {
                                 dbOrgQuests(req, res)
+                            } else {
+                                console.log('Огранизация не найдена')
+                                return res.status(500).json({ error: 'Огранизация не найдена' });
                             }
                         })
                 }
