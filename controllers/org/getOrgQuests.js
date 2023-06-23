@@ -46,6 +46,7 @@ exports.getOrgQuests = async (req, res) => {
 }
 function dbOrgQuests(req, res) {
     var sclVar={};
+    console.log(JSON.stringify(req.query))
     if (typeof req.query.p == "undefined") sclVar.page = '0';
     else sclVar.page = (req.query.p - 1) * 10;
     if (typeof req.query.st == "undefined") sqlVar.status_code = '{1, 2, 3, 4, 5}';
