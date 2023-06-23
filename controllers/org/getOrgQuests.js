@@ -21,6 +21,7 @@ exports.getOrgQuests = async (req, res) => {
                         FROM organizations 
                         WHERE org_id = $1`,
                         [req.query.id], (err, orgRow) => {
+                            console.log(JSON.stringify(orgRow))
                             if (err) {
                                 console.log(err)
                                 return res.status(500).json({ error: 'Ошибка поиска' });
