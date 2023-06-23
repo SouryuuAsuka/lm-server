@@ -51,9 +51,9 @@ function dbOrgQuests(req, res) {
     else sclPage = (Number(req.query.p) - 1) * 10;
     if (typeof req.query.st == "undefined") sclSt = '{0, 1, 2, 3, 4, 5}';
     else sclSt = "{" + req.query.st + "}";
+    var count = pool.query(`SELECT COUNT(*) FROM org_quests WHERE qu.org_id = $1 AND qu.status_code = ANY($2)`)
     pool.query(`
         SELECT 
-            COUNT(*) AS count,
             qu.qu_id AS qu_id,
             qu.order_id AS order_id,
             qu.goods_array AS goods,
@@ -83,7 +83,7 @@ function dbOrgQuests(req, res) {
                 }))
                 return quest
             })
-            return res.status(200).json({ quests: newQuests });
+            return res.status(200).json({ quests: newQuests, count: count });
         }
     });
 }
