@@ -52,7 +52,7 @@ function dbOrgQuests(req, res) {
     else sqlVar.status_code = "{" + req.query.st + "}";
     pool.query(`
         SELECT 
-            COUNT(*) AS count,
+            COUNT(qu.*) AS count,
             qu.qu_id AS qu_id,
             qu.order_id AS order_id,
             qu.goods_array AS goods,
