@@ -64,7 +64,7 @@ function dbOrgQuests(req, res) {
         JOIN orders AS o
         ON o.order_id = qu.order_id
         WHERE qu.org_id = $1 AND qu.status_code = ANY($2)
-        GROUP BY qu.qu_id
+        GROUP BY qu.qu_id, o.order_id
         OFFSET $3 LIMIT 10`, [req.query.id, sclVar.status_code, sclVar.page], (err, orgRow) => {
         if (err) {
             console.log(err)
