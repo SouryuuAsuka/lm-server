@@ -53,7 +53,7 @@ function dbOrgQuests(req, res) {
     else sclSt = "{" + req.query.st + "}";
     pool.query(`
         SELECT 
-            COUNT(qu.qu_id) AS count,
+            COUNT(*) AS count,
             qu.qu_id AS qu_id,
             qu.order_id AS order_id,
             qu.goods_array AS goods,
