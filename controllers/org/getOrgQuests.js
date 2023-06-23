@@ -50,7 +50,7 @@ function dbOrgQuests(req, res) {
     console.log(JSON.stringify(req.query))
     if (typeof req.query.p == "undefined") sclPage = 0;
     else sclPage = (Number(req.query.p) - 1) * 10;
-    if (typeof req.query.st == "undefined") sclSt = '{1, 2, 3, 4, 5}';
+    if (typeof req.query.st == "undefined") sclSt = '{0, 1, 2, 3, 4, 5}';
     else sclSt = "{" + req.query.st + "}";
     pool.query(`
         SELECT 
