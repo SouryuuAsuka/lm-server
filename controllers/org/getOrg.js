@@ -104,12 +104,18 @@ function aythRequest(req, res) {
     org.city AS city, 
     org.public AS public, 
     org.owner AS owner, 
-    ARRAY( SELECT 
-        qu.qu_id AS qu_id,
-        qu.status_code AS status_code,
-        qu.goods_array AS goods 
+
+    (SELECT 
+        json_agg( 
+            json_build_object(
+            'qu_id', qu.qu_id,
+            'status_code', qu.status_code,
+            'goods', qu.goods_array
+            )
+        )
         FROM org_quests AS qu 
         WHERE qu.org_id = $1
+        GROUP BY qu.ord_id
     ) AS quests, 
     json_agg( 
         json_build_object(
@@ -134,7 +140,6 @@ function aythRequest(req, res) {
     ORDER BY org.created DESC`,
         [req.query.id], async (err, orgRow) => {
             if (err) {
-                console.log(err)
                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
             } else {
                 if (orgRow.rows.length != 0) {
