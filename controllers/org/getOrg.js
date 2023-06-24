@@ -112,11 +112,11 @@ function aythRequest(req, res) {
             'status_code', qu.status_code,
             'goods', qu.goods_array
             )
-        )
+        )  AS quests
         FROM org_quests AS qu 
         WHERE qu.org_id = $1
         GROUP BY qu.org_id
-    ) AS quests, 
+    ), 
     json_agg( 
         json_build_object(
             'good_id', g.good_id, 
