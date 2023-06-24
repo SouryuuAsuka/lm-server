@@ -104,10 +104,10 @@ function aythRequest(req, res) {
     org.city AS city, 
     org.public AS public, 
     org.owner AS owner, 
-    (SELECT 
+    ARRAY( SELECT ROW(
         qu.qu_id AS qu_id,
         qu.status_code AS status_code,
-        qu.goods_array AS goods
+        qu.goods_array AS goods )
         FROM org_quests AS qu 
         WHERE qu.org_id = $1
     ) AS quests, 
