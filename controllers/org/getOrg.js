@@ -34,6 +34,7 @@ exports.getOrg = async (req, res) => {
 }
 
 function sendOrgData(res, org, owner) {
+    console.log(JSON.stringify(org))
     const newOrg = {
         orgId: Number(org.org_id),
         name: org.name,
@@ -140,7 +141,6 @@ function aythRequest(req, res) {
                 if (orgRow.rows.length != 0) {
                     var org = orgRow.rows[0];
                     sendOrgData(res, org, true);
-
                 } else {
                     return res.status(500).json({ error: true, message: 'Ошибка запроса' });
                 }

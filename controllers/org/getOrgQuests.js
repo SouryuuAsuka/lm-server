@@ -56,7 +56,6 @@ function dbOrgQuests(req, res) {
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
         } else {
-            console.log(JSON.stringify(count))
             pool.query(`
                 SELECT 
                     qu.qu_id AS qu_id,
