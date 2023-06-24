@@ -134,6 +134,7 @@ function aythRequest(req, res) {
     ORDER BY org.created DESC`,
         [req.query.id], async (err, orgRow) => {
             if (err) {
+                console.log(err)
                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
             } else {
                 if (orgRow.rows.length != 0) {
