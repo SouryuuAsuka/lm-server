@@ -113,7 +113,7 @@ function aythRequest(req, res) {
             )
         )  
         FROM org_quests AS qu 
-        WHERE qu.org_id = $1
+        WHERE qu.org_id = $1 AND (qu.status_code = 5 AND qu.paid = false)
         GROUP BY qu.org_id
     ) AS quests, 
     json_agg( 
@@ -134,7 +134,7 @@ function aythRequest(req, res) {
     FROM organizations AS org 
     LEFT JOIN goods AS g
     ON g.org_id = org.org_id
-    WHERE org.org_id = $1 AND (qu.status_code = 5 AND qu.paid = false)
+    WHERE org.org_id = $1 
     GROUP BY org.org_id
     ORDER BY org.created DESC`,
         [req.query.id], async (err, orgRow) => {
