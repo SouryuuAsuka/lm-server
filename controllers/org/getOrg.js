@@ -115,7 +115,7 @@ function aythRequest(req, res) {
         )
         FROM org_quests AS qu 
         WHERE qu.org_id = $1
-        GROUP BY qu.ord_id
+        GROUP BY qu.org_id
     ) AS quests, 
     json_agg( 
         json_build_object(
