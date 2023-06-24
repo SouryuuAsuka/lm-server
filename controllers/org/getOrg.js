@@ -104,12 +104,12 @@ function aythRequest(req, res) {
     org.city AS city, 
     org.public AS public, 
     org.owner AS owner, 
-    json_agg( 
-        json_build_object(
-        'qu_id', qu.qu_id,
-        'status_code', qu.status_code,
-        'goods', qu.goods_array
-        )
+    (SELECT 
+        qu.qu_id AS qu_id,
+        qu.status_code AS status_code,
+        qu.goods_array AS goods
+        FROM org_quests AS qu 
+        WHERE qu.org_id = $1
     ) AS quests, 
     json_agg( 
         json_build_object(
@@ -127,8 +127,6 @@ function aythRequest(req, res) {
         )
     ) AS goods
     FROM organizations AS org 
-    LEFT JOIN org_quests AS qu
-    ON qu.org_id = org.org_id
     LEFT JOIN goods AS g
     ON g.org_id = org.org_id
     WHERE org.org_id = $1 AND (qu.status_code = 5 AND qu.paid = false)
