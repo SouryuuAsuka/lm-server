@@ -30,6 +30,7 @@ const { addToCart } = require("@controllers/cart/addToCart");
 
 const { getOrg } = require("@controllers/org/getOrg");
 const { getOrgList } = require("@controllers/org/getOrgList");
+const { newOrgPayment } = require("@controllers/org/newOrgPayment");
 const { getOrgPayments } = require("@controllers/org/getOrgPayments");
 const { getOrgQuests } = require("@controllers/org/getOrgQuests");
 
@@ -104,6 +105,7 @@ app.post('/api/org', uploadAvatar.single('avatar'), newOrg);
 app.post('/api/org/edit', uploadAvatar.single('avatar'), editOrg);
 app.post('/api/org/public', setPublic);
 app.get('/api/org/pays', getOrgPayments);
+app.post('/api/org/pays', newOrgPayment);
 app.get('/api/org/quests', getOrgQuests);
 
 app.get('/api/moderation/couriers', getCouriers);

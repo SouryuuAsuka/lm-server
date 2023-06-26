@@ -86,8 +86,8 @@ exports.newOrg = async (req, res) => {
                                 path.resolve(req.file.destination, 'resized', req.file.filename)
                             )  // get image metadata for size
                                 .then(function (metadata) { //TODO: Потом надо будет как-то нормально обрабатывать    изображения
-                                    const orgInsertString = "INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, country, street, house, flat) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING org_id"
-                                    pool.query(orgInsertString, [[{lang: req.body.lang, text:req.body.name}], [{lang: req.body.lang, text:req.body.about}], decoded.userId, req.body.category, avatar, req.body.city, "NOW()", req.body.country, req.body.street, req.body.house, req.body.flat], (err, orgRow) => {
+                                    const orgInsertString = "INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, country, street, house, flat, comission) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING org_id"
+                                    pool.query(orgInsertString, [[{lang: req.body.lang, text:req.body.name}], [{lang: req.body.lang, text:req.body.about}], decoded.userId, req.body.category, avatar, req.body.city, "NOW()", req.body.country, req.body.street, req.body.house, req.body.flat, 20], (err, orgRow) => {
                                         if (err) {
                                             console.log(err)
                                             return res.status(400).json({ success: false, error: "Ошибка при создании организации" })

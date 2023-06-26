@@ -10,10 +10,10 @@ exports.getOrgPayments = async (req, res) => {
             if (err) {
                 return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
             } else {
+                var page;
+                if (typeof req.query.p == "undefined") page = '0';
+                else page = (req.query.p - 1) * 10;
                 if (decoded.userRole == 5 || decoded.userRole == 6) {
-                    var page;
-                    if (typeof req.query.p == "undefined") page = '0';
-                    else page = (req.query.p - 1) * 10;
                     pool.query(`
                         SELECT 
                             COUNT(*) AS count,
