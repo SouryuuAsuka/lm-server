@@ -30,7 +30,7 @@ exports.newOrgPayment = async (req, res) => {
                                 console.log("(Number(quest.commission) / 100) - "+  (Number(quest.commission) / 100));
                                 console.log("(1 - (Number(quest.commission) / 100)) - "+  (1 - (Number(quest.commission) / 100)));
                                 console.log("quSum * (1 - (Number(quest.commission) / 100)) - "+   quSum * (1 - (Number(quest.commission) / 100)));
-                                sum += Number(quSum * (1 - (Number(quest.commission) / 100))).toFixed(2)
+                                sum += Math.floor((quSum * (1 - (Number(quest.commission) / 100)))*100)/100
                             })
                             console.log("sum - "+sum);
                             console.log("sum.toFixed(1) - " + sum.toFixed(1))
