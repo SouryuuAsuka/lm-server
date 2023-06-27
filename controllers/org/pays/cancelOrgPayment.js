@@ -12,43 +12,43 @@ exports.cancelOrgPayment = async (req, res) => {
             } else {
                 if (decoded.userRole == 5 || decoded.userRole == 6) {
                     pool.query(`
-                    INSERT INTO org_payments
-                    (org_id, created, payer_id, ord_array, usd_sum)
-                    VALUES ($1, $2, $3, $4, $5) `,
-                    [req.body.orgId, "NOW()", decoded.userId, req.body.quests, sum.toFixed(1)], (err, orgRow) => {
-                        if (err) {
-                            console.log(err)
-                            return res.status(500).json({ error: 'Ошибка поиска' });
-                        } else {
-                            return res.status(200).json({text: "Зарегистрирована выплата в "+sum+" GEL"});
-                        }
-                    });
-                    pool.query(`
-                        UPDATE org_quests
-                        SET paid=true
-                        WHERE qu_id = ANY($1) AND paid=false AND status_code=5 RETURNING goods_array`, 
-                        [req.body.quests], (err, quRow) => {
-                        if (err) {
-                            console.log(err)
-                            return res.status(500).json({ error: 'Ошибка поиска' });
-                        } else {
-                            var sum = 0
-                            sum += quRow.rows.map((quest) => {
-                                var quSum = 0
-                                quest.goods_array.map((good) => {
-                                    quSum += Number(good.sum)
-                                })
-                                console.log("Number(quest.commission) - "+ Number(quest.commission));
-                                console.log("(Number(quest.commission) / 100) - "+  (Number(quest.commission) / 100));
-                                console.log("(1 - (Number(quest.commission) / 100)) - "+  (1 - (Number(quest.commission) / 100)));
-                                console.log("quSum * (1 - (Number(quest.commission) / 100)) - "+   quSum * (1 - (Number(quest.commission) / 100)));
-                                return quSum * (1 - (Number(quest.commission) / 100))
-                            })
-                            console.log("sum - "+sum);
-                            console.log("sum.toFixed(1) - " + sum.toFixed(1))
+                    UPDATE org_payments
+                    SET canceled = true
+                    WHERE pay_id = $1 RETURNING ord_array`,
+                        [req.body.payId], (err, payRow) => {
+                            if (err) {
+                                console.log(err)
+                                return res.status(500).json({ error: 'Ошибка поиска' });
+                            } else {
+                                pool.query(`
+                                    UPDATE org_quests
+                                    SET paid=false
+                                    WHERE qu_id = ANY($1)`,
+                                    [payRow.rows[0].ord_array], (err, quRow) => {
+                                        if (err) {
+                                            console.log(err)
+                                            return res.status(500).json({ error: 'Ошибка поиска' });
+                                        } else {
+                                            var sum = 0
+                                            sum += quRow.rows.map((quest) => {
+                                                var quSum = 0
+                                                quest.goods_array.map((good) => {
+                                                    quSum += Number(good.sum)
+                                                })
+                                                console.log("Number(quest.commission) - " + Number(quest.commission));
+                                                console.log("(Number(quest.commission) / 100) - " + (Number(quest.commission) / 100));
+                                                console.log("(1 - (Number(quest.commission) / 100)) - " + (1 - (Number(quest.commission) / 100)));
+                                                console.log("quSum * (1 - (Number(quest.commission) / 100)) - " + quSum * (1 - (Number(quest.commission) / 100)));
+                                                return quSum * (1 - (Number(quest.commission) / 100))
+                                            })
+                                            console.log("sum - " + sum);
+                                            console.log("sum.toFixed(1) - " + sum.toFixed(1))
+                                            return res.status(200).json({ text: "Отменена выплата №" + req.body.payId });
+                                        }
+                                    });
+                            }
+                        });
 
-                        }
-                    });
                 } else {
                     return res.status(400).json({ "error": true, "message": 'Unauthorized access.' });
                 }
