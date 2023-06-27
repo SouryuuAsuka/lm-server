@@ -14,7 +14,7 @@ exports.newOrgPayment = async (req, res) => {
                     pool.query(`
                         UPDATE org_quests
                         SET paid=true
-                        WHERE qu_id = ANY($1) AND paid=false AND status_code=5 RETURNING goods_array`, 
+                        WHERE qu_id = ANY($1) AND paid=false AND status_code=5 RETURNING goods_array, commission`, 
                         [req.body.quests], (err, quRow) => {
                         if (err) {
                             console.log(err)
