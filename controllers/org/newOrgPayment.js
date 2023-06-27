@@ -37,7 +37,7 @@ exports.newOrgPayment = async (req, res) => {
                                         console.log(err)
                                         return res.status(500).json({ error: 'Ошибка поиска' });
                                     } else {
-                                        return res.status(200).json({});
+                                        return res.status(200).json({text: "Зарегистрирована выплата в "+sum+" GEL"});
                                     }
                                 });
                         }
