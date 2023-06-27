@@ -79,11 +79,13 @@ function sendOrgData(res, org, owner) {
         if (i + 1 == org.goods.length) {
             if (owner) {
                 var totalSum = 0
-                totalSum += Number(org.quests.map((quest) => {
-                    return quest.goods.map((good) => {
-                        return Number(good.num) * Number(good.price)
-                    })
-                }))
+                if (org.quests.length >0){
+                    totalSum += Number(org.quests.map((quest) => {
+                        return quest.goods.map((good) => {
+                            return Number(good.num) * Number(good.price)
+                        })
+                    }))
+                }
                 newOrg.usd_total = totalSum;
                 return res.status(200).json({ org: newOrg });
             } else {
