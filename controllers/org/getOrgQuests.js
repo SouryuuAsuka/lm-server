@@ -65,6 +65,7 @@ function dbOrgQuests(req, res) {
                     qu.order_id AS order_id,
                     qu.goods_array AS goods,
                     qu.paid AS paid,
+                    qu.commission AS commission,
                     qu.status_code AS status_code,
                     o.created AS created,
                     o.date AS date
