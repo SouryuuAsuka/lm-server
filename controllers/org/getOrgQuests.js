@@ -86,7 +86,7 @@ function dbOrgQuests(req, res) {
                     var newQuests
                     newQuests = quests.map((quest) => {
                         quest.sum = 0;
-                        if (quest.goods.length >0) {
+                        if (Array.isArray(quest.goods)) {
                             quest.sum += Number(quest.goods.map((good) => {
                                 return Number(good.num) * Number(good.price)
                             }))
