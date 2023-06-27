@@ -21,7 +21,7 @@ exports.newOrgPayment = async (req, res) => {
                             return res.status(500).json({ error: 'Ошибка поиска' });
                         } else {
                             var sum = 0
-                            sum += quRow.rows.map((quest) => {
+                            quRow.rows.map((quest) => {
                                 var quSum = 0
                                 quest.goods_array.map((good) => {
                                     quSum += Number(good.price)*Number(good.num)
@@ -30,7 +30,7 @@ exports.newOrgPayment = async (req, res) => {
                                 console.log("(Number(quest.commission) / 100) - "+  (Number(quest.commission) / 100));
                                 console.log("(1 - (Number(quest.commission) / 100)) - "+  (1 - (Number(quest.commission) / 100)));
                                 console.log("quSum * (1 - (Number(quest.commission) / 100)) - "+   quSum * (1 - (Number(quest.commission) / 100)));
-                                return Number(quSum * (1 - (Number(quest.commission) / 100))).toFixed(2)
+                                sum += Number(quSum * (1 - (Number(quest.commission) / 100))).toFixed(2)
                             })
                             console.log("sum - "+sum);
                             console.log("sum.toFixed(1) - " + sum.toFixed(1))
