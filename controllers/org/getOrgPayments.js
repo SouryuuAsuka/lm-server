@@ -25,7 +25,7 @@ exports.getOrgPayments = async (req, res) => {
                         LEFT JOIN users AS u                            
                         ON p.payer_id = u.user_id
                         WHERE p.org_id = $1
-                        GROUP BY p.pay_id
+                        GROUP BY p.pay_id, u.user_id
                         OFFSET $2 LIMIT 10`, [req.query.id, page], (err, orgRow) => {
                         if (err) {
                             console.log(err)
