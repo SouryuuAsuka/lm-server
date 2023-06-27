@@ -20,6 +20,7 @@ exports.getOrgPayments = async (req, res) => {
                             u.username AS payername,
                             p.pay_id AS pay_id,
                             p.usd_sum AS usd_sum,
+                            p.canceled AS canceled,
                             p.created AS created
                         FROM org_payments AS p
                         LEFT JOIN users AS u                            
@@ -52,6 +53,7 @@ exports.getOrgPayments = async (req, res) => {
                                     COUNT(*) AS count,
                                     p.pay_id AS pay_id,
                                     p.usd_sum AS usd_sum,
+                                    p.canceled AS canceled,
                                     p.created AS created
                                 FROM org_payments AS p
                                 WHERE p.org_id = $1
