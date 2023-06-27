@@ -26,7 +26,7 @@ exports.newOrgPayment = async (req, res) => {
                                 quest.order_array.map((good) => {
                                     quSum += Number(good.sum)
                                 })
-                                return quSum * (Number(quest.commission) / 100)
+                                return quSum * (1 - (Number(quest.commission) / 100))
                             })
                             pool.query(`
                                 INSERT INTO org_payments
