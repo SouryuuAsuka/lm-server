@@ -29,20 +29,6 @@ exports.cancelOrgPayment = async (req, res) => {
                                             console.log(err)
                                             return res.status(500).json({ error: 'Ошибка поиска' });
                                         } else {
-                                            var sum = 0
-                                            sum += quRow.rows.map((quest) => {
-                                                var quSum = 0
-                                                quest.goods_array.map((good) => {
-                                                    quSum += Number(good.sum)
-                                                })
-                                                console.log("Number(quest.commission) - " + Number(quest.commission));
-                                                console.log("(Number(quest.commission) / 100) - " + (Number(quest.commission) / 100));
-                                                console.log("(1 - (Number(quest.commission) / 100)) - " + (1 - (Number(quest.commission) / 100)));
-                                                console.log("quSum * (1 - (Number(quest.commission) / 100)) - " + quSum * (1 - (Number(quest.commission) / 100)));
-                                                return quSum * (1 - (Number(quest.commission) / 100))
-                                            })
-                                            console.log("sum - " + sum);
-                                            console.log("sum.toFixed(1) - " + sum.toFixed(1))
                                             return res.status(200).json({ text: "Отменена выплата №" + req.body.payId });
                                         }
                                     });
