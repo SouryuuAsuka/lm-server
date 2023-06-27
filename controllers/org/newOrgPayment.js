@@ -28,6 +28,8 @@ exports.newOrgPayment = async (req, res) => {
                                 })
                                 return quSum * (1 - (Number(quest.commission) / 100))
                             })
+                            console.log("sum - "+sum);
+                            console.log("Math.round10(sum, -1) - "+ Math.round10(sum, -1))
                             pool.query(`
                                 INSERT INTO org_payments
                                 (org_id, created, payer_id, ord_array, usd_sum)
