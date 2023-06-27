@@ -32,7 +32,7 @@ exports.newOrgPayment = async (req, res) => {
                                 INSERT INTO org_payments
                                 (org_id, created, payer_id, ord_array, usd_sum)
                                 VALUES ($1, $2, $3, $4, $5) `,
-                                [req.body.orgId, "NOW()", decoded.userId, req.body.quests, sum], (err, orgRow) => {
+                                [req.body.orgId, "NOW()", decoded.userId, req.body.quests, Math.round10(sum, -1)], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(500).json({ error: 'Ошибка поиска' });
