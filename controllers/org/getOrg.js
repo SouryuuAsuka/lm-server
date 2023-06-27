@@ -79,8 +79,7 @@ function sendOrgData(res, org, owner) {
         if (i + 1 == org.goods.length) {
             if (owner) {
                 var totalSum = 0
-                console.log("org.quests "+org.quests)
-                if (org.quests.length >0){
+                if (org.quests != null){
                     totalSum += Number(org.quests.map((quest) => {
                         return quest.goods.map((good) => {
                             return Number(good.num) * Number(good.price)
