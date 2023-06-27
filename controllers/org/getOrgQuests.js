@@ -80,7 +80,7 @@ function dbOrgQuests(req, res) {
                     return res.status(500).json({ error: 'Ошибка поиска' });
                 } else if (orgRow.rows.length == 0) {
                     console.log("Организаций не найдено")
-                    return res.status(200).json({ orgs: [] });
+                    return res.status(200).json({ quests: [], count:0 });
                 } else {
                     var quests = orgRow.rows;
                     var newQuests
