@@ -26,6 +26,10 @@ exports.newOrgPayment = async (req, res) => {
                                 quest.goods_array.map((good) => {
                                     quSum += Number(good.sum)
                                 })
+                                console.log("Number(quest.commission) - "+ Number(quest.commission));
+                                console.log("(Number(quest.commission) / 100) - "+  (Number(quest.commission) / 100));
+                                console.log("(1 - (Number(quest.commission) / 100)) - "+  (1 - (Number(quest.commission) / 100)));
+                                console.log("quSum * (1 - (Number(quest.commission) / 100)) - "+   quSum * (1 - (Number(quest.commission) / 100)));
                                 return quSum * (1 - (Number(quest.commission) / 100))
                             })
                             console.log("sum - "+sum);
