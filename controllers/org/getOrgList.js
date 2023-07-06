@@ -77,7 +77,7 @@ function dbOrgList(req, res) {
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
         } else {
-            var orgList = [];
+            var orgRoworgList = [];
             if (orgRow.rows.length != 0) {
                 var count = pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
                 fs.readFile(__dirname + "/../../service/exchange_rates.json", "utf8", (err, data) => {
@@ -90,33 +90,7 @@ function dbOrgList(req, res) {
                         if (orgRow.rows.length == 0) {
                             return res.status(200).json({ orgs: [], count: 0 });
                         } else {
-                            for (let i = 0; i < orgRow.rows.length; i++) {
-                                orgList.push({
-                                    id: orgRow.rows[i].org_id,
-                                    name: orgRow.rows[i].name,
-                                    about: orgRow.rows[i].about,
-                                    category: orgRow.rows[i].category,
-                                    city: orgRow.rows[i].city,
-                                    avatar: orgRow.rows[i].avatar,
-                                    public: orgRow.rows[i].public,
-                                    goods: []
-                                })
-                                for (let j = 0; j < orgRow.rows[i].goods.length; j++) {
-                                    orgList[i].goods.push({
-                                        id: orgRow.rows[i].goods[j].good_id,
-                                        name: orgRow.rows[i].goods[j].name,
-                                        about: orgRow.rows[i].goods[j].about,
-                                        price: orgRow.rows[i].goods[j].price,
-                                        active: orgRow.rows[i].goods[j].active,
-                                        picture: orgRow.rows[i].goods[j].picture,
-                                        sold: orgRow.rows[i].goods[j].sold,
-                                        preparation_time: orgRow.rows[i].goods[j].preparation_time
-                                    })
-                                    if (i + 1 == orgRow.rows.length && j + 1 == orgRow.rows[i].goods.length) {
-                                        return res.status(200).json({ orgs: orgList, count: count });
-                                    }
-                                }
-                            }
+                            return res.status(200).json({ orgs: orgRow.rows, count: count });
                         }
 
                     }
