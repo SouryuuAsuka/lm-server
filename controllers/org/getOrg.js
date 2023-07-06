@@ -84,6 +84,7 @@ function sendOrgData(res, org, owner) {
                         goodSum+= Number(quest.goods.map((good) => {
                             console.log("goodSum - "+goodSum)
                             console.log("good.num - "+good.num + ", good.price - "+good.price)
+                            console.log("res ="+(Number(good.num) * Number(good.price)))
                             return (Number(good.num) * Number(good.price))
                         }))
                         console.log("totalSum - "+totalSum)
