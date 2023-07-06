@@ -35,7 +35,6 @@ const { cancelOrgPayment } = require("@controllers/org/pays/cancelOrgPayment");
 const { getOrgPayments } = require("@controllers/org/pays/getOrgPayments");
 const { getOrgQuests } = require("@controllers/org/getOrgQuests");
 
-const { getPurposeList } = require("@controllers/org/good/getPurposeList");
 const { newGood } = require("@controllers/org/good/newGood");
 const { editGood } = require("@controllers/org/good/editGood");
 const { setActive } = require("@controllers/org/good/setActive");
@@ -86,8 +85,6 @@ app.post('/api/confirmemail', confirmemail);
 app.get('/api/token', refreshToken);
 app.get('/api/orglist', getOrgList);
 app.get('/api/org', getOrg);
-
-app.get('/api/org/purpose', getPurposeList);
 
 app.get('/api/cart', getCart);
 app.post('/api/cart', newCart);
