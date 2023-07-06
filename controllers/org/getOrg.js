@@ -34,7 +34,7 @@ exports.getOrg = async (req, res) => {
 }
 
 function sendOrgData(res, org, owner) {
-    const newOrg = {
+    var newOrg = {
         orgId: Number(org.org_id),
         name: org.name,
         about: org.about,
@@ -80,9 +80,11 @@ function sendOrgData(res, org, owner) {
                 var totalSum = 0
                 if (Array.isArray(org.quests)){
                     totalSum += Number(org.quests.map((quest) => {
-                        return quest.goods.map((good) => {
+                        var goodSum=0;
+                        goodSum+= quest.goods.map((good) => {
                             return Number(good.num) * Number(good.price)
                         })
+                        return goodSum
                     }))
                 }
                 newOrg.sum_total = totalSum;
