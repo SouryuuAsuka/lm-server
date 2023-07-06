@@ -85,7 +85,8 @@ function sendOrgData(res, org, owner) {
                         })
                     }))
                 }
-                newOrg.usd_total = totalSum;
+                newOrg.sum_total = totalSum;
+                console.log('totalSum - '+ totalSum)
                 return res.status(200).json({ org: newOrg });
             } else {
                 return res.status(200).json({ org: newOrg });
