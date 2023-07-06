@@ -85,7 +85,7 @@ function sendOrgData(res, org, owner) {
                             goodSum+= (Number(good.num) * Number(good.price))
                         })
                         console.log("goodSum - " + goodSum)
-                        totalSum += goodSum
+                        totalSum += goodSum;
                     })
                 }
                 console.log("totalSum - "+totalSum)
