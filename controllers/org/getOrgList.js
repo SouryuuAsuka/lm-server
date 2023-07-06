@@ -52,16 +52,16 @@ function dbOrgList(req, res) {
                 json_agg( 
                     json_build_object(
                         'good_id', g.good_id, 
-                        'good_name', g.name, 
-                        'good_about',  g.about, 
-                        'good_price',  g.price, 
-                        'good_active', g.active, 
-                        'good_picture', g.picture, 
-                        'good_sold', g.sold, 
-                        'good_created', g.created, 
-                        'good_orders', g.orders, 
-                        'good_cat_id', g.cat_id, 
-                        'good_preparation_time', g.preparation_time
+                        'name', g.name, 
+                        'about',  g.about, 
+                        'price',  g.price, 
+                        'active', g.active, 
+                        'picture', g.picture, 
+                        'sold', g.sold, 
+                        'created', g.created, 
+                        'orders', g.orders, 
+                        'cat_id', g.cat_id, 
+                        'preparation_time', g.preparation_time
                     )
                 )  
                 FROM goods AS g 
