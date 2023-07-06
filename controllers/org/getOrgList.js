@@ -48,15 +48,27 @@ function dbOrgList(req, res) {
             org.avatar AS avatar, 
             org.city AS city, 
             org.public AS public, 
-            json_agg(g) AS goods
+            (SELECT 
+                json_agg( 
+                    json_build_object(
+                        'good_id', g.good_id, 
+                        'good_name', g.name, 
+                        'good_about',  g.about, 
+                        'good_price',  g.price, 
+                        'good_active', g.active, 
+                        'good_picture', g.picture, 
+                        'good_sold', g.sold, 
+                        'good_created', g.created, 
+                        'good_orders', g.orders, 
+                        'good_cat_id', g.cat_id, 
+                        'good_preparation_time', g.preparation_time
+                    )
+                )  
+                FROM goods AS g 
+                WHERE g.org_id = org.org_id
+                GROUP BY g.org_id
+            ) AS goods
             FROM organizations AS org 
-                JOIN goods AS g
-            ON g.good_id = (
-                SELECT g1.good_id FROM goods AS g1
-                WHERE g1.org_id = org.org_id AND g1.active = true
-                ORDER BY g1.created DESC
-                LIMIT 6
-            )
             WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
             GROUP BY org.org_id
             OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page], (err, orgRow) => {
