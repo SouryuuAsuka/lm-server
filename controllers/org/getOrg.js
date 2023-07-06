@@ -84,6 +84,7 @@ function sendOrgData(res, org, owner) {
                         quest.goods.map((good) => {
                             goodSum+= (Number(good.num) * Number(good.price))
                         })
+                        console.log("goodSum - " + goodSum)
                         return goodSum
                     }))
                 }
