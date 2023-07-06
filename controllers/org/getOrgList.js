@@ -41,7 +41,7 @@ function dbOrgList(req, res) {
     else sqlVar.category = "{" + req.query.t + "}";
     pool.query(`
             SELECT 
-            org.org_id AS org_id, 
+            org.org_id AS id, 
             org.name AS name, 
             org.about AS about, 
             org.category AS category, 
@@ -51,7 +51,7 @@ function dbOrgList(req, res) {
             (SELECT 
                 json_agg( 
                     json_build_object(
-                        'good_id', g.good_id, 
+                        'id', g.good_id, 
                         'name', g.name, 
                         'about',  g.about, 
                         'price',  g.price, 
