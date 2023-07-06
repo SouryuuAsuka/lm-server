@@ -79,11 +79,14 @@ function sendOrgData(res, org, owner) {
             if (owner) {
                 var totalSum = 0
                 if (Array.isArray(org.quests)){
+                    
                     totalSum += Number(org.quests.map((quest) => {
                         var goodSum=0;
                         goodSum+= quest.goods.map((good) => {
+                            console.log("2")
                             return Number(good.num) * Number(good.price)
                         })
+                        console.log("1")
                         return goodSum
                     }))
                 }
