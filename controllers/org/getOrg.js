@@ -96,8 +96,7 @@ function sendOrgData(res, org, owner) {
                     })
                     newOrg.sum_total = totalSum;
                 }
-                console.log('newOrg.sum_received - '+ newOrg.sum_received)
-                console.log('newOrg.sum_total - '+ newOrg.sum_total)
+
                 return res.status(200).json({ org: newOrg });
             } else {
                 return res.status(200).json({ org: newOrg });
