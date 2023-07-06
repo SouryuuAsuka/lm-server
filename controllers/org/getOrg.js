@@ -77,8 +77,15 @@ function sendOrgData(res, org, owner) {
         }
         if (i + 1 == org.goods.length) {
             if (owner) {
-                var totalSum = 0
+                if (Array.isArray(org.payments)){
+                    var totalSum = 0
+                    org.payments.map((pay) => {
+                        totalSum += pay.usd_sumы;
+                    })
+                    newOrg.sum_received = totalSum;
+                }
                 if (Array.isArray(org.quests)){
+                    var totalSum = 0
                     org.quests.map((quest) => {
                         var goodSum=0;
                         quest.goods.map((good) => {
@@ -87,9 +94,8 @@ function sendOrgData(res, org, owner) {
                         console.log("goodSum - " + goodSum)
                         totalSum += goodSum;
                     })
+                    newOrg.sum_total = totalSum;
                 }
-                console.log("totalSum - "+totalSum)
-                newOrg.sum_total = totalSum;
                 return res.status(200).json({ org: newOrg });
             } else {
                 return res.status(200).json({ org: newOrg });
@@ -121,6 +127,16 @@ function aythRequest(req, res) {
         WHERE qu.org_id = $1 AND (qu.status_code = 5 AND qu.paid = false)
         GROUP BY qu.org_id
     ) AS quests, 
+    (SELECT 
+        json_agg( 
+            json_build_object(
+            'usd_sum', p.usd_sum
+            )
+        )  
+        FROM org_payments AS p 
+        WHERE p.org_id = $1 AND p.canceled = false
+        GROUP BY p.org_id
+    ) AS payments, 
     json_agg( 
         json_build_object(
             'good_id', g.good_id, 
