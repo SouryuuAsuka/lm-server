@@ -80,7 +80,7 @@ function sendOrgData(res, org, owner) {
                 if (Array.isArray(org.payments)){
                     var totalSum = 0
                     org.payments.map((pay) => {
-                        totalSum += pay.usd_sumы;
+                        totalSum += pay.usd_sum;
                     })
                     newOrg.sum_received = totalSum;
                 }
