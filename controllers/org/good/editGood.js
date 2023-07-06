@@ -52,7 +52,7 @@ exports.editGood = async (req, res) => {
                                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                             } else {
                                 const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, preparation_time = $4 WHERE good_id = $5 AND org_id = $6"
-                                pool.query(orgInsertString, [req.body.name, req.body.about, req.body.price.toFixed(2), (24*req.body.preparationTime), req.body.goodId, user.rows[0].org_id], (err, orgRow) => {
+                                pool.query(orgInsertString, [req.body.name, req.body.about, Number(req.body.price).toFixed(2), (24*req.body.preparationTime), req.body.goodId, user.rows[0].org_id], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании товара" })
