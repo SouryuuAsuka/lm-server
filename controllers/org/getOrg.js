@@ -82,14 +82,12 @@ function sendOrgData(res, org, owner) {
                     totalSum += Number(org.quests.map((quest) => {
                         var goodSum=0;
                         quest.goods.map((good) => {
-                            goodSum+= Number(good.num) * Number(good.price)
+                            goodSum+= (Number(good.num) * Number(good.price))
                         })
-                        console.log("totalSum - "+totalSum)
                         return goodSum
                     }))
                 }
                 newOrg.sum_total = totalSum;
-                console.log('totalSum - '+ totalSum)
                 return res.status(200).json({ org: newOrg });
             } else {
                 return res.status(200).json({ org: newOrg });
