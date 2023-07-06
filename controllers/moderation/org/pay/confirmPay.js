@@ -14,7 +14,6 @@ exports.confirmPay = async (req, res) => {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
             } else {
                 pool.query(`SELECT * FROM users WHERE user_id = $1`, [decoded.userId], async (err, userRow) => {
-                    console.log(JSON.stringify(req.body))
                     if (err) {
                         return res.status(400).json({ success: false, error: "Ошибка при подтверждении роли пользователя" })
                     } else if (req.body.orgId == undefined) {

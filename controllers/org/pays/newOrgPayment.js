@@ -26,14 +26,8 @@ exports.newOrgPayment = async (req, res) => {
                                 quest.goods_array.map((good) => {
                                     quSum += Number(good.price)*Number(good.num)
                                 })
-                                console.log("Number(quest.commission) - "+ Number(quest.commission));
-                                console.log("(Number(quest.commission) / 100) - "+  (Number(quest.commission) / 100));
-                                console.log("(1 - (Number(quest.commission) / 100)) - "+  (1 - (Number(quest.commission) / 100)));
-                                console.log("quSum * (1 - (Number(quest.commission) / 100)) - "+   quSum * (1 - (Number(quest.commission) / 100)));
                                 sum += Math.floor((quSum * (1 - (Number(quest.commission) / 100)))*100)/100
                             })
-                            console.log("sum - "+sum);
-                            console.log("sum.toFixed(1) - " + sum.toFixed(1))
                             pool.query(`
                                 INSERT INTO org_payments
                                 (org_id, created, payer_id, ord_array, usd_sum)

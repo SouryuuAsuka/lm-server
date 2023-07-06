@@ -32,9 +32,6 @@ exports.confirmemail = async (req, res) => {
                     error: "Код 103. Данные валидации не верны",
                 });
             } else if (mailToken.rows[0].mail_key != mailClientKey) {
-                console.log(JSON.stringify(mailToken.rows));
-                console.log(mailToken.rows[0].mail_key )
-                console.log(mailClientKey);
                 return res.status(400).json({
                     error: "Код 104. Данные валидации не верны",
                 });
@@ -70,8 +67,6 @@ exports.confirmemail = async (req, res) => {
                         await client.query(`UPDATE users SET user_role = 1 WHERE user_id = $1 RETURNING user_id, username;`, [ mailToken.rows[0].user_id,]);
                         await client.query(`INSERT INTO refresh_tokens (user_id, user_ip, created, token) VALUES ($1, $2, $3, $4)`, [ mailToken.rows[0].user_id, session.userIp, session.created, session.refreshToken ]);
                         await client.query( `DELETE FROM mail_confirm_tokens WHERE user_id = $1;`, [ mailToken.rows[0].user_id]);
-                        console.log(accessToken);
-                        console.log(refreshToken);
                         res.cookie('accessToken', accessToken, {
                             httpOnly: true,
                         })

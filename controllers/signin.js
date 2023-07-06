@@ -7,7 +7,6 @@ const crypto = require("crypto");
 exports.signin = async (req, res) => {
     try {
         const login = req.body.login;
-        console.log("login " + login)
         var user;
         if (validator.isEmail(login)) {
             user = await pool.query(`SELECT * FROM users WHERE email = $1`, [login])

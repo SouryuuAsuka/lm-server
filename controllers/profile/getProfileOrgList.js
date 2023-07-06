@@ -47,8 +47,6 @@ exports.getProfileOrgList = async (req, res) => {
                                         console.log("Организаций не найдено")
                                         return res.status(200).json({ orgs: [], count: 0 });
                                 } else {
-                                    console.log("orgCount - " + orgCount)
-                                    console.log("orgCount.count - " + orgCount.count)
                                     var orgList =[];
                                     for (let i = 0; i < orgRow.rows.length; i++) {
                                         orgList.push({

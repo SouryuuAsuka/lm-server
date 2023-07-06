@@ -4,7 +4,6 @@ const { getOrgFromDB } = require('@service/getOrgFromDB');
 
 exports.getOrgRequest = async (req, res) => {
     try {
-        console.log("access_toket -  " + req.cookies.accessToken);
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
                 return res.status(401).json({ error: 'Unauthorized access.' });

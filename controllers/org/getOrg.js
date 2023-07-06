@@ -34,7 +34,6 @@ exports.getOrg = async (req, res) => {
 }
 
 function sendOrgData(res, org, owner) {
-    console.log(JSON.stringify(org))
     const newOrg = {
         orgId: Number(org.org_id),
         name: org.name,

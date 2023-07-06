@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 exports.setOrgComment = async (req, res) => {
     try {//TODO: Модифицировать middleware функцию, чтобы не вызывать jwf.verify дважды за запрос
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
-            console.log("начало проверки")
             if (err) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
             } else if (req.body.orgId == undefined) {

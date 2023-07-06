@@ -44,7 +44,6 @@ exports.signup = async (req, res) => {
             res.status(400).json({ success: false, error: "Некорректный пароль" })
         }
         else {
-            console.log("Подключаюсь");
             const nets = networkInterfaces();
             const results = Object.create(null); // Or just '{}', an empty object
 
@@ -63,7 +62,6 @@ exports.signup = async (req, res) => {
             }
             console.log("%j", results);
             pool.on('error', console.error);
-            console.log("Начинаю искать");
             const emailSearch = await pool.query(`SELECT * FROM users WHERE email= $1;`, [email]); //Checking if user already exists
             if (emailSearch.rows.length != 0) {
                 return res.status(400).json({
@@ -82,10 +80,6 @@ exports.signup = async (req, res) => {
                     const salt = await bcrypt.genSalt(10);
                     const salt2 = await bcrypt.genSalt(10);
                     const salt3 = await bcrypt.genSalt(10);
-                    console.log("Солим ебать")
-                    console.log(salt2)
-                    console.log("salt3")
-                    console.log(salt3)
                     bcrypt.hash(password, salt, (err, hash) => {
                         if (err) {
                             console.log(err);
@@ -94,7 +88,6 @@ exports.signup = async (req, res) => {
                                 error: "Код: 101. Ошибка сервера",
                             });
                         }
-                        console.log("первый пароль")
                         bcrypt.hash(hash, process.env.LOCAL_PASS_SALT, async (err2, hash2) => {
                             if (err2) {
                                 console.log(err2);
@@ -102,23 +95,17 @@ exports.signup = async (req, res) => {
                                     error: "Код: 101. Ошибка сервера",
                                 });
                             }
-                            console.log("Пароли сгенерированы");
                             try {
                                 await pool.query(`BEGIN;`);
                                 const userInsertString = "INSERT INTO users (username, email, password, pass_salt, regtime) VALUES ($1, $2, $3, $4, $5) RETURNING user_id;"
                                 const dbResult = await pool.query(userInsertString, [username, email, hash2, salt, "NOW()"]);
                                 var mailKey = crypto.randomBytes(16).toString('hex');
                                 var mailToken = crypto.randomBytes(16).toString('hex');
-                                console.log("mailKИли Мишеey "+ mailKey);
                                 var mailKeyHash = await bcrypt.hash(mailKey, process.env.LOCAL_MAIL_KEY_SALT);
-                                console.log("mailKey "+ mailKey);
-                                console.log("mailKeyHash "+ JSON.stringify(mailKeyHash));
-                                console.log(dbResult.rows[0].user_id);
                                 const mailInsertString = `INSERT INTO mail_confirm_tokens (user_id, mail_token, mail_key, created) VALUES ($1, $2, $3, $4);`;
                                 await pool.query(mailInsertString, [dbResult.rows[0].user_id, mailToken, mailKeyHash, "NOW()"]);
                                 
                                 var link = 'https://lampymarket.com/confirmemail?t=' + mailToken + '&k=' + mailKey
-                                console.log("start SMTP")
                                 let result = await transporter.sendMail({
                                     from: '"Сервер" <noreply@lampymarket.com>',
                                     to: email,

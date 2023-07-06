@@ -3,13 +3,10 @@ const jwt = require('jsonwebtoken');
 
 exports.getUser = async (req, res) => {
     try {
-        console.log("access_toket -  " + req.cookies.accessToken);
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
                 return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
             } else {
-                console.log("decoded " + JSON.stringify(decoded))
-                console.log("decoded.user_id " + decoded.userId)
                 const userRow = await pool.query(`SELECT * FROM users WHERE user_id = $1`, [decoded.userId]);
                 if(userRow.rows[0] != undefined){
                     const user = { 

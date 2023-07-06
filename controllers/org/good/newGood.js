@@ -56,7 +56,6 @@ exports.newGood = async (req, res) => {
                                             path.resolve(req.file.destination, 'resized', req.file.filename)
                                         )  // get image metadata for size
                                             .then(function (metadata) { //TODO: Потом надо будет как-то нормально обрабатывать    изображения
-                                                //console.log("orgRow" + JSON.stringify(orgRow))
                                                 var metaData = {
                                                     'Content-Type': 'image/jpeg',
                                                 }

@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 exports.getCouriers = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
-            console.log("начало проверки")
             if (err) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
             } else if (decoded.userRole != 5 && decoded.userRole != 6) {
@@ -15,7 +14,6 @@ exports.getCouriers = async (req, res) => {
                         return res.status(401).json({ error: true, message: 'Unauthorized access.' });
                     } else {
                         if (count.rows[0].count != 0) {
-                            console.log(count.rows[0])
                             pool.query(`
                                 SELECT 
                                 tg_id, username, country, city, firstname, lastname

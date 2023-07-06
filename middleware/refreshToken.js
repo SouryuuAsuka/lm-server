@@ -11,8 +11,6 @@ exports.refreshToken = (req, res) => {
             if (err) {
                 return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
             } else {
-                //console.log("decoded " + JSON.stringify(decoded))
-                //console.log("decoded.user_id " + decoded.userId)
                 pool.query(`SELECT 
                 u.user_role AS user_role,
                 r.user_id AS user_id, 
@@ -28,7 +26,6 @@ exports.refreshToken = (req, res) => {
                             error: "Ошибка сервера"
                         })
                     } else if (user.rows.length == 0) {
-                        console.log(decoded.userId+" "+decoded.date+" "+decoded.hash);
                         return res.status(500).json({
                             error: "Пользователь не найден"
                         })
@@ -70,7 +67,6 @@ exports.refreshToken = (req, res) => {
                                         error: "Ошибка сервера"
                                     })
                                 } else {
-                                    console.log("Пам пам")
                                     res.cookie('accessToken', accessToken, {
                                         httpOnly: true,
                                     })

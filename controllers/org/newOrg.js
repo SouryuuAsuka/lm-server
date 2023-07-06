@@ -92,7 +92,6 @@ exports.newOrg = async (req, res) => {
                                             console.log(err)
                                             return res.status(400).json({ success: false, error: "Ошибка при создании организации" })
                                         } else {
-                                            //console.log("orgRow" + JSON.stringify(orgRow))
                                             var metaData = {
                                                 'Content-Type': 'image/jpeg',
                                             }

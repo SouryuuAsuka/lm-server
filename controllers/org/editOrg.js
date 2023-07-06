@@ -21,8 +21,6 @@ exports.editOrg = async (req, res) => {
             if (err) {
                 return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
             } else {
-                console.log(JSON.stringify(req.body));
-
                 if (req.body.name == undefined) {
                     return res.status(400).json({ success: false, error: "Название организации должно быть заполнено" })
                 } else if (req.body.about == undefined) {
@@ -56,7 +54,6 @@ exports.editOrg = async (req, res) => {
                         } else {
                             if (orgRow1.rows[0] != undefined) {
                                 var avatar;
-                                console.log("req.file "+ JSON.stringify(req.file));
                                 if (req.file) {
                                     avatar = orgRow1.rows[0].avatar+1;
                                 } else {

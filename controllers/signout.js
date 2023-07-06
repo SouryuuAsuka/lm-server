@@ -9,8 +9,6 @@ exports.signout = (req, res) => {
             if (err) {
                 return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
             } else {
-                //console.log("decoded " + JSON.stringify(decoded))
-                //console.log("decoded.user_id " + decoded.userId)
                 await pool.query(`SELECT * FROM refresh_tokens WHERE user_id = $1`, [decoded.userId], (err, user) => {
                     if (err) {
                         console.error(err);
@@ -30,12 +28,8 @@ exports.signout = (req, res) => {
                             const element = user.rows[i];
                             var createdTime = element.created;
                             var tokenCreated = new Date(createdTime);
-                            console.log("tokenCreated " + tokenCreated);
                             var tokenTime = tokenCreated.setMonth(tokenCreated.getMonth() + 1);
-                            console.log("element.refresh_token " + element.token)
-                            console.log("refreshToken " + refreshToken)
                             if (element.token == refreshToken && tokenTime > nowTime) {
-                                console.log("counter " + counter);
                                 pool.query(`DELETE FROM refresh_tokens WHERE token_id = $1`, [ element.token_id ] , (err, dbResult) => {
                                     if (err) {
                                         console.error(err);
@@ -45,7 +39,6 @@ exports.signout = (req, res) => {
                                     } else {
                                         searchSuccess = true;
                                         return res.status(200).clearCookie('accessToken', {httpOnly: true}).clearCookie('refreshToken', {httpOnly: true}).json({ error: "" });
-                                        console.log("4")
                                     };
                                 });
                             } else if (searchSuccess == false && (i+1) == user.rows.length ) {

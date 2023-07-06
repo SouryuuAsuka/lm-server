@@ -57,7 +57,6 @@ exports.getPayList = async (req, res) => {
                                                 console.log(err);
                                                 return res.status(500).json({ error: 'Неверный запрос' });
                                             } else {
-                                                console.log(data)
                                                 parseData = JSON.parse(data);
                                                 for (let i = 0; i < orgRow.rows.length; i++) {
                                                     orgList[i] = {
@@ -77,7 +76,6 @@ exports.getPayList = async (req, res) => {
                                                     }
                                                     orgList[i].usdTotal = usdTotal*0.92
                                                     orgList[i].usdTotal = orgList[i].usdTotal.toFixed(1)
-                                                    console.log(JSON.stringify(orgList[i]))
                                                     if (i + 1 == orgRow.rows.length) {
                                                         console.log(test);
                                                         return res.status(200).json({ orgs: orgList, count: count });
