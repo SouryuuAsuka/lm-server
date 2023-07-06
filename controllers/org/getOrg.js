@@ -176,7 +176,7 @@ function aythRequest(req, res) {
 function notAythRequest(req, res) {
     pool.query(`
         SELECT 
-        org.org_id AS org_id, 
+        org.org_id AS id, 
         org.name AS name, 
         org.about AS about, 
         org.category AS category, 
