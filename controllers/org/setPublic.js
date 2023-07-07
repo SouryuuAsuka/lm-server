@@ -19,6 +19,7 @@ exports.setPublic = async (req, res) => {
                     return res.status(400).json({ success: false, error: "ID организации заполнено некорректно" })
                 } else {
                     if (decoded.userRole == 5 || decoded.userRole == 6) {
+                        console.log(JSON.stringify(req.body))
                         const orgInsertString = "UPDATE organizations SET public = $1 WHERE org_id = $2"
                         pool.query(orgInsertString, [req.body.public, req.body.orgId], (err, orgRow) => {
                             if (err) {
