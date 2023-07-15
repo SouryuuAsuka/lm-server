@@ -10,7 +10,7 @@ exports.getUser = async (req, res) => {
                 const userRow = await pool.query(`SELECT * FROM users WHERE user_id = $1`, [decoded.userId]);
                 if(userRow.rows[0] != undefined){
                     const user = { 
-                        userId: userRow.rows[0].user_id,
+                        id: userRow.rows[0].user_id,
                         username: userRow.rows[0].username,
                         email: userRow.rows[0].email,
                         firstname: userRow.rows[0].firstname,
