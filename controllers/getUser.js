@@ -18,12 +18,10 @@ exports.getUser = async (req, res) => {
                         userRole: userRow.rows[0].user_role,                    
                         regtime: userRow.rows[0].regtime,
                         techTelegram: userRow.rows[0].tech_telegram,
-                        telegram: userRow.rows[0].telegram
-                    }
-                    if (userRow.rows[0].avatar != null){
-                        user.avatar = userRow.rows[0].avatar;
-                    } else {
-                        user.avatar = "defaultAvatar1";
+                        telegram: userRow.rows[0].telegram,
+                        avatar: userRow.rows[0].avatar,
+                        tgCode: null,
+                        tgUsername: null
                     }
                     if (!userRow.rows[0].tech_telegram){
                         var salt = userRow.rows[0].pass_salt;
@@ -32,7 +30,7 @@ exports.getUser = async (req, res) => {
                     } else{
                         const tgUserRow = await pool.query(`SELECT * FROM tg_tech_users WHERE user_id = $1`, [userRow.rows[0].user_id]);
                         if (tgUserRow.rows[0] != undefined) {
-                            user.telegramUsername = tgUserRow.rows[0].username;
+                            user.tgUsername = tgUserRow.rows[0].username;
                             return res.status(200).json({ user: user });
                         } else{
                             return res.status(500).json({ error: true, message: 'Ошибка при поиске пользователя' });

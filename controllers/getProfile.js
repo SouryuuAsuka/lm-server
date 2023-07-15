@@ -30,7 +30,7 @@ exports.getProfile = async (req, res) => {
                 } else{
                     const tgUserRow = await pool.query(`SELECT * FROM tg_users WHERE user_id = $1`, [userRow.rows[0].user_id]);
                     if (tgUserRow.rows[0] != undefined) {
-                        user.telegramUsername = tgUserRow.rows[0].username;
+                        user.tgUsername = tgUserRow.rows[0].username;
                         return res.status(200).json({ profile: user });
                     } else{
                         return res.status(500).json({ error: true, message: 'Ошибка при поиске пользователя' });

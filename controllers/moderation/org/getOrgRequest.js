@@ -55,7 +55,7 @@ exports.getOrgRequest = async (req, res) => {
                                     email: orgRow.rows[0].email,
                                     firstname: orgRow.rows[0].firstname,
                                     surname: orgRow.rows[0].surname,
-                                    telegramUsername: orgRow.rows[0].t_username,
+                                    tgUsername: orgRow.rows[0].t_username,
                                     moderatorComment:orgRow.rows[0].moderator_comment
                                 }
                                 if (orgRow.rows[0].owner == owner) {
