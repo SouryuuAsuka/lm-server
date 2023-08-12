@@ -47,7 +47,7 @@ exports.editOrg = async (req, res) => {
                     FROM users AS u 
                     JOIN organizations AS org 
                     ON u.user_id = org.owner
-                    WHERE u.user_id = $1 AND org.org_id = $2`, [decoded.userId, req.body.orgId], (err, orgRow1) => {
+                    WHERE u.user_id = $1 AND org.org_id = $2`, [decoded.userId, req.params.orgId], (err, orgRow1) => {
                         if (err) {
                             console.log(err);
                             return res.status(400).json({ success: false, error: "Ошибка при редактировании организации" })
@@ -60,7 +60,7 @@ exports.editOrg = async (req, res) => {
                                     avatar = orgRow1.rows[0].avatar;
                                 }
                                 const orgInsertString = "UPDATE organizations SET name = $1, about = $2, category = $3, avatar = $4, city = $5 WHERE owner = $6 AND org_id = $7 RETURNING org_id"
-                                pool.query(orgInsertString, [req.body.name, req.body.about, req.body.category, avatar, req.body.city, decoded.userId, req.body.orgId], (err, orgRow) => {
+                                pool.query(orgInsertString, [req.body.name, req.body.about, req.body.category, avatar, req.body.city, decoded.userId, req.params.orgId], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при редактировании организации" })

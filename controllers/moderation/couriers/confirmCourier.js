@@ -7,7 +7,7 @@ exports.confirmCourier = async (req, res) => {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
-            } else if (req.body.tgId == undefined) {
+            } else if (req.params.tgId == undefined) {
                 return res.status(401).json({ error: true, message: 'Некорректный id.' });
             } else if (decoded.userRole != 5 && decoded.userRole != 6) {
                 return res.status(401).json({ error: true, message: 'Недостаточно прав для редактирования оранизации' });
@@ -16,7 +16,7 @@ exports.confirmCourier = async (req, res) => {
                     UPDATE tg_couriers
                     SET confirm = true
                     WHERE tg_id = $1
-                    RETURNING app_id`, [req.body.tgId], (err, tgRow) => {
+                    RETURNING app_id`, [req.params.tgId], (err, tgRow) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({ error: 'Ошибка поиска' });

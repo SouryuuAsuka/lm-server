@@ -1,63 +1,19 @@
 'use strict';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var cookies = require("cookie-parser");
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookies = require("cookie-parser");
 const cors = require("cors");
 require('module-alias/register');
-const schedule = require('node-schedule');
-const fs = require('fs');
-const axios = require('axios');
 
+const users = require('@routes/users')
+const carts = require('@routes/carts')
+const couriers = require('@routes/couriers')
+const orgs = require('@routes/orgs')
+const products = require('@routes/products')
+const profiles = require('@routes/profiles')
+const requests = require('@routes/requests')
 
-//require('dotenv').config();
-//const dotenv = require('dotenv');
-//dotenv.config();
-
-
-//Импорты
-const { signin } = require("@controllers/signin");
-const { signup } = require("@controllers/signup");
-const { signout } = require("@controllers/signout");
-const { getProfile } = require("@controllers/getProfile");
-const { getProfileOrgList } = require("@controllers/profile/getProfileOrgList");
-const { getUser } = require("@controllers/getUser");
-const { confirmemail } = require("@controllers/confirmemail");
-
-const { newCart } = require("@controllers/cart/newCart");
-const { getCart } = require("@controllers/cart/getCart");
-const { addToCart } = require("@controllers/cart/addToCart");
-
-const { getOrg } = require("@controllers/org/getOrg");
-const { getOrgList } = require("@controllers/org/getOrgList");
-const { newOrgPayment } = require("@controllers/org/pays/newOrgPayment");
-const { cancelOrgPayment } = require("@controllers/org/pays/cancelOrgPayment");
-const { getOrgPayments } = require("@controllers/org/pays/getOrgPayments");
-const { getOrgQuests } = require("@controllers/org/getOrgQuests");
-
-const { newGood } = require("@controllers/org/good/newGood");
-const { editGood } = require("@controllers/org/good/editGood");
-const { setActive } = require("@controllers/org/good/setActive");
-
-const { newOrg } = require("@controllers/org/newOrg");
-const { editOrg } = require("@controllers/org/editOrg");
-const { setPublic } = require("@controllers/org/setPublic");
-const { getCouriers } = require("@controllers/moderation/couriers/getCouriers");
-const { confirmCourier } = require("@controllers/moderation/couriers/confirmCourier");
-const { orgConfirm } = require("@controllers/moderation/org/confirm");
-const { setOrgComment } = require("@controllers/moderation/org/setOrgComment");
-const { getOrgRequest } = require("@controllers/moderation/org/getOrgRequest");
-const { getOrgRequestList } = require("@controllers/moderation/org/getOrgRequestList");
-const { getPayList } = require("@controllers/moderation/org/pay/getPayList");
-const { confirmPay } = require("@controllers/moderation/org/pay/confirmPay");
-const { canselPay } = require("@controllers/moderation/org/pay/canselPay");
-
-const { refreshToken } = require("@middleware/refreshToken");
-
-//Импорты middleware 
-const { uploadAvatar } = require("@middleware/multer/uploadAvatar")
-
-// приложение
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -79,45 +35,15 @@ app.get('/', (req, res) => {
   res.send('Hello World in panel api');
 });
 
-app.post('/api/signin', signin);
-app.post('/api/signup', signup);
-app.post('/api/confirmemail', confirmemail);
-app.get('/api/token', refreshToken);
-app.get('/api/orglist', getOrgList);
-app.get('/api/org', getOrg);
+app.use('/v1/users', users)
+app.use('/v1/carts', carts)
+app.use('/v1/couriers', couriers)
+app.use('/v1/orgs', orgs)
+app.use('/v1/products', products)
+app.use('/v1/profiles', profiles)
+app.use('/v1/requests', requests)
 
-app.get('/api/cart', getCart);
-app.post('/api/cart', newCart);
-app.post('/api/cart/addtocart', addToCart);
-
-app.use(require('./middleware/auth'));
-
-app.get('/api/profile', getProfile);
-app.get('/api/profile/orgs', getProfileOrgList);
-
-app.post('/api/org/good', uploadAvatar.single('picture'), newGood);
-app.post('/api/org/good/edit', uploadAvatar.single('picture'), editGood);
-app.post('/api/org/good/active', setActive);
-
-app.post('/api/org', uploadAvatar.single('avatar'), newOrg);
-app.post('/api/org/edit', uploadAvatar.single('avatar'), editOrg);
-app.post('/api/org/public', setPublic);
-app.get('/api/org/pays', getOrgPayments);
-app.post('/api/org/pays', newOrgPayment);
-app.post('/api/org/pays/cancel', cancelOrgPayment);
-app.get('/api/org/quests', getOrgQuests);
-
-app.get('/api/moderation/couriers', getCouriers);
-app.post('/api/moderation/couriers', confirmCourier);
-app.get('/api/moderation/org', getOrgRequest);
-app.post('/api/moderation/org/confirm', orgConfirm);
-app.post('/api/moderation/org/setcomment', setOrgComment);
-app.get('/api/moderation/org/requestlist', getOrgRequestList);
-app.get('/api/moderation/org/pay', getPayList);
-app.post('/api/moderation/org/pay/confirm', confirmPay);
-app.post('/api/moderation/org/pay/cansel', canselPay);
-app.delete('/api/token', signout);
-app.get('/api/user', getUser);
+//app.use(require('./middleware/auth'));
 
 app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () => {
   console.log(`Running on http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`);

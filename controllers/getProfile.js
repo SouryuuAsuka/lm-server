@@ -2,10 +2,10 @@ const pool = require("@service/db");
 
 exports.getProfile = async (req, res) => {
     try {
-        if (req.query.username == undefined) {
+        if (req.params.username == undefined) {
             return res.status(500).json({ error: true, message: 'Пустой запрос' });
         } else {
-            const userRow = await pool.query(`SELECT * FROM users WHERE LOWER(username) = $1`, [req.query.username.toLowerCase()]);
+            const userRow = await pool.query(`SELECT * FROM users WHERE LOWER(username) = $1`, [req.params.username.toLowerCase()]);
             if (userRow.rows[0] != undefined) {
                 const user = {
                     userId: userRow.rows[0].user_id,

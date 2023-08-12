@@ -11,16 +11,16 @@ exports.setPublic = async (req, res) => {
             if (err) {
                 return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
             } else {
-                if (req.body.orgId == undefined) {
+                if (req.params.orgId == undefined) {
                     return res.status(400).json({ success: false, error: "ID организации должно быть заполнено" })
                 } else if (req.body.public == undefined) {
                     return res.status(400).json({ success: false, error: "Статус организации должен быть заполнено" })
-                } else if (isNaN(req.body.orgId)) {
+                } else if (isNaN(req.params.orgId)) {
                     return res.status(400).json({ success: false, error: "ID организации заполнено некорректно" })
                 } else {
                     if (decoded.userRole == 5 || decoded.userRole == 6) {
                         const orgInsertString = "UPDATE organizations SET public = $1 WHERE org_id = $2"
-                        pool.query(orgInsertString, [req.body.public, req.body.orgId], (err, orgRow) => {
+                        pool.query(orgInsertString, [req.body.public, req.params.orgId], (err, orgRow) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Ошибка при редактировании организации" })
@@ -31,7 +31,7 @@ exports.setPublic = async (req, res) => {
                     } else {
                         console.log(JSON.stringify(req.body))
                         const orgInsertString = "UPDATE organizations SET public = $1 WHERE owner = $2 AND org_id = $3"
-                        pool.query(orgInsertString, [req.body.public, decoded.userId, req.body.orgId], (err, orgRow) => {
+                        pool.query(orgInsertString, [req.body.public, decoded.userId, req.params.orgId], (err, orgRow) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Ошибка при редактировании организации" })

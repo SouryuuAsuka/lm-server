@@ -19,7 +19,7 @@ exports.getOrgQuests = async (req, res) => {
                         SELECT owner
                         FROM organizations 
                         WHERE org_id = $1`,
-                        [req.query.id], (err, orgRow) => {
+                        [req.params.orgId], (err, orgRow) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(500).json({ error: 'Ошибка поиска' });
@@ -54,7 +54,7 @@ function dbOrgQuests(req, res) {
     else sclSt = "{" + req.query.st + "}";
     if (typeof req.query.paid == "undefined") sclPaid = '{true, false}';
     else sclPaid = "{" + req.query.paid + "}";
-    pool.query(`SELECT COUNT(*) AS count FROM org_quests WHERE org_id = $1 AND status_code = ANY($2)`, [req.query.id, sclSt],  (err, count) => {
+    pool.query(`SELECT COUNT(*) AS count FROM org_quests WHERE org_id = $1 AND status_code = ANY($2)`, [req.params.orgId, sclSt],  (err, count) => {
         if (err) {
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
@@ -74,7 +74,7 @@ function dbOrgQuests(req, res) {
                 ON o.order_id = qu.order_id
                 WHERE qu.org_id = $1 AND qu.status_code = ANY($2) AND qu.paid = ANY($3)
                 GROUP BY qu.qu_id, qu.order_id, qu.goods_array, qu.paid, qu.status_code, o.created, o.date
-                OFFSET $4 LIMIT 20`, [req.query.id, sclSt, sclPaid, sclPage], (err, orgRow) => {
+                OFFSET $4 LIMIT 20`, [req.params.orgId, sclSt, sclPaid, sclPage], (err, orgRow) => {
                 if (err) {
                     console.log(err)
                     return res.status(500).json({ error: 'Ошибка поиска' });

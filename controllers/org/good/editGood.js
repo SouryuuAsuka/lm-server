@@ -12,13 +12,13 @@ exports.editGood = async (req, res) => {
                     return res.status(400).json({ success: false, error: "Название товара должно быть заполнено" })
                 } else if (req.body.about == undefined) {
                     return res.status(400).json({ success: false, error: "Описание товара должно быть заполнено" })
-                } else if (req.body.goodId == undefined) {
+                } else if (req.params.productId == undefined) {
                     return res.status(400).json({ success: false, error: "ID товара должно быть заполнено" })
                 } else if (req.body.price == undefined) {
                     return res.status(400).json({ success: false, error: "Цена товара должно быть заполнено" })
                 } else if (req.body.preparationTime == undefined) {
                     return res.status(400).json({ success: false, error: "Минимальное время доставки товара должно быть заполнено" })
-                } else if (isNaN(req.body.goodId)) {
+                } else if (isNaN(req.params.productId)) {
                     return res.status(400).json({ success: false, error: "Ошибка при указании ID товара" })
                 } else if (isNaN(req.body.preparationTime)) {
                     return res.status(400).json({ success: false, error: "Минимальное время изготовления товара должно быть заполнено" })
@@ -29,7 +29,7 @@ exports.editGood = async (req, res) => {
                 } else {
                     if (decoded.userRole == 5 || decoded.userRole == 6) {
                         const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, preparation_time = $4 WHERE good_id = $5"
-                        pool.query(orgInsertString, [req.body.name, req.body.about, Number(req.body.price).toFixed(2), (24*req.body.preparationTime), req.body.goodId], (err, orgRow) => {
+                        pool.query(orgInsertString, [req.body.name, req.body.about, Number(req.body.price).toFixed(2), (24*req.body.preparationTime), req.params.productId], (err, orgRow) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Ошибка при создании товара" })
@@ -46,13 +46,13 @@ exports.editGood = async (req, res) => {
                         SELECT * FROM organizations AS org
                         JOIN goods AS g 
                         ON org.org_id = g.org_id
-                        WHERE g.good_id = $1 AND org.owner = $2`, [req.body.goodId, decoded.userId], (err, user) => {
+                        WHERE g.good_id = $1 AND org.owner = $2`, [req.params.productId, decoded.userId], (err, user) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                             } else {
                                 const orgInsertString = "UPDATE goods SET name = $1, about = $2, price = $3, preparation_time = $4 WHERE good_id = $5 AND org_id = $6"
-                                pool.query(orgInsertString, [req.body.name, req.body.about, Number(req.body.price).toFixed(2), (24*req.body.preparationTime), req.body.goodId, user.rows[0].org_id], (err, orgRow) => {
+                                pool.query(orgInsertString, [req.body.name, req.body.about, Number(req.body.price).toFixed(2), (24*req.body.preparationTime), req.params.productId, user.rows[0].org_id], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)
                                         return res.status(400).json({ success: false, error: "Ошибка при создании товара" })

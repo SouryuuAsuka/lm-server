@@ -29,7 +29,7 @@ exports.getProfileOrgList = async (req, res) => {
                         LEFT JOIN users AS u
                         ON org.owner = u.user_id
                         WHERE org.city LIKE $1 AND org.category = ANY($2) AND u.username = $3
-                        OFFSET $4 LIMIT 10`, [sqlVar.city, sqlVar.category, req.query.username, sqlVar.page], (err, orgRow) => {
+                        OFFSET $4 LIMIT 10`, [sqlVar.city, sqlVar.category, req.params.username, sqlVar.page], (err, orgRow) => {
                         if (err) {
                             console.log(err)
                             return res.status(500).json({ error: 'Ошибка поиска' });
@@ -39,7 +39,7 @@ exports.getProfileOrgList = async (req, res) => {
                                 FROM organizations AS org 
                                 LEFT JOIN users AS u
                                 ON org.owner = u.user_id
-                                WHERE org.city LIKE $1 AND org.category = ANY($2) AND u.username = $3`, [sqlVar.city, sqlVar.category, req.query.username], (err, orgCount) => {
+                                WHERE org.city LIKE $1 AND org.category = ANY($2) AND u.username = $3`, [sqlVar.city, sqlVar.category, req.params.username], (err, orgCount) => {
                                 if (err) {
                                     console.log(err)
                                     return res.status(500).json({ error: 'Ошибка поиска' });

@@ -6,12 +6,12 @@ exports.getOrg = async (req, res) => {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
                 notAythRequest(req, res);
-            } else if (req.query.id == undefined) {
+            } else if (req.params.orgId == undefined) {
                 return res.status(500).json({ error: true, message: 'Пустой запрос' });
             } else if (decoded.userRole == 5 || decoded.userRole == 6) {
                 aythRequest(req, res)
             } else {
-                pool.query(`SELECT owner FROM organizations WHERE org_id = $1`, [req.query.id], async (err, selOrgRow) => {
+                pool.query(`SELECT owner FROM organizations WHERE org_id = $1`, [req.params.orgId], async (err, selOrgRow) => {
                     if (err) {
                         return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
                     } else if (selOrgRow.rows.length == 0) {
@@ -159,7 +159,7 @@ function aythRequest(req, res) {
     WHERE org.org_id = $1 
     GROUP BY org.org_id
     ORDER BY org.created DESC`,
-        [req.query.id], async (err, orgRow) => {
+        [req.params.orgId], async (err, orgRow) => {
             if (err) {
                 console.log(err)
                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
@@ -202,7 +202,7 @@ function notAythRequest(req, res) {
         LEFT JOIN goods AS g
         ON g.org_id = org.org_id 
         WHERE org.org_id = $1 AND org.public = true AND g.active = true
-        GROUP BY org.org_id`, [req.query.id], async (err, orgRow) => {
+        GROUP BY org.org_id`, [req.params.orgId], async (err, orgRow) => {
         if (err) {
             console.log(err)
             return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })

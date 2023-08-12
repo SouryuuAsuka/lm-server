@@ -27,7 +27,7 @@ exports.getOrgPayments = async (req, res) => {
                         ON p.payer_id = u.user_id
                         WHERE p.org_id = $1
                         GROUP BY p.pay_id, u.user_id
-                        OFFSET $2 LIMIT 10`, [req.query.id, page], (err, orgRow) => {
+                        OFFSET $2 LIMIT 10`, [req.params.orgId, page], (err, orgRow) => {
                         if (err) {
                             console.log(err)
                             return res.status(500).json({ error: 'Ошибка поиска' });
@@ -42,7 +42,7 @@ exports.getOrgPayments = async (req, res) => {
                     pool.query(`
                     SELECT owner
                     FROM organizations 
-                    WHERE org_id = $1`, [req.query.id], (err, orgRow) => {
+                    WHERE org_id = $1`, [req.params.orgId], (err, orgRow) => {
                         if (err) {
                             console.log(err)
                             return res.status(500).json({ error: 'Ошибка поиска' });
@@ -58,7 +58,7 @@ exports.getOrgPayments = async (req, res) => {
                                 FROM org_payments AS p
                                 WHERE p.org_id = $1
                                 GROUP BY p.pay_id
-                                OFFSET $2 LIMIT 10`, [req.query.id, page], (err, orgRow) => {
+                                OFFSET $2 LIMIT 10`, [req.params.orgId, page], (err, orgRow) => {
                                 if (err) {
                                     console.log(err)
                                     return res.status(500).json({ error: 'Ошибка поиска' });

@@ -15,7 +15,7 @@ exports.cancelOrgPayment = async (req, res) => {
                     UPDATE org_payments
                     SET canceled = true
                     WHERE pay_id = $1 RETURNING ord_array`,
-                        [req.body.payId], (err, payRow) => {
+                        [req.params.orgId], (err, payRow) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(500).json({ error: 'Ошибка поиска' });
@@ -29,7 +29,7 @@ exports.cancelOrgPayment = async (req, res) => {
                                             console.log(err)
                                             return res.status(500).json({ error: 'Ошибка поиска' });
                                         } else {
-                                            return res.status(200).json({ text: "Отменена выплата №" + req.body.payId });
+                                            return res.status(200).json({ text: "Отменена выплата №" + req.params.orgId });
                                         }
                                     });
                             }

@@ -12,7 +12,7 @@ exports.orgConfirm = async (req, res) => {
             console.log("начало проверки")
             if (err) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
-            } else if (req.body.requestId == undefined) {
+            } else if (req.params.requestId == undefined) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
             } else if (decoded.userRole != 5 && decoded.userRole != 6) {
                 return res.status(401).json({ error: true, message: 'Недостаточно прав для редактирования оранизации' });
@@ -24,7 +24,7 @@ exports.orgConfirm = async (req, res) => {
                     ON o.owner = u.user_id
                     LEFT JOIN tg_tech_users AS t
                     ON u.user_id = t.user_id
-                    WHERE o.org_id = $1`, [req.body.requestId], (err, userRow) => {
+                    WHERE o.org_id = $1`, [req.params.requestId], (err, userRow) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({ error: "Ошибка при обработке запроса" });
@@ -36,15 +36,15 @@ exports.orgConfirm = async (req, res) => {
                                     SELECT org_r.owner, org_r.name, org_r.about, org_r.category, org_r.created, org_r.avatar, org_r.country, org_r.city, org_r.street, org_r.house, org_r.flat
                                     FROM organizations_request AS org_r
                                     WHERE org_r.org_id = $1
-                                    RETURNING o.org_id, o.owner`, [req.body.requestId]);
-                                await client.query(`DELETE FROM organizations_request WHERE org_id = $1;`, [req.body.requestId]);
+                                    RETURNING o.org_id, o.owner`, [req.params.requestId]);
+                                await client.query(`DELETE FROM organizations_request WHERE org_id = $1;`, [req.params.requestId]);
                                 await client.query(`UPDATE users SET user_role = 3 WHERE user_id = $1;`, [newOrgRow.rows[0].owner]);
-                                minioClient.copyObject('avatars-org', newOrgRow.rows[0].org_id + ".jpeg", '/avatars-org-request/' + req.body.requestId + ".jpeg", function (e, data) {
+                                minioClient.copyObject('avatars-org', newOrgRow.rows[0].org_id + ".jpeg", '/avatars-org-request/' + req.params.requestId + ".jpeg", function (e, data) {
                                     if (e) {
                                         console.log(e);
                                         return res.status(500).json({ error: "Ошибка при обработке запроса" });
                                     } else {
-                                        minioClient.removeObject('avatars-org-request', req.body.requestId + ".jpeg", function (err) {
+                                        minioClient.removeObject('avatars-org-request', req.params.requestId + ".jpeg", function (err) {
                                             if (err) {
                                                 console.log('Unable to remove object', err)
                                                 return res.status(500).json({ error: "Ошибка при сохранении аватара" });

@@ -3,11 +3,11 @@ const tbot = require("@service/tbot_axios");
 const jwt = require('jsonwebtoken');
 
 exports.setOrgComment = async (req, res) => {
-    try {//TODO: Модифицировать middleware функцию, чтобы не вызывать jwf.verify дважды за запрос
+    try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
                 return res.status(401).json({ error: true, message: 'Unauthorized access.' });
-            } else if (req.body.orgId == undefined) {
+            } else if (req.params.requestId == undefined) {
                 return res.status(401).json({ error: true, message: 'Id организации не задан' });
             } else if (decoded.userRole != 5 && decoded.userRole != 6) {
                 return res.status(401).json({ error: true, message: 'Недостаточно прав для редактирования оранизации' });
@@ -19,13 +19,13 @@ exports.setOrgComment = async (req, res) => {
                     ON o.owner = u.user_id
                     LEFT JOIN tg_tech_users AS t
                     ON u.user_id = t.user_id
-                    WHERE o.org_id = $1`, [req.body.orgId], async (err, userRow) => {
+                    WHERE o.org_id = $1`, [req.params.requestId], async (err, userRow) => {
                     if (err) {
                         console.log(err)
                         return res.status(500).json({ error: "Ошибка при обработке запроса" });
                     } else {
                         pool.query(
-                            `UPDATE organizations_request SET moderator_comment = $1 WHERE org_id = $2;`, [req.body.comment, req.body.orgId], (err, orgRow) => {
+                            `UPDATE organizations_request SET moderator_comment = $1 WHERE org_id = $2;`, [req.body.comment, req.params.requestId], (err, orgRow) => {
                                 if (err) {
                                     console.log(err)
                                     return res.status(500).json({ error: "Ошибка при обработке запроса" });
