@@ -23,7 +23,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cookies());
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  credentials: true,
+  optionsSuccessStatus: 200   
+}));
 
 // Позволяет видеть в req.ip реальный ip пользователя, а не nginx
 app.set('trust proxy', true);
