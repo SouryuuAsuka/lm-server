@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const { getCouriers } = require("@controllers/couriers/getCouriers");
-const { confirmCourier } = require("@controllers/couriers/confirmCourier");
+const getCouriers = require("@controllers/couriers/getCouriers");
+const confirmCourier = require("@controllers/couriers/confirmCourier");
 
 
 router.get('/', getCouriers);

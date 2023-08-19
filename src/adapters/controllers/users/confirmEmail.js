@@ -4,7 +4,6 @@ const tx = require("@database/postgresql/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
 const confirmEmail = async (req, res) => {
     try {
         var mailClientCleanKey = req.body.k;
@@ -60,13 +59,12 @@ const confirmEmail = async (req, res) => {
                 );
                 //const refreshToken = crypto.randomBytes(32).toString('hex');
                 session = {userIp: req.ip, refreshToken: refreshToken, created: new Date()}
-               
                 
                 await tx( res, "Ошибка подключения к базе данных",
                     async (client)     =>{
                         await client.query(`UPDATE users SET user_role = 1 WHERE user_id = $1 RETURNING user_id, username;`, [ mailToken.rows[0].user_id,]);
                         await client.query(`INSERT INTO refresh_tokens (user_id, user_ip, created, token) VALUES ($1, $2, $3, $4)`, [ mailToken.rows[0].user_id, session.userIp, session.created, session.refreshToken ]);
-                        await client.query( `DELETE FROM mail_confirm_tokens WHERE user_id = $1;`, [ mailToken.rows[0].user_id]);
+                        await client.query(`DELETE FROM mail_confirm_tokens WHERE user_id = $1;`, [ mailToken.rows[0].user_id]);
                         res.cookie('accessToken', accessToken, {
                             httpOnly: true,
                         })

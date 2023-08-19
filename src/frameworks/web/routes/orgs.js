@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const { getOrg } = require("@controllers/orgs/getOrg");
-const { getOrgList } = require("@controllers/orgs/getOrgList");
-const { newOrg } = require("@controllers/orgs/newOrg");
-const { editOrg } = require("@controllers/orgs/editOrg");
-const { setPublic } = require("@controllers/orgs/setPublic");
-const { newOrgPayment } = require("@controllers/orgs/pays/newOrgPayment");
-const { cancelOrgPayment } = require("@controllers/orgs/pays/cancelOrgPayment");
-const { getOrgPayments } = require("@controllers/orgs/pays/getOrgPayments");
-const { getOrgQuests } = require("@controllers/orgs/getOrgQuests");
+const getOrg = require("@controllers/orgs/getOrg");
+const getOrgList = require("@controllers/orgs/getOrgList");
+const newOrg = require("@controllers/orgs/newOrg");
+const editOrg = require("@controllers/orgs/editOrg");
+const setPublic = require("@controllers/orgs/setPublic");
+const newOrgPayment = require("@controllers/orgs/pays/newOrgPayment");
+const cancelOrgPayment = require("@controllers/orgs/pays/cancelOrgPayment");
+const getOrgPayments = require("@controllers/orgs/pays/getOrgPayments");
+const getOrgQuests = require("@controllers/orgs/getOrgQuests");
 
 const { uploadAvatar } = require("@middleware/multer/uploadAvatar")
 
