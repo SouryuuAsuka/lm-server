@@ -12,7 +12,7 @@ const getOrgQuests = require("@controllers/orgs/getOrgQuests");
 
 const { uploadAvatar } = require("@middleware/multer/uploadAvatar")
 
-router.get('/', getOrgList);
+router.get('', getOrgList);
 router.post('/', uploadAvatar.single('avatar'), newOrg);
 router.get('/:orgId', getOrg);
 router.patch('/:orgId', uploadAvatar.single('avatar'), editOrg);
