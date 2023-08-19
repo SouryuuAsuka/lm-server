@@ -1,7 +1,7 @@
 const pool = require("@database/postgresql/db");
 const jwt = require('jsonwebtoken');
 
-exports.getCouriers = async (req, res) => {
+const getCouriers = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -63,3 +63,4 @@ exports.getCouriers = async (req, res) => {
         return res.status(500).json({ error: "Ошибка при обработке запроса" });
     };
 }
+module.exports = getCouriers;

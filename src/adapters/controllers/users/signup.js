@@ -11,13 +11,13 @@ let transporter = nodemailer.createTransport({
     host: "smtp.zoho.eu",
     port: 465,
     secure: true,
-    auth:{
+    auth: {
         user: 'noreply@lampymarket.com',
         pass: 'jg3j&W%YV5i#yLF%CZfq'
     },
 })
 
-exports.signup = async (req, res) => {
+const signup = async (req, res) => {
 
     try {
         pool.on('error', console.error);
@@ -104,7 +104,7 @@ exports.signup = async (req, res) => {
                                 var mailKeyHash = await bcrypt.hash(mailKey, process.env.LOCAL_MAIL_KEY_SALT);
                                 const mailInsertString = `INSERT INTO mail_confirm_tokens (user_id, mail_token, mail_key, created) VALUES ($1, $2, $3, $4);`;
                                 await pool.query(mailInsertString, [dbResult.rows[0].user_id, mailToken, mailKeyHash, "NOW()"]);
-                                
+
                                 var link = 'https://lampymarket.com/confirmemail?t=' + mailToken + '&k=' + mailKey
                                 let result = await transporter.sendMail({
                                     from: '"Сервер" <noreply@lampymarket.com>',
@@ -137,4 +137,6 @@ exports.signup = async (req, res) => {
             error: "Ошибка при формировании запроса!", //Database connection error
         });
     };
-}
+};
+
+module.exports = signup;

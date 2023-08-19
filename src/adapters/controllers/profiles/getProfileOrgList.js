@@ -2,7 +2,7 @@ const pool = require("@database/postgresql/db");
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
-exports.getProfileOrgList = async (req, res) => {
+const getProfileOrgList = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -79,3 +79,5 @@ exports.getProfileOrgList = async (req, res) => {
         });
     };
 }
+
+module.exports = getProfileOrgList;

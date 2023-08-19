@@ -2,7 +2,7 @@ const pool = require("@database/postgresql/db");
 const jwt = require('jsonwebtoken');
 
 
-exports.getOrgRequestList = async (req, res) => {
+const getOrgRequestList = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -56,3 +56,5 @@ exports.getOrgRequestList = async (req, res) => {
         });
     };
 }
+
+module.exports = getOrgRequestList;

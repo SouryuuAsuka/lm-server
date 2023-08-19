@@ -1,7 +1,7 @@
 const pool = require("@database/postgresql/db");
 const jwt = require('jsonwebtoken');
 
-exports.signout = (req, res) => {
+const signout = (req, res) => {
     // refresh the damn token
     try {
         const refreshToken = req.cookies.refreshToken;
@@ -60,3 +60,5 @@ exports.signout = (req, res) => {
         });
     };
 }
+
+module.exports = signout;

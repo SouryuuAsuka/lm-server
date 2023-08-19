@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require("crypto");
 
 
-exports.refreshToken = (req, res) => {
+const refreshToken = (req, res) => {
     // refresh the damn token
     try {
         const refreshToken = req.cookies.refreshToken;
@@ -96,3 +96,5 @@ exports.refreshToken = (req, res) => {
         });
     };
 }
+
+module.exports = refreshToken;

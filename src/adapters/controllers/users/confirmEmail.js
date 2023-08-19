@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 
-exports.confirmEmail = async (req, res) => {
+const confirmEmail = async (req, res) => {
     try {
         var mailClientCleanKey = req.body.k;
         var mailClientToken = req.body.t;
@@ -91,3 +91,5 @@ exports.confirmEmail = async (req, res) => {
         });
     };
 }
+
+module.exports = confirmEmail;

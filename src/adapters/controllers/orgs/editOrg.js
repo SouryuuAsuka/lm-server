@@ -14,7 +14,7 @@ const minioClient = new Minio.Client({
 });
 
 
-exports.editOrg = async (req, res) => {
+const editOrg = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -111,3 +111,5 @@ exports.editOrg = async (req, res) => {
         });
     };
 }
+
+module.exports = editOrg;

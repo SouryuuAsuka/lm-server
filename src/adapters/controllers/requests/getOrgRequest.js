@@ -1,7 +1,7 @@
 const pool = require("@database/postgresql/db");
 const jwt = require('jsonwebtoken');
 
-exports.getOrgRequest = async (req, res) => {
+const getOrgRequest = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -92,3 +92,5 @@ exports.getOrgRequest = async (req, res) => {
 async function getUserFromDb(req, res, tableName) {
 
 }
+
+module.exports = getOrgRequest;

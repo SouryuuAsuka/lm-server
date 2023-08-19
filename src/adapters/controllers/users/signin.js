@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
-exports.signin = async (req, res) => {
+const signin = async (req, res) => {
     try {
         const login = req.body.login;
         var user;
@@ -92,3 +92,5 @@ exports.signin = async (req, res) => {
         });
     };
 }
+
+module.exports = signin;

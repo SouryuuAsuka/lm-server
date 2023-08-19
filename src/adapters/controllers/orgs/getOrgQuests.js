@@ -6,7 +6,7 @@ var sqlVar = {};
 /*if(all) sqlVar.public = "{true, false}"
 else sqlVar.public = "{true}"*/
 
-exports.getOrgQuests = async (req, res) => {
+const getOrgQuests = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -98,5 +98,6 @@ function dbOrgQuests(req, res) {
             });
         }
     })
-
 }
+
+module.exports = getOrgQuests;

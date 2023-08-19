@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const tx = require("@database/postgresql/tx");
 
 
-exports.orgConfirm = async (req, res) => {
+const orgConfirm = async (req, res) => {
     try {//TODO: Модифицировать middleware функцию, чтобы не вызывать jwf.verify дважды за запрос
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             console.log("начало проверки")
@@ -78,3 +78,5 @@ exports.orgConfirm = async (req, res) => {
         return res.status(500).json({ error: "Ошибка при обработке запроса" });
     };
 }
+
+module.exports = orgConfirm;

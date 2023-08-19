@@ -1,7 +1,7 @@
 const pool = require("@database/postgresql/db");
 const validator = require('validator');
 
-exports.addToCart = async (req, res) => {
+const addToCart = async (req, res) => {
     try {
         var cartId = null;
         if (req.cookies.cart_id != undefined) {
@@ -50,3 +50,5 @@ exports.addToCart = async (req, res) => {
         });
     };
 }
+
+module.exports = addToCart;

@@ -1,6 +1,6 @@
 const pool = require("@database/postgresql/db");
 
-exports.getProfile = async (req, res) => {
+const getProfile = async (req, res) => {
     try {
         if (req.params.username == undefined) {
             return res.status(500).json({ error: true, message: 'Пустой запрос' });
@@ -49,3 +49,5 @@ exports.getProfile = async (req, res) => {
         });
     };
 }
+
+module.exports = getProfile;

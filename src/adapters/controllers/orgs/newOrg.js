@@ -5,9 +5,7 @@ const minioClient = require("@common/minio");
 const validator = require('validator');
 const sharp = require('sharp');
 
-
-
-exports.newOrg = async (req, res) => {
+const newOrg = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -104,7 +102,7 @@ exports.newOrg = async (req, res) => {
                                                     if (err) {
                                                         console.log(err);
                                                         return res.status(400).json({ success: false, error: "Ошибка при сохранении изображения" })
-                                                     } else return res.status(200).json({ success: true });
+                                                    } else return res.status(200).json({ success: true });
                                                 } 
                                                 //TODO: Добавить удаление временных файлов
                                                 //TODO: Добавить огранияение на количество заявок
@@ -133,3 +131,5 @@ exports.newOrg = async (req, res) => {
         });
     };
 }
+
+module.exports = newOrg;

@@ -2,7 +2,7 @@ const pool = require("@database/postgresql/db");
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
-exports.getOrgList = async (req, res) => {
+const getOrgList = async (req, res) => {
     try {
         dbOrgList(req, res)
         /*if (req.cookies.accessToken != undefined){
@@ -101,5 +101,6 @@ function dbOrgList(req, res) {
             }
         }
     });
-
 }
+
+module.exports = getOrgList;

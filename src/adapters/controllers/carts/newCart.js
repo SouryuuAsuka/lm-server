@@ -9,7 +9,7 @@ function generateRandomString(length) {
     }
     return result;
 }
-exports.newCart = async (req, res) => {
+const newCart = async (req, res) => {
     try {
         if (req.body.goodId == undefined) {
             return res.status(400).json({ success: false, error: "ID товара должен быть отправлен" })
@@ -46,3 +46,5 @@ exports.newCart = async (req, res) => {
         });
     };
 }
+
+module.exports = newCart;

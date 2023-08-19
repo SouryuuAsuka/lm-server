@@ -1,7 +1,7 @@
 const pool = require("@database/postgresql/db");
 const validator = require('validator');
 
-exports.getCart = async (req, res) => {
+const getCart = async (req, res) => {
     try {
         var cartId = null;
         if (req.cookies.cart_id != undefined) {
@@ -122,3 +122,5 @@ function sortCart(cart, callback) {
         }
     }
 }
+
+module.exports = getCart;

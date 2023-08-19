@@ -2,7 +2,7 @@ const pool = require("@database/postgresql/db");
 const tbot = require("@axios/tbot_axios");
 const jwt = require('jsonwebtoken');
 
-exports.setOrgComment = async (req, res) => {
+const setOrgComment = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -62,3 +62,5 @@ exports.setOrgComment = async (req, res) => {
         return res.status(500).json({ error: "Ошибка при обработке запроса" });
     };
 }
+
+module.exports = setOrgComment;

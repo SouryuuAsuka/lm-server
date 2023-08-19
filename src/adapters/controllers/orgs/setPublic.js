@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const validator = require('validator');
 const sharp = require('sharp');
 
-exports.setPublic = async (req, res) => {
+const setPublic = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -51,3 +51,5 @@ exports.setPublic = async (req, res) => {
         });
     };
 }
+
+module.exports = setPublic;

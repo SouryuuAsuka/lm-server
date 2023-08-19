@@ -2,7 +2,7 @@ const pool = require("@common/minio");
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 
-exports.editGood = async (req, res) => {
+const editGood = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -101,3 +101,5 @@ function savePicture(req, res, orgRow) {
         );
     })
 }
+
+module.exports = editGood;

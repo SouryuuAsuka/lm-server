@@ -4,7 +4,7 @@ const validator = require('validator');
 const jwt = require('jsonwebtoken');
 
 
-exports.newOrgPayment = async (req, res) => {
+const newOrgPayment = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -55,3 +55,5 @@ exports.newOrgPayment = async (req, res) => {
         });
     };
 }
+
+module.exports = newOrgPayment;

@@ -5,7 +5,7 @@ const validator = require('validator');
 const minioClient = require("@common/minio");
 const sharp = require('sharp');
 
-exports.newGood = async (req, res) => {
+const newGood = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             if (err) {
@@ -94,3 +94,5 @@ exports.newGood = async (req, res) => {
         });
     };
 }
+
+module.exports = newGood;
