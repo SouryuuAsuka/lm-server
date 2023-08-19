@@ -7,7 +7,7 @@ const getUser = require("@controllers/users/getUser");
 const confirmEmail = require("@controllers/users/confirmEmail");
 const refreshToken = require("@controllers/users/refreshToken");
 
-router.get('/', getUser);
+router.get('', getUser);
 router.post('/signin', signin);
 router.post('/signup', signup);
 router.post('/confirm-email', confirmEmail);
