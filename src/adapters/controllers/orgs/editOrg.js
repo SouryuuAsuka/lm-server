@@ -1,7 +1,6 @@
 const path = require("path")
 const pool = require("@database/postgresql/db");
 const jwt = require('jsonwebtoken');
-const bcrypt = require("bcrypt");
 const validator = require('validator');
 const sharp = require('sharp');
 

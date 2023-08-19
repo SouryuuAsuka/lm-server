@@ -10,4 +10,4 @@ RUN npm install
 # копируем исходный код
 COPY . .
 
-CMD [ "node", "server.js" ]
+CMD [ "node", "app.js" ]
