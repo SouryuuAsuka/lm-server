@@ -6,13 +6,13 @@ const cookies = require("cookie-parser");
 const cors = require("cors");
 require('module-alias/register');
 
-const users = require('@root/src/frameworks/web/routes/users');
-const carts = require('@root/src/frameworks/web/routes/carts');
-const couriers = require('@root/src/frameworks/web/routes/couriers');
-const orgs = require('@root/src/frameworks/web/routes/orgs');
-const products = require('@root/src/frameworks/web/routes/products');
-const profiles = require('@root/src/frameworks/web/routes/profiles');
-const requests = require('@root/src/frameworks/web/routes/requests');
+const users = require('@routes/users');
+const carts = require('@routes/carts');
+const couriers = require('@routes/couriers');
+const orgs = require('@routes/orgs');
+const products = require('@routes/products');
+const profiles = require('@routes/profiles');
+const requests = require('@routes/requests');
 
 const app = express();
 

@@ -1,5 +1,5 @@
 
-const pool = require("@service/db");
+const pool = require("@database/postgresql/db");
 
 const tx = async (res, error, callback) => {
     const client = await pool.connect()
