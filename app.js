@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 
 app.use(cookies());
 app.use(cors({
-  origin: ['https://lampymarket.com', 'https://cbot.lampymarket.com', 'https://tbot.lampymarket.com', 'https://dbot.lampymarket.com'],
+  origin: ['https://lampymarket.com', 'https://api.lampymarket.com', 'https://cbot.lampymarket.com', 'https://tbot.lampymarket.com', 'https://dbot.lampymarket.com'],
   credentials: true
 }));
 
