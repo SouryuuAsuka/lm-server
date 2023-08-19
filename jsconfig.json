@@ -1,20 +1,43 @@
-// @ts-ignore
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "module": "commonjs",
+    "target": "es6",
+    "baseUrl": ".",
+    "noEmit": true,
     "paths": {
-      "@service/*": [
-        "services/*"
+      "@root/*": [
+        "./*"
       ],
       "@controllers/*": [
-        "controllers/*"
+        "./src/adapters/controllers/*"
       ],
-      "@middleware/*": [
-        "middleware/*"
+      "@database/*": [
+        "./src/frameworks/database/*"
+      ],
+      "@common/*": [
+        "./src/frameworks/common/*"
       ],
       "@routes/*": [
-        "routes/*"
+        "src/frameworks/web/routes/*"
+      ],
+      "@middleware/*": [
+        "./src/frameworks/web/middleware/*"
+      ],
+      "@axios/*": [
+        "./src/frameworks/web/axios/*"
+      ],
+      "@entities/*": [
+        "./src/entities/*"
+      ],
+      "@use_cases/*": [
+        "./src/application/use_cases/*"
+      ],
+      "@tests/*": [
+        "./tests/*"
       ]
     }
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

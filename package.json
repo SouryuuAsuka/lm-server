@@ -2,16 +2,22 @@
   "name": "projector-panel",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "_moduleAliases": {
-    "@service": "service",
-    "@controllers": "controllers",
-    "@middleware": "middleware",
-    "@routes": "routes"
+    "@root": ".",
+    "@database": "src/frameworks/database",
+    "@common": "src/frameworks/common",
+    "@controllers": "src/adapters/controllers",
+    "@middleware": "src/frameworks/web/middleware",
+    "@routes": "src/frameworks/web/routes",
+    "@axios": "src/frameworks/web/axios",
+    "@entities": "src/entities",
+    "@use_cases": "src/application/use_cases",
+    "@tests": "tests"
   },
   "author": "",
   "license": "ISC",
