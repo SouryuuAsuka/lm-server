@@ -6,12 +6,13 @@ const signout = require("@controllers/users/signout");
 const getUser = require("@controllers/users/getUser");
 const confirmEmail = require("@controllers/users/confirmEmail");
 const refreshToken = require("@controllers/users/refreshToken");
+const auth = require("@middleware/auth")
 
 router.get('', getUser);
 router.post('/signin', signin);
 router.post('/signup', signup);
 router.post('/confirm-email', confirmEmail);
 router.get('/token', refreshToken);
-router.delete('/token', signout);
+router.delete('/token', auth(), signout);
 
 module.exports = router;
