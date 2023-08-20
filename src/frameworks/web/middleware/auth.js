@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 module.exports = (req, res, next) => {
   const token = req.cookies.accessToken;
   if (token) {
-
     // verifies secret and checks exp
     jwt.verify(token, process.env.ACCESS_KEY_SECRET, function (err, decoded) {
       if (err) {

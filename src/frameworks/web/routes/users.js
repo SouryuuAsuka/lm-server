@@ -17,7 +17,7 @@ router.get('', getUser);
 router.post('/signin', signin);
 router.post('/signup', signup);
 router.post('/confirm-email', confirmEmail);
-router.get('/token', refreshToken);
-router.delete('/token', auth, signout);
+router.get('/token', auth, refreshToken);
+router.delete('/token', signout);
 
 module.exports = router;
