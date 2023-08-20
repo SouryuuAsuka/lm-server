@@ -15,7 +15,8 @@ const profiles = require('@routes/profiles');
 const requests = require('@routes/requests');
 
 const app = express();
-
+app.use(cors());
+app.options('*', cors()); 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -23,17 +24,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cookies());
+
 /*app.use(cors({
   origin: '*',
   credentials: true,
   optionsSuccessStatus: 200   
-}));*/
+}));
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
-});
+});*/
 // Позволяет видеть в req.ip реальный ip пользователя, а не nginx
 app.set('trust proxy', true);
 
