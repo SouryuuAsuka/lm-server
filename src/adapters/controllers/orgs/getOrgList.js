@@ -73,31 +73,13 @@ function dbOrgList(req, res) {
             GROUP BY org.org_id
             OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page], (err, orgRow) => {
         if (err) {
-
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
         } else {
-            var orgRoworgList = [];
-            if (orgRow.rows.length != 0) {
-                var count = pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
-                fs.readFile(__dirname + "/../../service/exchange_rates.json", "utf8", (err, data) => {
-                    console.log(data)
-                    parseData = JSON.parse(data);
-                    if (err) {
-                        console.log(err);
-                        return res.status(500).json({ error: 'Неверный запрос' });
-                    } else {
-                        if (orgRow.rows.length == 0) {
-                            return res.status(200).json({ orgs: [], count: 0 });
-                        } else {
-                            return res.status(200).json({ orgs: orgRow.rows, count: count });
-                        }
-
-                    }
-                })
+            if (orgRow.rows.length == 0) {
+                return res.status(200).json({ orgs: [], count: 0 });
             } else {
-                console.log("Организаций не найдено")
-                return res.status(200).json({ orgs: [] });
+                return res.status(200).json({ orgs: orgRow.rows, count: count });
             }
         }
     });
