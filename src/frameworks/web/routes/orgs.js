@@ -1,5 +1,9 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+
+const appInit = require('@middleware/appInit');
+const { uploadAvatar } = require("@middleware/multer/uploadAvatar");
+
 const getOrg = require("@controllers/orgs/getOrg");
 const getOrgList = require("@controllers/orgs/getOrgList");
 const newOrg = require("@controllers/orgs/newOrg");
@@ -10,7 +14,7 @@ const cancelOrgPayment = require("@controllers/orgs/pays/cancelOrgPayment");
 const getOrgPayments = require("@controllers/orgs/pays/getOrgPayments");
 const getOrgQuests = require("@controllers/orgs/getOrgQuests");
 
-const { uploadAvatar } = require("@middleware/multer/uploadAvatar")
+router.use(appInit);
 
 router.get('', getOrgList);
 router.post('/', uploadAvatar.single('avatar'), newOrg);
