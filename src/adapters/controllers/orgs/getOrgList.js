@@ -76,10 +76,21 @@ function dbOrgList(req, res) {
             console.log(err)
             return res.status(500).json({ error: 'Ошибка поиска' });
         } else {
-            if (orgRow.rows.length == 0) {
-                return res.status(200).json({ orgs: [], count: 0 });
+            if (orgRow.rows.length != 0) {
+                var count = pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({ error: 'Неверный запрос' });
+                } else {
+                    if (orgRow.rows.length == 0) {
+                        return res.status(200).json({ orgs: [], count: 0 });
+                    } else {
+                        return res.status(200).json({ orgs: orgRow.rows, count: count });
+                    }
+                }
             } else {
-                return res.status(200).json({ orgs: orgRow.rows, count: count });
+                console.log("Организаций не найдено")
+                return res.status(200).json({ orgs: [] });
             }
         }
     });
