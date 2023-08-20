@@ -18,6 +18,6 @@ router.post('/signin', signin);
 router.post('/signup', signup);
 router.post('/confirm-email', confirmEmail);
 router.get('/token', refreshToken);
-router.delete('/token', auth(), signout);
+router.delete('/token', auth, signout);
 
 module.exports = router;
