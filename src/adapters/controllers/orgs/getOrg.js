@@ -3,27 +3,32 @@ const jwt = require('jsonwebtoken');
 
 const getOrg = async (req, res) => {
     try {
-        jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
-            if (err) {
-                notAythRequest(req, res);
-            } else if (req.params.orgId == undefined) {
-                return res.status(500).json({ error: true, message: 'Пустой запрос' });
-            } else if (decoded.userRole == 5 || decoded.userRole == 6) {
-                aythRequest(req, res)
-            } else {
-                pool.query(`SELECT owner FROM organizations WHERE org_id = $1`, [req.params.orgId], async (err, selOrgRow) => {
-                    if (err) {
-                        return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
-                    } else if (selOrgRow.rows.length == 0) {
-                        return res.status(400).json({ success: false, error: "Произошла ошибка поиске организации" })
-                    } else if (selOrgRow.rows[0].owner == decoded.userId) {
-                        aythRequest(req, res)
-                    } else {
-                        notAythRequest(req, res);
-                    }
-                })
-            }
-        })
+        let fullAccess = false;
+        if (jwt.isAdmin) fullAccess = true;
+        else if (jwt.isAuth) {
+            
+            jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
+                if (err) {
+                    notAythRequest(req, res);
+                } else if (req.params.orgId == undefined) {
+                    return res.status(500).json({ error: true, message: 'Пустой запрос' });
+                } else if (decoded.userRole == 5 || decoded.userRole == 6) {
+                    aythRequest(req, res)
+                } else {
+                    pool.query(`SELECT owner FROM organizations WHERE org_id = $1`, [req.params.orgId], async (err, selOrgRow) => {
+                        if (err) {
+                            return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })
+                        } else if (selOrgRow.rows.length == 0) {
+                            return res.status(400).json({ success: false, error: "Произошла ошибка поиске организации" })
+                        } else if (selOrgRow.rows[0].owner == decoded.userId) {
+                            aythRequest(req, res)
+                        } else {
+                            notAythRequest(req, res);
+                        }
+                    })
+                }
+            })
+        }
     }
     catch (err) {
         console.log(err);
@@ -77,19 +82,19 @@ function sendOrgData(res, org, owner) {
         }
         if (i + 1 == org.goods.length) {
             if (owner) {
-                if (Array.isArray(org.payments)){
+                if (Array.isArray(org.payments)) {
                     var totalSum = 0
                     org.payments.map((pay) => {
                         totalSum += pay.usd_sum;
                     })
                     newOrg.sum_received = totalSum;
                 }
-                if (Array.isArray(org.quests)){
+                if (Array.isArray(org.quests)) {
                     var totalSum = 0
                     org.quests.map((quest) => {
-                        var goodSum=0;
+                        var goodSum = 0;
                         quest.goods.map((good) => {
-                            goodSum+= (Number(good.num) * Number(good.price))
+                            goodSum += (Number(good.num) * Number(good.price))
                         })
                         console.log("goodSum - " + goodSum)
                         totalSum += goodSum;
@@ -108,7 +113,7 @@ function sendOrgData(res, org, owner) {
 function aythRequest(req, res) {
     pool.query(`
     SELECT 
-    org.org_id AS org_id, 
+    org.org_id AS "orgId", 
     org.name AS name, 
     org.about AS about, 
     org.category AS category, 
@@ -140,17 +145,17 @@ function aythRequest(req, res) {
     ) AS payments, 
     json_agg( 
         json_build_object(
-            'good_id', g.good_id, 
-            'good_name', g.name, 
-            'good_about',  g.about, 
-            'good_price',  g.price, 
-            'good_active', g.active, 
-            'good_picture', g.picture, 
-            'good_sold', g.sold, 
-            'good_created', g.created, 
-            'good_orders', g.orders, 
-            'good_cat_id', g.cat_id, 
-            'good_preparation_time', g.preparation_time
+            'id', g.good_id, 
+            'name', g.name, 
+            'about',  g.about, 
+            'price',  g.price, 
+            'active', g.active, 
+            'picture', g.picture, 
+            'sold', g.sold, 
+            'created', g.created, 
+            'orders', g.orders, 
+            'cat_id', g.cat_id, 
+            'preparation_time', g.preparation_time
         )
     ) AS goods
     FROM organizations AS org 
@@ -176,7 +181,7 @@ function aythRequest(req, res) {
 function notAythRequest(req, res) {
     pool.query(`
         SELECT 
-        org.org_id AS org_id, 
+        org.org_id AS orgId, 
         org.name AS name, 
         org.about AS about, 
         org.category AS category, 
@@ -185,17 +190,17 @@ function notAythRequest(req, res) {
         org.public AS public, 
         json_agg( 
             json_build_object(
-                'good_id', g.good_id, 
-                'good_name', g.name, 
-                'good_about',  g.about, 
-                'good_price',  g.price, 
-                'good_active', g.active, 
-                'good_picture', g.picture, 
-                'good_sold', g.sold, 
-                'good_created', g.created, 
-                'good_orders', g.orders, 
-                'good_cat_id', g.cat_id, 
-                'good_preparation_time', g.preparation_time
+                'id', g.good_id, 
+                'name', g.name, 
+                'about',  g.about, 
+                'price',  g.price, 
+                'active', g.active, 
+                'picture', g.picture, 
+                'sold', g.sold, 
+                'created', g.created, 
+                'orders', g.orders, 
+                'cat_id', g.cat_id, 
+                'preparation_time', g.preparation_time
             )
         ) AS goods
         FROM organizations AS org 

@@ -12,6 +12,10 @@ const products = require('@routes/products');
 const profiles = require('@routes/profiles');
 const requests = require('@routes/requests');
 
+const ErrorHandler = require('@common/ErrorHandler');
+
+const dependencies = require("@config/projectDependencies");
+
 const app = express();
 
 app.set('trust proxy', true);
@@ -23,12 +27,13 @@ app.get('/', (req, res) => {
 app.use('/v1/users', users);
 app.use('/v1/carts', carts);
 app.use('/v1/couriers', couriers);
-app.use('/v1/orgs', orgs);
+app.use('/v1/orgs', orgs(dependencies));
 app.use('/v1/products', products);
 app.use('/v1/profiles', profiles);
 app.use('/v1/requests', requests);
 
 //app.use(require('./middleware/auth'));
+app.use(ErrorHandler);
 
 app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () => {
   console.log(`Running on http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`);

@@ -32,6 +32,9 @@
       "@use_cases/*": [
         "./src/application/use_cases/*"
       ],
+      "@config/*": [
+        "./src/config/*"
+      ],
       "@tests/*": [
         "./tests/*"
       ]
