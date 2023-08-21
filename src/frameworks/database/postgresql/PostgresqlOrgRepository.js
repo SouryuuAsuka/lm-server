@@ -41,7 +41,8 @@ module.exports = class OrgsRepositoryPostgresql {
       else sqlVar.city = req.query.c;
       if (category == undefined) sqlVar.category = '{0, 1, 2}';
       else sqlVar.category = "{" + req.query.t + "}";
-      pool.query(`
+      console.log("!1")
+      this.pool.query(`
         SELECT 
         org.org_id AS id, 
         org.name AS name, 
@@ -78,14 +79,17 @@ module.exports = class OrgsRepositoryPostgresql {
           console.log(err)
           throw 'Ошибка поиска';
         } else {
+          console.log("!2")
           if (orgRow.rows.length != 0) {
-            var count = pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
+            var count = this.pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
             if (err) {
               throw 'Ошибка поиска';
             } else {
+              console.log("!3")
               if (orgRow.rows.length == 0) {
                 return { orgs: [], count: 0 };
               } else {
+                console.log("!4")
                 return { orgs: orgRow.rows, count: count };
               }
             }
