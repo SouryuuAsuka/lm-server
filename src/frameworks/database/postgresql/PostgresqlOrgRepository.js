@@ -42,7 +42,7 @@ module.exports = class OrgsRepositoryPostgresql {
       if (category == undefined) sqlVar.category = '{0, 1, 2}';
       else sqlVar.category = "{" + req.query.t + "}";
       console.log("!1")
-      this.pool.query(`
+      await this.pool.query(`
         SELECT 
         org.org_id AS id, 
         org.name AS name, 
@@ -74,14 +74,14 @@ module.exports = class OrgsRepositoryPostgresql {
         FROM organizations AS org 
         WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
         GROUP BY org.org_id
-        OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page], (err, orgRow) => {
+        OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page], async (err, orgRow) => {
         if (err) {
           console.log(err)
           throw 'Ошибка поиска';
         } else {
           console.log("!2")
           if (orgRow.rows.length != 0) {
-            var count = this.pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
+            var count = await this.pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
             if (err) {
               throw 'Ошибка поиска';
             } else {
