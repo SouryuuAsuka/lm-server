@@ -32,7 +32,7 @@ module.exports = class OrgsRepositoryPostgresql {
       return res.status(400).json({ success: false, error: "Произошла ошибка при поиске организации" })
     }
   }
-  getOrgList(page, city, category) {
+  async getOrgList(page, city, category) {
     try {
       let sqlVar = {};
       if (page == undefined) sqlVar.page = '0';

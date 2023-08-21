@@ -1,4 +1,4 @@
-const PostgresqlDatabaseServices = require('@database/postgresql/PostgresqlDatabaseService')
+const PostgresqlDatabaseServices = require('@database/postgresql/PostgresqlDatabaseService');
 
 module.exports = (() => {
   return {

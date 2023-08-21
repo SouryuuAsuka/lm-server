@@ -1,6 +1,6 @@
-function GetOrgList (orgsRepository) {
+function GetOrgList (orgRepository) {
   return async (id) => {
-    return orgsRepository.GetOrgList(id);
+    return orgRepository.GetOrgList(id);
   }
 }
 module.exports = GetOrgList;
