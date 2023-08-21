@@ -7,7 +7,6 @@ const { uploadAvatar } = require("@middleware/multer/uploadAvatar");
 const orgController = require("@controllers/org/org.controller")
 
 const getOrg = require("@controllers/orgs/getOrg");
-const getOrgList = require("@controllers/orgs/getOrgList");
 const newOrg = require("@controllers/orgs/newOrg");
 const editOrg = require("@controllers/orgs/editOrg");
 const setPublic = require("@controllers/orgs/setPublic");
