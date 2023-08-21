@@ -1,7 +1,7 @@
 function GetOrgList (orgRepository) {
-  return async (id) => {
-    console.log(JSON.stringify(await orgRepository.getOrgList(id)));
-    return await orgRepository.getOrgList(id);
+  return async (page, city, category) => {
+    console.log(JSON.stringify(await orgRepository.getOrgList(page, city, category)));
+    return await orgRepository.getOrgList(page, city, category);
   }
 }
 module.exports = GetOrgList;
