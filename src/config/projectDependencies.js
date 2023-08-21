@@ -4,4 +4,4 @@ module.exports = (() => {
   return {
     DatabaseService: new PostgresqlDatabaseServices()
   }
-})
+})();
