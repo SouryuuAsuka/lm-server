@@ -41,7 +41,6 @@ module.exports = class OrgsRepositoryPostgresql {
       else sqlVar.city = req.query.c;
       if (category == undefined) sqlVar.category = '{0, 1, 2}';
       else sqlVar.category = "{" + req.query.t + "}";
-      console.log("!1")
       const orgRow = await this.pool.query(`
         SELECT 
         org.org_id AS id, 
@@ -75,15 +74,12 @@ module.exports = class OrgsRepositoryPostgresql {
         WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
         GROUP BY org.org_id
         OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page])
-      console.log("!2")
       if (orgRow.rows.length != 0) {
         var count = await this.pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
-          console.log("!3")
           if (orgRow.rows.length == 0) {
             return { orgs: [], count: 0 };
           } else {
-            console.log("!4")
-            return { orgs: orgRow.rows, count: count };
+            return { orgs: orgRow.rows, count: count.rows.count };
           }
       } else {
         return { orgs: [], count: 0 };

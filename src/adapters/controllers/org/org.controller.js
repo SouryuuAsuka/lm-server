@@ -6,7 +6,6 @@ module.exports = (dependecies) => {
     try {
       const GetOrgListCommand = GetOrgList(orgRepository);
       const response = await GetOrgListCommand(req.query.p, req.query.c, req.query.t);
-      console.log(JSON.stringify(response));
       res.json(response);
     } catch (err) {
       next(err);
