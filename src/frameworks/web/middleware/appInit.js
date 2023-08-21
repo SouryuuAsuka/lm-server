@@ -6,17 +6,17 @@ const jwt = require('jsonwebtoken');
 const jwtAuth = (req, res, next) => {
   jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
     if (err) {
-      req.locals.isAuth = false;
-      req.locals.isAdmin = false;
-      req.locals.userId = null;
+      res.locals.isAuth = false;
+      res.locals.isAdmin = false;
+      res.locals.userId = null;
     } else {
-      req.locals.isAuth = true;
-      req.locals.userRole = decoded.userRole;
-      req.locals.userId = decoded.userId;
+      res.locals.isAuth = true;
+      res.locals.userRole = decoded.userRole;
+      res.locals.userId = decoded.userId;
       if (decoded.userRole == 5 || decoded.userRole == 6){
-        req.locals.isAuth = true;
+        res.locals.isAuth = true;
       } else {
-        req.locals.isAdmin = false;
+        res.locals.isAdmin = false;
       }
     }
     next();
