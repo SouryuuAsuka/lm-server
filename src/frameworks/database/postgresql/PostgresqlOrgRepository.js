@@ -78,9 +78,6 @@ module.exports = class OrgsRepositoryPostgresql {
       console.log("!2")
       if (orgRow.rows.length != 0) {
         var count = await this.pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
-        if (err) {
-          throw 'Ошибка поиска';
-        } else {
           console.log("!3")
           if (orgRow.rows.length == 0) {
             return { orgs: [], count: 0 };
@@ -88,7 +85,6 @@ module.exports = class OrgsRepositoryPostgresql {
             console.log("!4")
             return { orgs: orgRow.rows, count: count };
           }
-        }
       } else {
         return { orgs: [], count: 0 };
       }
