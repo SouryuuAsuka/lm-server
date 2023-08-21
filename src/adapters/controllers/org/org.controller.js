@@ -2,14 +2,14 @@ const GetOrgList = require('@use_cases/org/GetOrgList')
 
 module.exports = (dependecies) => {
   const { orgRepository } = dependecies.DatabaseService;
-  const getOrgList = (req, res, next) => {
-    const GetOrgListCommand = GetOrgList(orgRepository);
-    GetOrgListCommand(req.query.p, req.query.c, req.query.t).then((response) => {
-      console.log(JSON.stringify(response));
+  const getOrgList = async (req, res, next) => {
+    try {
+      const GetOrgListCommand = GetOrgList(orgRepository);
+      const response = await GetOrgListCommand(req.query.p, req.query.c, req.query.t)
       res.json(response);
-    }).catch((err) => {
+    } catch (err) {
       next(err);
-    })
+    }
   }
   return { getOrgList };
 }
