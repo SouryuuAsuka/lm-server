@@ -63,13 +63,9 @@ module.exports = (dependecies) => {
       const { accessToken, refreshToken, profileLink } = await SigninCommand(login, req.body.password, req.ip, type);
       console.log(JSON.stringify({ accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink }))
       res.cookie('accessToken', accessToken, {
-        httpOnly: true,
-        domain: 'lampymarket.com',
         sameSite: "none",
       })
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        domain: 'lampymarket.com',
         sameSite: "none",
       })
       return res.status(200).json({ success: true, profile: profileLink });
