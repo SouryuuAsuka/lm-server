@@ -25,7 +25,7 @@ const jwtAuth = (req, res, next) => {
 }
 
 module.exports = [
-  cors(),
+  cors({ credentials: true, origin: true }),
   bodyParser.urlencoded({ extended: false }), // parse application/x-www-form-urlencoded
   bodyParser.json(),  // parse application/json
   cookies(),
