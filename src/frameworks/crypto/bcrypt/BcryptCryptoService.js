@@ -7,6 +7,6 @@ module.exports = class BcryptCryptoService {
   constructor() {
     this.hasher=bcrypt;
     this.crypto=crypto;
-    this.userComparer = new BcryptUserComparer(this.pool, this.hasher, this.crypto);
+    this.userComparer = new BcryptUserComparer(this.hasher, this.crypto);
   }
 };
