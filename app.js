@@ -12,19 +12,11 @@ const payments = require('@routes/payment.router');
 const products = require('@routes/product.router');
 const request = require('@routes/request.router');
 
-const cors = require("cors");
-
 const ErrorHandler = require('@common/ErrorHandler');
 
 const dependencies = require("@config/projectDependencies");
 
 const app = express();
-const corsOptions = {
-  origin: '*',
-  credentials: true,            //access-control-allow-credentials:true
-  optionSuccessStatus: 200
-}
-app.use(cors(corsOptions));
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
