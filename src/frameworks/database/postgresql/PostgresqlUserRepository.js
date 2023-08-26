@@ -111,7 +111,7 @@ module.exports = class PostgresqlUserRepository {
           user.tgCode = salt.substring(salt.length - 6)
           return user;
         } else {
-          const tgUserRow = await pool.query(`SELECT * FROM tg_tech_users WHERE user_id = $1`, [userRow.rows[0].user_id]);
+          const tgUserRow = await this.pool.query(`SELECT * FROM tg_tech_users WHERE user_id = $1`, [userRow.rows[0].user_id]);
           if (tgUserRow.rows[0] != undefined) {
             user.tgUsername = tgUserRow.rows[0].username;
             return user;
