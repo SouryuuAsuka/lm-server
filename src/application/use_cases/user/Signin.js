@@ -24,6 +24,7 @@ function Signin(userRepository, userComparer, jwtEncrypter) {
       } else {
         profileLink = "id" + user.userId;
       }
+      console.log(JSON.stringify({ accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink }))
       return { accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink }
     } catch (err) {
       throw err;
