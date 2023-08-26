@@ -65,11 +65,9 @@ module.exports = (dependecies) => {
       console.log(JSON.stringify({ accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink }))
       res.cookie('accessToken', accessToken, {
         domain: "lampymarket.com",
-        sameSite: "none",
       })
       res.cookie('refreshToken', refreshToken, {
         domain: "lampymarket.com",
-        sameSite: "none",
       })
       return res.status(200).json({ success: true, profile: profileLink });
     } catch (err) {
