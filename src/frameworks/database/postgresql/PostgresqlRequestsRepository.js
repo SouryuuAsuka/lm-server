@@ -6,18 +6,18 @@ module.exports = class PostgresqlCourierRepository {
     try {
       const requestRow = await this.pool.query(`
         SELECT 
-        o.org_id AS 'orgId',
+        o.org_id AS "orgId",
         o.name AS name, 
         o.about AS about, 
         o.avatar AS avatar, 
         o.category AS category, 
         o.city AS city, 
-        o.moderator_comment AS 'moderatorComment',
+        o.moderator_comment AS "moderatorComment",
         u.email AS email, 
         u.firstname AS firstname, 
         u.surname AS surname, 
         u.telegram AS telegram,
-        t.username AS 'tgUsername'
+        t.username AS "tgUsername"
         FROM organizations_request AS o
         LEFT JOIN users AS u
         ON o.owner = u.user_id

@@ -131,12 +131,12 @@ module.exports = class PostgresqlUserRepository {
     try {
       const userRow = await this.pool.query(`
         SELECT 
-        u.user_id AS 'userId'
+        u.user_id AS "userId"
         , u.username AS username
         , u.email AS email
-        , u.user_role AS 'userRole'
+        , u.user_role AS "userRole"
         , u.password AS password
-        , u.pass_salt AS 'passSalt'
+        , u.pass_salt AS "passSalt"
         FROM users AS u WHERE user_id = $1`
         , [userId])
       if(userRow.rows.length === 0) throw "Пользователь не найден";
@@ -150,11 +150,11 @@ module.exports = class PostgresqlUserRepository {
     try {
       const userRow = await this.pool.query(`
         SELECT 
-        u.user_id AS 'userId'
+        u.user_id AS "userId"
         , u.email AS email
-        , u.user_role AS 'userRole'
+        , u.user_role AS "userRole"
         , u.password AS password
-        , u.pass_salt AS 'passSalt'
+        , u.pass_salt AS "passSalt"
         FROM users AS u WHERE email = $1`
         , [email])
       return userRow.rows[0];
@@ -167,11 +167,11 @@ module.exports = class PostgresqlUserRepository {
     try {
       const userRow = await this.pool.query(`
         SELECT 
-        u.user_id AS 'userId'
+        u.user_id AS "userId"
         , u.email AS email
-        , u.user_role AS 'userRole'
+        , u.user_role AS "userRole"
         , u.password AS password
-        , u.pass_salt AS 'passSalt' 
+        , u.pass_salt AS "passSalt"
         FROM users AS u WHERE username = $1`
         , [username])
       return userRow.rows[0];
@@ -216,10 +216,10 @@ module.exports = class PostgresqlUserRepository {
     try {
       const refreshRow = await this.pool.query(`
       SELECT 
-      u.user_role AS 'userRole'
-      , r.user_id AS 'userId'
+      u.user_role AS "userRole"
+      , r.user_id AS "userId"
       , u.email AS email
-      , r.token_id AS 'tokenId'
+      , r.token_id AS "tokenId"
       FROM refresh_tokens AS r 
       JOIN users AS u
       ON r.user_id = u.user_id
@@ -241,7 +241,7 @@ module.exports = class PostgresqlUserRepository {
   }
   async createUser(username, email, hash, salt) {
     try {
-      const userInsertString = "INSERT INTO users (username, email, password, pass_salt, regtime) VALUES ($1, $2, $3, $4, $5) RETURNING user_id AS 'userId';"
+      const userInsertString = `INSERT INTO users (username, email, password, pass_salt, regtime) VALUES ($1, $2, $3, $4, $5) RETURNING user_id AS "userId";`
       const userRow = await this.pool.query(userInsertString, [username, email, hash, salt, "NOW()"]);
       return userRow;
     } catch (err) {
@@ -263,8 +263,8 @@ module.exports = class PostgresqlUserRepository {
     try {
       const mailConfirm = await this.pool.query(`
       SELECT 
-      user_id AS 'userId'
-      , mail_key AS 'mailKey'
+      user_id AS "userId"
+      , mail_key AS "mailKey"
       FROM mail_confirm_tokens WHERE mail_token = $1;`
         , [mailToken, mailKey]);
       if (mailConfirm.rows.length === 0) 'Токен валидации не найден';
