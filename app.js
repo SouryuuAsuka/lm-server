@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 });
 app.use(cookies())
 app.use((req, res, next)=>{
-  console.log(req);
+  console.log(req.cookies);
   next();
 })
 app.use('/v1/carts', carts(dependencies));
