@@ -1,6 +1,7 @@
 const validator = require('validator');
 
 const GetUser = require('@use_cases/user/GetUser');
+const GetUserByUsername = require('@use_cases/user/GetUserByUsername');
 const GetOrgListByUsername = require('@use_cases/user/GetOrgListByUsername');
 const Signin = require('@use_cases/user/Signin');
 const Signup = require('@use_cases/user/Signup');
@@ -18,8 +19,8 @@ module.exports = (dependecies) => {
       if (req.params.username == undefined) {
         return res.status(500).json({ error: true, message: 'Пустой запрос' });
       } else {
-        const GetUserCommand = GetUser(userRepository);
-        const response = await GetUserCommand(req.params.username);
+        const GetUserByUsernameCommand = GetUserByUsername(userRepository);
+        const response = await GetUserByUsernameCommand(req.params.username);
         return res.json({ profile: response });
       }
     } catch (err) {
