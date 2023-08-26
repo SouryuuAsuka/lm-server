@@ -4,7 +4,7 @@ module.exports = class BcryptUserComparer {
   }
   async generateAccessToken(userId, email, userRole) {
     try {
-      const accessToken = jwt.sign( 
+      const accessToken = this.jwt.sign( 
         {
           userId: userId,
           email: email,
@@ -23,7 +23,7 @@ module.exports = class BcryptUserComparer {
   }
   async generateRefreshToken(userId, tokenHash, tokenDate) {
     try {
-      const refreshToken = jwt.sign( 
+      const refreshToken = this.jwt.sign( 
         {
           userId: userId,
           date: tokenDate,
@@ -42,7 +42,7 @@ module.exports = class BcryptUserComparer {
   }
   async verifyRefreshToken(token) {
     try {
-      await jwt.verify(token, process.env.REFRESH_KEY_SECRET);
+      await this.jwt.verify(token, process.env.REFRESH_KEY_SECRET);
       return true;
     } catch (err) {
       console.log(err);
