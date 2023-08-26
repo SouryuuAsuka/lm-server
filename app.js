@@ -11,7 +11,6 @@ const orgs = require('@routes/org.router');
 const payments = require('@routes/payment.router');
 const products = require('@routes/product.router');
 const request = require('@routes/request.router');
-const cookies = require("cookie-parser");
 
 const ErrorHandler = require('@common/ErrorHandler');
 
