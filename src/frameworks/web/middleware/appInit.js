@@ -4,6 +4,7 @@ const cookies = require("cookie-parser");
 const jwt = require('jsonwebtoken');
 
 const jwtAuth = (req, res, next) => {
+  console.log(JSON.stringify(res.locals))
   jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
     if (err) {
       res.locals.isAuth = false;
