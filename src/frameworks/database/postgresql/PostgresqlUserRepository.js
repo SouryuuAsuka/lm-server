@@ -151,6 +151,7 @@ module.exports = class PostgresqlUserRepository {
       const userRow = await this.pool.query(`
         SELECT 
         u.user_id AS "userId"
+        , u.username AS username
         , u.email AS email
         , u.user_role AS "userRole"
         , u.password AS password
@@ -168,6 +169,7 @@ module.exports = class PostgresqlUserRepository {
       const userRow = await this.pool.query(`
         SELECT 
         u.user_id AS "userId"
+        , u.username AS username
         , u.email AS email
         , u.user_role AS "userRole"
         , u.password AS password
