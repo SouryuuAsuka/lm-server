@@ -11,6 +11,7 @@ const orgs = require('@routes/org.router');
 const payments = require('@routes/payment.router');
 const products = require('@routes/product.router');
 const request = require('@routes/request.router');
+const cookies = require("cookie-parser");
 
 const ErrorHandler = require('@common/ErrorHandler');
 
@@ -22,7 +23,11 @@ app.set('trust proxy', true);
 app.get('/', (req, res) => {
   res.send('Hello World in panel api');
 });
-
+app.use(cookies())
+app.use((req, res, next)=>{
+  console.log(req);
+  next();
+})
 app.use('/v1/carts', carts(dependencies));
 app.use('/v1/couriers', couriers(dependencies));
 app.use('/v1/orgs', orgs(dependencies));
