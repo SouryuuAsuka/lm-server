@@ -113,10 +113,10 @@ module.exports = (dependecies) => {
       const RefreshTokenCommand = RefreshToken(userRepository, userComparer, userTrasporter);
       const { refreshToken, accessToken } = await RefreshTokenCommand(req.cookies.refreshToken, req.ip);
       res.cookie('accessToken', accessToken, {
-        httpOnly: true,
+        domain: "lampymarket.com",
       })
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
+        domain: "lampymarket.com",
       })
       return res.status(200).json({ error: "" });
     } catch (err) {
@@ -135,10 +135,10 @@ module.exports = (dependecies) => {
         const ConfirmEmailCommand = ConfirmEmail(userRepository, userComparer, jwtEncrypter);
         const { accessToken, refreshToken, profileLink } = await ConfirmEmailCommand(mailClientToken, mailClientKey, req.ip);
         res.cookie('accessToken', accessToken, {
-          httpOnly: true,
+          domain: "lampymarket.com",
         })
         res.cookie('refreshToken', refreshToken, {
-          httpOnly: true,
+          domain: "lampymarket.com",
         })
         return res.json({ profile: profileLink })
       }
