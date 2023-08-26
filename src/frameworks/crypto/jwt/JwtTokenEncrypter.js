@@ -42,8 +42,7 @@ module.exports = class BcryptUserComparer {
   }
   async verifyRefreshToken(token) {
     try {
-      await this.jwt.verify(token, process.env.REFRESH_KEY_SECRET);
-      return true;
+      return await this.jwt.verify(token, process.env.REFRESH_KEY_SECRET);
     } catch (err) {
       console.log(err);
       throw err;
