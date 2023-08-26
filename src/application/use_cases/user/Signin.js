@@ -13,6 +13,7 @@ function Signin(userRepository, userComparer, jwtEncrypter) {
       if (hash !== user.password) {
         throw 'Login error';
       }
+      console.log(JSON.stringify(user))
       const tokenHash = await userComparer.generateHash(8);
       const tokenDate = new Date();
       await userRepository.createRefreshToken(user.userId, tokenDate, tokenHash, ip);
