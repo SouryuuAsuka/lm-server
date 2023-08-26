@@ -12,6 +12,8 @@ const payments = require('@routes/payment.router');
 const products = require('@routes/product.router');
 const request = require('@routes/request.router');
 
+const cors = require("cors");
+
 const ErrorHandler = require('@common/ErrorHandler');
 
 const dependencies = require("@config/projectDependencies");
@@ -19,7 +21,7 @@ const dependencies = require("@config/projectDependencies");
 const app = express();
 
 app.set('trust proxy', true);
-
+app.use(cors())
 app.get('/', (req, res) => {
   res.send('Hello World in panel api');
 });
