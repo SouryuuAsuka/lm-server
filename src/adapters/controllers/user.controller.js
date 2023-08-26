@@ -65,10 +65,12 @@ module.exports = (dependecies) => {
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
         domain: 'lampymarket.com',
+        sameSite: "none",
       })
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         domain: 'lampymarket.com',
+        sameSite: "none",
       })
       return res.status(200).json({ success: true, profile: profileLink });
     } catch (err) {
