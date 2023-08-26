@@ -61,6 +61,7 @@ module.exports = (dependecies) => {
       }
       const SigninCommand = Signin(userRepository, userComparer, jwtEncrypter);
       const { accessToken, refreshToken, profileLink } = await SigninCommand(login, req.body.password, req.ip, type);
+      console.log(JSON.stringify({ accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink }))
       res.cookie('accessToken', accessToken, {
         httpOnly: true
       })
