@@ -23,11 +23,6 @@ app.set('trust proxy', true);
 app.get('/', (req, res) => {
   res.send('Hello World in panel api');
 });
-app.use(cookies())
-app.use((req, res, next)=>{
-  console.log(req.cookies);
-  next();
-})
 app.use('/v1/carts', carts(dependencies));
 app.use('/v1/couriers', couriers(dependencies));
 app.use('/v1/orgs', orgs(dependencies));
