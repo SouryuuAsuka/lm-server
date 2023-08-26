@@ -1,5 +1,5 @@
 {
-  "name": "projector-panel",
+  "name": "lampy-server",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -11,6 +11,9 @@
     "@root": ".",
     "@database": "src/frameworks/database",
     "@common": "src/frameworks/common",
+    "@aws": "src/frameworks/aws",
+    "@crypto": "src/frameworks/crypto",
+    "@mail": "src/frameworks/mail",
     "@controllers": "src/adapters/controllers",
     "@middleware": "src/frameworks/web/middleware",
     "@routes": "src/frameworks/web/routes",

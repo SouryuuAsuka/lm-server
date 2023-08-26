@@ -41,10 +41,10 @@ const setActive = async (req, res) => {
                         })
                     } else {
                         pool.query(`
-                        SELECT * FROM organizations AS org
-                        JOIN goods AS g
-                        ON org.org_id = g.org_id
-                        WHERE g.good_id = $1 AND org.owner = $2`, [req.params.productId, decoded.userId], (err, user) => {
+                            SELECT * FROM organizations AS org
+                            JOIN goods AS g
+                            ON org.org_id = g.org_id
+                            WHERE g.good_id = $1 AND org.owner = $2`, [req.params.productId, decoded.userId], (err, user) => {
                             if (err) {
                                 console.log(err)
                                 return res.status(400).json({ success: false, error: "Произошла ошибка при верификации запроса" })

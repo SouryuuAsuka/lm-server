@@ -34,7 +34,6 @@ const cancelOrgPayment = async (req, res) => {
                                     });
                             }
                         });
-
                 } else {
                     return res.status(400).json({ "error": true, "message": 'Unauthorized access.' });
                 }

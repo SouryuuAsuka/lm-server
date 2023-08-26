@@ -34,16 +34,13 @@ const signup = async (req, res) => {
         } //TODO: прописать blacklist из зарезервированных username
         if (!validator.isEmail(email)) {
             res.status(400).json({ success: false, error: "Некорректный Email" })
-        }
-        else if (validator.isEmpty(username)) {
+        } else if (validator.isEmpty(username)) {
             res.status(400).json({ success: false, error: "Заполните поле Username" })
         } else if (!validator.matches(username, '^[a-zA-Z0-9_.-]*$')) {
             res.status(400).json({ success: false, error: "Username содержит некорректные символы" })
-        }
-        else if (!validator.isStrongPassword(password)) {
+        } else if (!validator.isStrongPassword(password)) {
             res.status(400).json({ success: false, error: "Некорректный пароль" })
-        }
-        else {
+        } else {
             const nets = networkInterfaces();
             const results = Object.create(null); // Or just '{}', an empty object
 

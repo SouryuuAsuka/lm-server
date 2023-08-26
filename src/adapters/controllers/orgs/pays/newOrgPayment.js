@@ -31,7 +31,7 @@ const newOrgPayment = async (req, res) => {
                             pool.query(`
                                 INSERT INTO org_payments
                                 (org_id, created, payer_id, ord_array, usd_sum)
-                                VALUES ($1, $2, $3, $4, $5) `,
+                                VALUES ($1, $2, $3, $4, $5)`,
                                 [req.body.orgId, "NOW()", decoded.userId, req.body.quests, sum.toFixed(1)], (err, orgRow) => {
                                     if (err) {
                                         console.log(err)

@@ -7,7 +7,7 @@ const tx = require("@database/postgresql/tx");
 
 
 const orgConfirm = async (req, res) => {
-    try {//TODO: Модифицировать middleware функцию, чтобы не вызывать jwf.verify дважды за запрос
+    try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
             console.log("начало проверки")
             if (err) {

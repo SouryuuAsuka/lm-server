@@ -4,13 +4,13 @@ const express = require('express');
 
 require('module-alias/register');
 
-const users = require('@routes/users');
-const carts = require('@routes/carts');
-const couriers = require('@routes/couriers');
-const orgs = require('@routes/orgs');
-const products = require('@routes/products');
-const profiles = require('@routes/profiles');
-const requests = require('@routes/requests');
+const users = require('@routes/user.router');
+const carts = require('@routes/cart.router');
+const couriers = require('@routes/courier.router');
+const orgs = require('@routes/org.router');
+const payments = require('@routes/payment.router');
+const products = require('@routes/product.router');
+const request = require('@routes/request.router');
 
 const ErrorHandler = require('@common/ErrorHandler');
 
@@ -24,13 +24,13 @@ app.get('/', (req, res) => {
   res.send('Hello World in panel api');
 });
 
-app.use('/v1/users', users);
-app.use('/v1/carts', carts);
-app.use('/v1/couriers', couriers);
+app.use('/v1/carts', carts(dependencies));
+app.use('/v1/couriers', couriers(dependencies));
 app.use('/v1/orgs', orgs(dependencies));
-app.use('/v1/products', products);
-app.use('/v1/profiles', profiles);
-app.use('/v1/requests', requests);
+app.use('/v1/orgs/:orgId/payments', payments(dependencies));
+app.use('/v1/products', products(dependencies));
+app.use('/v1/users', users(dependencies));
+app.use('/v1/requests', request(dependencies));
 
 //app.use(require('./middleware/auth'));
 app.use(ErrorHandler);

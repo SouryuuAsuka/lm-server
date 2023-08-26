@@ -2,10 +2,6 @@ const pool = require("@database/postgresql/db");
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
-var sqlVar = {};
-/*if(all) sqlVar.public = "{true, false}"
-else sqlVar.public = "{true}"*/
-
 const getOrgQuests = async (req, res) => {
     try {
         jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {

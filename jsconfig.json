@@ -14,11 +14,20 @@
       "@database/*": [
         "./src/frameworks/database/*"
       ],
+      "@aws/*": [
+        "./src/frameworks/aws/*"
+      ],
+      "@crypto/*": [
+        "./src/frameworks/crypto/*"
+      ],
+      "@mail/*": [
+        "./src/frameworks/mail/*"
+      ],
       "@common/*": [
         "./src/frameworks/common/*"
       ],
       "@routes/*": [
-        "src/frameworks/web/routes/*"
+        "./src/frameworks/web/routes/*"
       ],
       "@middleware/*": [
         "./src/frameworks/web/middleware/*"

@@ -6,7 +6,6 @@ const getOrg = async (req, res) => {
         let fullAccess = false;
         if (jwt.isAdmin) fullAccess = true;
         else if (jwt.isAuth) {
-            
             jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
                 if (err) {
                     notAythRequest(req, res);
@@ -145,7 +144,7 @@ function aythRequest(req, res) {
     ) AS payments, 
     json_agg( 
         json_build_object(
-            'id', g.good_id, 
+            'id', g.id, 
             'name', g.name, 
             'about',  g.about, 
             'price',  g.price, 
@@ -181,7 +180,7 @@ function aythRequest(req, res) {
 function notAythRequest(req, res) {
     pool.query(`
         SELECT 
-        org.org_id AS orgId, 
+        org.org_id AS 'orgId', 
         org.name AS name, 
         org.about AS about, 
         org.category AS category, 

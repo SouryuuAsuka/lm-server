@@ -1,4 +1,6 @@
-
-export default function getOwnerId(id, orgsRepository) {
-  return orgsRepository.getOwnerId(id);
-}s
+function GetOwnerId (orgRepository) {
+  return async (id) => {
+    return await orgRepository.getOwnerId(id);
+  }
+}
+module.exports = GetOwnerId;

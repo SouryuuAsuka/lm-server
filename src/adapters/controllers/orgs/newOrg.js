@@ -50,22 +50,6 @@ const newOrg = async (req, res) => {
                 } else if (validator.isEmpty(req.body.lang)) {
                     return res.status(400).json({ success: false, error: "Язык организации должен быть указан" })
                 }
-                /*
-                else if (req.body.preparTimeMin == undefined) {
-                    return res.status(400).json({ success: false, error: "Минимальное время изготовления товаров организации должно быть заполнено" })
-                } else if (req.body.preparTimeMax == undefined) {
-                    return res.status(400).json({ success: false, error: "Максимальное время изготовления товаров организации должно быть заполнено" })
-                } else if (validator.isEmpty(req.body.preparTimeMin)) {
-                    return res.status(400).json({ success: false, error: "Минимальное время изготовления товаров организации должен быть указано" })
-                } else if (validator.isEmpty(req.body.preparTimeMax)) {
-                    return res.status(400).json({ success: false, error: "Максимальное время изготовления товаров организации должен быть указано" })
-                } else if (!validator.matches(req.body.preparTimeMin, '^[0-9]{1,3}$')) {
-                    return res.status(400).json({ success: false, error: "Некорректо указано минимальное время изготовления товаров" })
-                } else if (!validator.matches(req.body.preparTimeMax, '^[0-9]{1,3}$')) {
-                    return res.status(400).json({ success: false, error: "Некорректо указано максимальное время изготовления товаров" })
-                } else if (Number(req.body.preparTimeMax) < Number(req.body.preparTimeMin)) {
-                    return res.status(400).json({ success: false, error: "Минимальное время доставки превышает максимальное время изготовления" })
-                }*/
                 else if (!validator.matches(req.body.category, '^[012]{1,2}$')) {
                     return res.status(400).json({ success: false, error: "Некорректный тип организации" })
                 } else if (!validator.matches(req.body.city, '^[a-z]{3,4}$')) {
