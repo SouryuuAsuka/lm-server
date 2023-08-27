@@ -2,6 +2,7 @@ function RefreshToken(userRepository, userComparer, jwtEncrypter) {
   return async (refreshToken, ip) => {
     try {
       const decoded = await jwtEncrypter.verifyRefreshToken(refreshToken);
+      console.log(JSON.stringify(decoded))
       const user = await userRepository.searchRefreshToken(decoded.userId, decoded.date, decoded.hash);
       if (user.length === 0) throw 'Токен не найден';
       const nowTime = new Date();
