@@ -22,7 +22,6 @@ const jwtAuth = (req, res, next) => {
       }
     })
   } else {
-    console.log(err)
     res.locals.isAuth = false;
     res.locals.isAdmin = false;
     res.locals.userId = null;
