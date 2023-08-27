@@ -8,7 +8,7 @@ const jwtAuth = (req, res, next) => {
   if (req.cookies.accessToken && !(req.url.includes('/token') && req.method === 'GET')) {
     jwt.verify(req.cookies.accessToken, process.env.ACCESS_KEY_SECRET, async function (err, decoded) {
       if (err) {
-        res.status(401).json({});
+        return res.status(401).json({});
       } else {
         res.locals.isAuth = true;
         res.locals.userRole = decoded.userRole;
