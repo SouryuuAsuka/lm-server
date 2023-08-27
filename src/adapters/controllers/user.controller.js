@@ -110,14 +110,19 @@ module.exports = (dependecies) => {
   const refreshToken = async (req, res, next) => {
     try {
       if(req.cookies.refreshToken === undefined) throw "Unauthorized access.";
+      console.log("1")
       const RefreshTokenCommand = RefreshToken(userRepository, userComparer, userTrasporter);
+      console.log("2")
       const { refreshToken, accessToken } = await RefreshTokenCommand(req.cookies.refreshToken, req.ip);
+      console.log("3")
       res.cookie('accessToken', accessToken, {
         domain: "lampymarket.com",
       })
+      console.log("4")
       res.cookie('refreshToken', refreshToken, {
         domain: "lampymarket.com",
       })
+      console.log("5")
       return res.status(200).json({ error: "" });
     } catch (err) {
       console.log(err);
