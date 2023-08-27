@@ -226,7 +226,8 @@ module.exports = class PostgresqlUserRepository {
       JOIN users AS u
       ON r.user_id = u.user_id
       WHERE r.user_id = $1 AND r.created = $2 AND r.token = $3`, [userId, date, hash]);
-      return refreshRow.rows;
+      if (refreshRow.rows.length === 0) throw 'Токен не найден';
+      return refreshRow.rows[0];
     } catch (err) {
       console.log(err);
       throw err;
