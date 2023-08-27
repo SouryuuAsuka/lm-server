@@ -3,7 +3,7 @@ function RefreshToken(userRepository, userComparer, jwtEncrypter) {
     try {
       const decoded = await jwtEncrypter.verifyRefreshToken(refreshToken);
       const user = await userRepository.searchRefreshToken(decoded.userId, decoded.date, decoded.hash);
-      if (user.length === 0) 'Токен не найден';
+      if (user.length === 0) throw 'Токен не найден';
       const nowTime = new Date();
       const tokenCreated = new Date(decoded.date);
       const tokenTime = tokenCreated.setMonth(tokenCreated.getMonth() + 1);
