@@ -18,6 +18,7 @@ const jwtAuth = (req, res, next) => {
         } else {
           res.locals.isAdmin = false;
         }
+        next();
       }
     })
   } else {
@@ -25,9 +26,8 @@ const jwtAuth = (req, res, next) => {
     res.locals.isAuth = false;
     res.locals.isAdmin = false;
     res.locals.userId = null;
+    next();
   }
-  next();
-
 }
 
 module.exports = [
