@@ -8,6 +8,7 @@ function RefreshToken(userRepository, userComparer, jwtEncrypter) {
       const nowTime = new Date();
       const tokenCreated = new Date(decoded.date);
       const tokenTime = tokenCreated.setMonth(tokenCreated.getMonth() + 1);
+      console.log(JSON.stringify(user));
       if (tokenTime > nowTime) {
         const hash = userComparer.generateHash(8);
         const accessToken = await jwtEncrypter.generateAccessToken(user.userId, user.email, user.userRole);
