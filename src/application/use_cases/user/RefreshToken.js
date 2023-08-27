@@ -2,12 +2,10 @@ function RefreshToken(userRepository, userComparer, jwtEncrypter) {
   return async (refreshToken, ip) => {
     try {
       const decoded = await jwtEncrypter.verifyRefreshToken(refreshToken);
-      console.log(JSON.stringify(decoded))
       const user = await userRepository.searchRefreshToken(decoded.userId, decoded.date, decoded.hash);
       const nowTime = new Date();
       const tokenCreated = new Date(decoded.date);
       const tokenTime = tokenCreated.setMonth(tokenCreated.getMonth() + 1);
-      console.log(JSON.stringify(user));
       if (tokenTime > nowTime) {
         const hash = userComparer.generateHash(8);
         const accessToken = await jwtEncrypter.generateAccessToken(user.userId, user.email, user.userRole);

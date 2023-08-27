@@ -32,7 +32,6 @@ module.exports = (dependecies) => {
       if (res.locals.isAuth === false) {
         return res.status(500).json({ error: true, message: 'Пустой запрос' });
       } else {
-        console.log(JSON.stringify(res.locals))
         const GetUserCommand = GetUser(userRepository);
         const response = await GetUserCommand(res.locals.userId);
         return res.json({ user: response });
