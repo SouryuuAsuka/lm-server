@@ -120,6 +120,7 @@ module.exports = (dependecies) => {
       })
       return res.status(200).json({ error: "" });
     } catch (err) {
+      console.log(err);
       next({ error: err });
     }
   }
