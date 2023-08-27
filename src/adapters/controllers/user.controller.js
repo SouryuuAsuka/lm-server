@@ -109,6 +109,7 @@ module.exports = (dependecies) => {
   }
   const refreshToken = async (req, res, next) => {
     try {
+      console.log("0")
       if(req.cookies.refreshToken === undefined) throw "Unauthorized access.";
       console.log("1")
       const RefreshTokenCommand = RefreshToken(userRepository, userComparer, userTrasporter);
