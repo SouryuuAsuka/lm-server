@@ -10,4 +10,4 @@ RUN npm install
 # копируем исходный код
 COPY . .
 
-CMD [ "node", "app.js" ]
+CMD [ "npm", "run", "start:debug" ]
