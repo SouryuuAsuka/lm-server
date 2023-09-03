@@ -19,7 +19,7 @@ export class AuthController {
     @Ip() ip: string,
     @Req() req: any
   ){
-    console.log(req.user);
+    console.log(req);
     return this.authUseCases.signin(req.user, ip);
   }
 
