@@ -139,7 +139,7 @@ export class OrgsRepository {
       console.log(page)
       const orgRow = await this.pool.query(`
         SELECT 
-        org.id AS id, 
+        org.org_id AS id, 
         org.name AS name, 
         org.about AS about, 
         org.category AS category, 
