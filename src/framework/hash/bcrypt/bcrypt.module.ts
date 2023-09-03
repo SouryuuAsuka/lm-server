@@ -7,6 +7,7 @@ export class BcryptModule {
   async getPasswordHash(password: string, passSalt: string) {
     try {
       const hash = await bcrypt.hash(password, passSalt);
+      console.log("process.env.LOCAL_PASS_SALT "+ process.env.LOCAL_PASS_SALT)
       return await bcrypt.hash(hash, process.env.LOCAL_PASS_SALT);
     } catch (err) {
       console.log(err);
