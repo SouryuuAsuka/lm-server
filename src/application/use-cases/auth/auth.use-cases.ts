@@ -11,12 +11,12 @@ export class AuthUseCases {
     private readonly bcryptModule: BcryptModule,
   ) { }
 
-  async validateUser(username: string, password: string, type: string) {
+  async validateUser(login: string, password: string, type: string) {
     let user: any;
     if (type === 'email') {
-      user = await this.authRepository.getUserPassByEmail(username);
+      user = await this.authRepository.getUserPassByEmail(login);
     } else if (type === 'username') {
-      user = await this.authRepository.getUserPassByUsername(username);
+      user = await this.authRepository.getUserPassByUsername(login);
     } else {
       throw 'Login type error';
     }
