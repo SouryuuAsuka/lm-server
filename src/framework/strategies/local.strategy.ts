@@ -6,7 +6,7 @@ import validator from 'validator';
 
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
+export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(private authUseCases: AuthUseCases) {
     super();
   }
