@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MinioService } from './minio.service'
-
+import { IAwsService } from '@application/ports/IAwsService';
 /*const minioFactory = async () => {
   return new NestMinioModule.register(
     endPoint: 'lm-minio',
@@ -12,7 +12,7 @@ import { MinioService } from './minio.service'
 };*/
 
 @Module({
-  providers: [ MinioService ],
-  exports: [ MinioService ],
+  providers: [{ provide: IAwsService, useClass: MinioService }],
+  exports: [IAwsService],
 })
 export class MinioModule { }

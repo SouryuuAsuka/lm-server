@@ -6,7 +6,7 @@ import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';
 export class OrgsUseCases {
   constructor(private readonly orgsRepository: IOrgsRepository) { }
 
-  async getOrgList(page: number, city: string, category: string) {
+  async getOrgList(page: number = 1, city: string = '%', category: string = '0, 1, 2') {
     return await this.orgsRepository.getOrgList(page, city, category);
   }
   async createOrg( createOrg: CreateOrgDto, ownerId: number) {

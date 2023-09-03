@@ -6,7 +6,7 @@ import { ExceptionsService } from '@presentation/exceptions/exceptions.service';
 export class AuthRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
-    private readonly exceptionService: ExceptionsService,
+    private exceptionService: ExceptionsService,
   ) { }
   async getUserPassByEmail(email: string) {
     try {
@@ -22,7 +22,7 @@ export class AuthRepository {
         , [email])
       return userRow.rows[0];
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      throw this.exceptionService.DatabaseException(err.message);
     }
   }
   async getUserPassByUsername(username: string) {
@@ -39,7 +39,7 @@ export class AuthRepository {
         , [username])
       return userRow.rows[0];
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      throw this.exceptionService.DatabaseException(err.message);
     }
   }
   async createRefreshToken(userId, tokenDate, tokenHash, ip) {
@@ -51,7 +51,7 @@ export class AuthRepository {
       if (response.rowCount === 0) throw new Error("Токен не создан");
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      throw this.exceptionService.DatabaseException(err.message);
     }
   }
   async deleteRefreshTokenById(tokenId:number) {
@@ -60,7 +60,7 @@ export class AuthRepository {
       if (response.rowCount === 0) throw new Error("Токен не создан");
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      throw this.exceptionService.DatabaseException(err.message);
     }
   }
   async getRefreshTokenById(userId:number) {
@@ -70,7 +70,7 @@ export class AuthRepository {
         , [userId]);
       return response.rows[0];
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      throw this.exceptionService.DatabaseException(err.message);
     }
   }
   async searchRefreshToken(userId:number, date, hash) {
@@ -87,7 +87,7 @@ export class AuthRepository {
       WHERE r.user_id = $1 AND r.created = $2 AND r.token = $3`, [userId, date, hash]);
       return response.rows[0];
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async updateRefreshTokenById(ip, tokenDate, tokenHash, tokenId) {
@@ -96,7 +96,7 @@ export class AuthRepository {
       if (response.rowCount === 0) throw new Error('Токен не найден');
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      throw this.exceptionService.DatabaseException(err.message);
     }
   }
 }

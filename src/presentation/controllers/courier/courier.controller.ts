@@ -1,6 +1,12 @@
 import { Controller, Get, Param, Post, Body, Put, Query, Patch, Delete } from '@nestjs/common';
 import { CouriersUseCases } from '@application/use-cases/courier/courier.use-cases';
-@Controller('couriers')
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('couriers')
+@Controller({
+  path: 'couriers',
+  version: '1',
+})
 export class CouriersController {
   constructor(private couriersUseCases: CouriersUseCases) {}
 

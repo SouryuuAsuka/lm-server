@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CartCookiesDto } from '@domain/dtos/cart';
 
 @Injectable()
 export abstract class ICouriersRepository {

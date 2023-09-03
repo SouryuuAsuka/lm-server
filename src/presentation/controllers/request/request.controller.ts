@@ -1,7 +1,12 @@
 import { Controller, Get, Param, Post, Body, Put, Query, Patch, Delete } from '@nestjs/common';
 import { RequestsUseCases } from '@application/use-cases/request/request.use-cases';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('requests')
+@ApiTags('requests')
+@Controller({
+  path: 'requests',
+  version: '1',
+})
 export class RequestsController {
   constructor(private requestsUseCases: RequestsUseCases) {}
 

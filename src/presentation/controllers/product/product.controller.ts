@@ -1,8 +1,13 @@
 import { Controller, Get, Param, Post, Body, Put, Query, Patch, Delete } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from '@domain/dtos/product';
 import { ProductsUseCases } from '@application/use-cases/product/product.use-cases';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('products')
+@ApiTags('products')
+@Controller({
+  path: 'products',
+  version: '1',
+})
 export class ProductsController {
   constructor(private productsUseCases: ProductsUseCases) { }
 

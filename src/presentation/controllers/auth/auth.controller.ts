@@ -1,14 +1,16 @@
 import { Controller, Get, UseGuards, Post, Body, Delete, Ip } from '@nestjs/common';
 import { SigninDto, SignupDto } from '@domain/dtos/user';
 import { AuthUseCases } from '@application/use-cases/auth/auth.use-cases';
-import { UsersUseCases } from '@application/use-cases/user/user.use-cases';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller()
+@ApiTags('auth')
+@Controller({
+  version: '1',
+})
 export class AuthController {
   constructor(
     private authUseCases: AuthUseCases,
-    private usersUseCases: UsersUseCases
     ) {}
   @UseGuards(AuthGuard('local'))
   @Post('signin')

@@ -15,6 +15,10 @@ import { LocalStrategy } from '@framework/strategies/local.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthUseCases, LocalStrategy, HashModule],
+  providers: [
+    AuthUseCases, 
+    LocalStrategy, 
+    HashModule,
+  ],
 })
 export class AuthModule { }

@@ -46,7 +46,7 @@ export class OrgsRepository {
         throw 'Ошибка запроса';
       }
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getFullOrgById(orgId) {
@@ -108,10 +108,10 @@ export class OrgsRepository {
       if (orgRow.rows.length != 0) {
         return orgRow.rows[0];
       } else {
-        throw 'Ошибка запроса';
+        throw new Error('Ошибка запроса');
       }
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getOwnerId(orgId) {
@@ -119,20 +119,24 @@ export class OrgsRepository {
       const selOrgRow = await this.pool.query(`SELECT owner FROM organizations WHERE org_id = $1`, [orgId]);
       return selOrgRow.rows[0].owner;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getOrgList(page = 1, city = '%', category = '0, 1, 2') {
+  async getOrgList(page: number, city: string, category: string) {
     try {
+      console.log(2)
       interface SqlVar {
         page: number;
         city: string;
         category: string;
       }
-      let sqlVar: SqlVar;
-      sqlVar.page = (page - 1) * 10;
-      sqlVar.city = city;
-      sqlVar.category = "{" + category + "}";
+      console.log(3)
+      let sqlVar: SqlVar ={
+        page: (page - 1) * 10,
+        city,
+        category:  "{" + category + "}"
+      };
+      console.log(page)
       const orgRow = await this.pool.query(`
         SELECT 
         org.id AS id, 
@@ -165,7 +169,8 @@ export class OrgsRepository {
         FROM organizations AS org 
         WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
         GROUP BY org.org_id
-        OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page])
+        OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page]);
+        console.log("Tu ut tu")
       if (orgRow.rows.length != 0) {
         const count = await this.pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
         if (orgRow.rows.length == 0) {
@@ -177,7 +182,8 @@ export class OrgsRepository {
         return { orgs: [], count: 0 };
       }
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      console.log('error')
+      this.exceptionService.DatabaseException(err.message);
     };
   }
   async newOrg(org, ownerId) {
@@ -190,7 +196,7 @@ export class OrgsRepository {
       await this.pool.query(orgInsertString, [[{ lang: org.lang, text: org.name }], [{ lang: org.lang, text: org.about }], ownerId, org.category, 1, org.city, "NOW()", org.country, org.street, org.house, org.flat, 20]);
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async editOrg(org, ownerId, avatar) {
@@ -199,7 +205,7 @@ export class OrgsRepository {
       await this.pool.query(orgInsertString, [org.name, org.about, org.category, avatar, org.city, ownerId, org.orgId]);
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async setPublic(publicType, orgId, owner = null) {
@@ -213,7 +219,7 @@ export class OrgsRepository {
       }
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getOwner(orgId){
@@ -249,7 +255,7 @@ export class OrgsRepository {
         OFFSET $4 LIMIT 20`, [orgId, sclVar.status, sclVar.page, sclVar.paid]);
       return { quests: quRow.rows, count: count.rows[0].count }
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
 }

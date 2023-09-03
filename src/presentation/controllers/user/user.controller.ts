@@ -1,8 +1,12 @@
 import { Controller, Get, Param, Post, Body, Put, Query, Delete } from '@nestjs/common';
-import { SigninDto, SignupDto } from '@domain/dtos/user';
 import { UsersUseCases } from '@application/use-cases/user/user.use-cases';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('users')
+@ApiTags('users')
+@Controller({
+  path: 'users',
+  version: '1',
+})
 export class UsersController {
   constructor(private usersUseCases: UsersUseCases) {}
 

@@ -2,7 +2,13 @@ import { Controller, Get, Param, Post, Body, Put, Query, Patch, Delete } from '@
 import { CartsUseCases } from '@application/use-cases/cart/cart.use-cases';
 import { CartCookiesDto } from '@domain/dtos/cart';
 import { Cookies } from '@framework/nestjs/decorators';
-@Controller('couriers')
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('carts')
+@Controller({
+  path: 'carts',
+  version: '1',
+})
 export class CartsController {
   constructor(private cartsUseCases: CartsUseCases) { }
 
