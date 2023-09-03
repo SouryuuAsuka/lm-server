@@ -13,6 +13,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
 
   async validate(login: string, password: string): Promise<any> {
     let type: string;
+    console.log("login - "+login+" password - "+password);
     if (validator.isEmail(login)) {
       type = 'email';
     } else {
