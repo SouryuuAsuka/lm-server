@@ -10,7 +10,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
   );
   await app.register(fastifyCookie);
   app.useGlobalFilters(new HttpExceptionFilter());
@@ -25,6 +25,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  await app.listen(3000, () => {
+    console.log(`⛱ Lampy Server listening on port 3000`);
+    console.log('Press Ctrl+C to quit.');
+  });
 }
 bootstrap();
