@@ -8,7 +8,9 @@ import validator from 'validator';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(private authUseCases: AuthUseCases) {
-    super();
+    super({
+      usernameField: 'login',
+    });
   }
 
   async validate(login: string, password: string): Promise<any> {
