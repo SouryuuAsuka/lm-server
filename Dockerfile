@@ -11,4 +11,4 @@ RUN npm install
 COPY . .
 
 RUN npm run build 
-RUN npm run start:debug 
+CMD ["npm", "run", "start:debug" ]
