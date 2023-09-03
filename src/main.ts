@@ -25,7 +25,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000, () => {
+  await app.listen(3000, "0.0.0.0", () => {
     console.log(`⛱ Lampy Server listening on port 3000`);
     console.log('Press Ctrl+C to quit.');
   });
