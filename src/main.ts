@@ -4,7 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { HttpExceptionFilter } from '@framework/nestjs/filters/http-exeptions.filter';
 import { VersioningType } from '@nestjs/common';
-import { fastifyCors } from '@fastify/cors';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -13,8 +13,6 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
   await app.register(fastifyCookie);
-  await app.register(fastifyCors);
-
   app.useGlobalFilters(new HttpExceptionFilter());
   app.enableVersioning({
     type: VersioningType.URI,
@@ -26,6 +24,12 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  app.enableCors({
+    credentials: true, 
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Accept',
+  });
 
   await app.listen(3000, "0.0.0.0", () => {
     console.log(`⛱ Lampy Server listening on port 3000`);
