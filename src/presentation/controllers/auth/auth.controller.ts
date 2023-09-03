@@ -1,8 +1,9 @@
-import { Controller, Get, UseGuards, Post, Body, Delete, Ip, Req } from '@nestjs/common';
+import { Controller, Get, UseGuards, Post, Body, Delete, Ip, Req, Res } from '@nestjs/common';
 import { SigninDto, SignupDto } from '@domain/dtos/user';
 import { AuthUseCases } from '@application/use-cases/auth/auth.use-cases';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
+import { FastifyRequest, FastifyReply } from 'fastify';
 
 @ApiTags('auth')
 @Controller({
@@ -11,21 +12,25 @@ import { ApiTags } from '@nestjs/swagger';
 export class AuthController {
   constructor(
     private authUseCases: AuthUseCases,
-    ) {}
+  ) { }
   @UseGuards(AuthGuard('local'))
   @Post('signin')
   async signin(
     @Body() user: SigninDto,
     @Ip() ip: string,
-    @Req() req: any
-  ){
-    return this.authUseCases.signin(req.user, ip);
+    @Req() req: any,
+    @Res({ passthrough: true }) res: FastifyReply,
+  ) {
+    const { accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink } = await this.authUseCases.signin(req.user, ip);
+    res.cookie('accessToken', accessToken);
+    res.cookie('refreshToken', refreshToken);
+    return { profile: profileLink };
   }
 
   @Post('signup')
   async signup(
     @Body() user: SignupDto
-  ){
+  ) {
     return this.authUseCases.signup(user);
   }
 
