@@ -18,11 +18,11 @@ export class AuthUseCases {
     } else if (type === 'username') {
       user = await this.authRepository.getUserPassByUsername(login);
     } else {
-      throw 'Login type error';
+      throw new Error('Login type error');
     }
     const hash = await this.bcryptModule.getPasswordHash(password, user.passSalt)
     if (hash !== user.password) {
-      throw 'Login error';
+      throw new Error('Login error');
     }
     return user;
   }

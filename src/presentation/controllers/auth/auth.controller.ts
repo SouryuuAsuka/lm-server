@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Post, Body, Delete, Ip } from '@nestjs/common';
+import { Controller, Get, UseGuards, Post, Body, Delete, Ip, Req } from '@nestjs/common';
 import { SigninDto, SignupDto } from '@domain/dtos/user';
 import { AuthUseCases } from '@application/use-cases/auth/auth.use-cases';
 import { AuthGuard } from '@nestjs/passport';
@@ -16,9 +16,11 @@ export class AuthController {
   @Post('signin')
   async signin(
     @Body() user: SigninDto,
-    @Ip() ip: string
+    @Ip() ip: string,
+    @Req() req: any
   ){
-    return this.authUseCases.signin(user, ip);
+    console.log(req.user);
+    return this.authUseCases.signin(req.user, ip);
   }
 
   @Post('signup')

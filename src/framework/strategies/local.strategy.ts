@@ -18,6 +18,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
     } else {
       type = 'username';
     }
+    
     const user = await this.authUseCases.validateUser(login, password, type);
     if (!user) {
       throw new UnauthorizedException({
