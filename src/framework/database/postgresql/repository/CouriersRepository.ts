@@ -39,7 +39,7 @@ export class CouriersRepository {
         }
       }
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async confirmCourier(tgId) {
@@ -52,7 +52,7 @@ export class CouriersRepository {
       if (tgRow.rowCount === 0) throw new Error("Курьер не найден");
       return tgRow.rows[0].app_id;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
 }

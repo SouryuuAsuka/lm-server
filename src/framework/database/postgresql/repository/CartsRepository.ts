@@ -19,7 +19,7 @@ export class CartsRepository {
       }
     } catch (err) {
       console.log(err);
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getFullCart(cartToken, cartId) {
@@ -85,7 +85,7 @@ export class CartsRepository {
       }
     } catch (err) {
       console.log(err);
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async addProductToCart(cart, cartToken, cartId) {
@@ -96,7 +96,7 @@ export class CartsRepository {
       return true;
     } catch (err) {
       console.log(err);
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async createCart(productId, token) {
@@ -110,7 +110,7 @@ export class CartsRepository {
       return { cartId: cartRow.rows[0].cart_id, token: token };
     } catch (err) {
       console.log(err);
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
 }

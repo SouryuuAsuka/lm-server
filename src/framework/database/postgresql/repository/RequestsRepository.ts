@@ -33,7 +33,7 @@ export class RequestsRepository {
       if (requestRow.rowCount === 0) throw new Error("Организация не найдена");
       return requestRow.rows[0];
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async confirmRequest(requestId: number) {
@@ -49,7 +49,7 @@ export class RequestsRepository {
       if (response.rowCount === 0) throw new Error("Ошибка при переносе организации");
       return newOrgRow.rows[0];
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getRequestList(page: number) {
@@ -69,7 +69,7 @@ export class RequestsRepository {
         OFFSET $1 LIMIT 10`, [sqlVar.page]);
       return requestRow.rows;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async setOrgComment(requestId: number, comment: string) {
@@ -78,7 +78,7 @@ export class RequestsRepository {
       if (requestRow.rowCount === 0) throw new Error("Ошибка при переносе организации");
       return requestRow.rows[0];
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
 }

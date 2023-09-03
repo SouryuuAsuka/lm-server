@@ -16,7 +16,7 @@ export class ProductsRepository {
       if (response.rowCount === 0) throw new Error("Товар не найден");
       return response.rows[0].productId;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getOwnerOfProduct(productId: number) {
@@ -28,7 +28,7 @@ export class ProductsRepository {
       if (user.rowCount === 0) throw new Error("Организация не найдена");
       return user.rows[0].owner;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async editProduct(product: UpdateProductDto){
@@ -38,7 +38,7 @@ export class ProductsRepository {
       if (response.rowCount === 0) throw new Error("Товар не найден");
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async setActiveProduct(status: string, productId: number,) {
@@ -48,7 +48,7 @@ export class ProductsRepository {
       if (response.rowCount === 0) throw new Error("Товар не найден");
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
 }

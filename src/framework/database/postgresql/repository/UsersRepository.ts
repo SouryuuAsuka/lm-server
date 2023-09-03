@@ -38,7 +38,7 @@ export class UsersRepository {
       delete user.passSalt;
       return user;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getOrgListByUsername(username: string, page: number = 1, city: string = '%', category: string = '0, 1, 2') {
@@ -78,7 +78,7 @@ export class UsersRepository {
         return { orgs: orgRow.rows, count: orgCount.rows[0].count };
       }
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async updateUserRole(userId: number, userRole) {
@@ -87,7 +87,7 @@ export class UsersRepository {
       if (response.rowCount === 0) throw new Error("Пользователь не найден");
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getUserById(userId: number) {
@@ -125,7 +125,7 @@ export class UsersRepository {
         throw 'Unauthorized access.';
       }
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async createUser(username, email, hash, salt) {
@@ -135,7 +135,7 @@ export class UsersRepository {
       if (response.rowCount === 0) throw new Error("Юзер не создан");
       return response.rows[0];
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async createMailToken(userId, mailToken, mailKeyHash) {
@@ -145,7 +145,7 @@ export class UsersRepository {
       if (response.rowCount === 0) throw new Error("Почтовый токен не создан");
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getMailConfirm(mailToken, mailKey) {
@@ -159,7 +159,7 @@ export class UsersRepository {
       if (response.rowCount === 0) throw new Error('Токен валидации не найден');
       return response.rows[0];
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async deleteMailConfirm(userId) {
@@ -168,7 +168,7 @@ export class UsersRepository {
       if (response.rowCount === 0) throw new Error('Токен валидации не найден');
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
 }

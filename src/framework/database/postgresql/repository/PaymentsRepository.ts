@@ -15,7 +15,7 @@ export class PaymentsRepository {
       if (response.rowCount === 0) throw new Error("Ошибка при изменении выплат");
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getFullPaymentList(orgId: number, page: number = 1) {
@@ -38,7 +38,7 @@ export class PaymentsRepository {
           OFFSET $2 LIMIT 10`, [orgId, sqlVar.offset])
       return orgRow.rows;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getPaymentList(orgId: number, page: number = 1) {
@@ -58,7 +58,7 @@ export class PaymentsRepository {
         OFFSET $2 LIMIT 10`, [orgId, sqlVar.offset]);
       return orgRow.rows;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async setPaidQuests(quests) {
@@ -71,7 +71,7 @@ export class PaymentsRepository {
       if (quRow.rowCount === 0) throw new Error("Ошибка при регистрации выплат");
       return quRow.rows;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async updatePaymentsById(orgId: number, userId: number, quests, sum) {
@@ -84,7 +84,7 @@ export class PaymentsRepository {
       if (response.rowCount === 0) throw new Error("Ошибка при поиске выплаты");
       return true;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
 }
