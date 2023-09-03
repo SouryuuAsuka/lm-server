@@ -20,6 +20,7 @@ export class AuthUseCases {
     } else {
       throw new Error('Login type error');
     }
+    console.log(JSON.stringify(user));
     const hash = await this.bcryptModule.getPasswordHash(password, user.passSalt)
     console.log("hash - "+hash);
     console.log("user.password - "+user.password);
