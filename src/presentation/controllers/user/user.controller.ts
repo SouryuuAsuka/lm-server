@@ -9,23 +9,33 @@ import { AuthGuard } from '@nestjs/passport';
   version: '1',
 })
 export class UsersController {
-  constructor(private usersUseCases: UsersUseCases) {}
+  constructor(private usersUseCases: UsersUseCases) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
   async getUser(
     @Req() req: any,
   ) {
-    const userId=0;
-    console.log("user: "+JSON.stringify(req.user));
-    return this.usersUseCases.getUser(userId);
+    const userId = 0;
+    console.log("user: " + JSON.stringify(req.user));
+    return {
+      status: "success",
+      data: {
+        user: this.usersUseCases.getUser(userId)
+      }
+    }
   }
 
   @Get(':username')
   async getUserByUsername(
     @Param('username') username: string
   ) {
-    return this.usersUseCases.getUserByUsername(username);
+    return {
+      status: "success",
+      data: {
+        user: this.usersUseCases.getUserByUsername(username)
+      }
+    }
   }
 
   @Get(':username/orgs')
@@ -35,7 +45,12 @@ export class UsersController {
     @Body('city') city: string,
     @Body('category') category: string,
   ) {
-    return this.usersUseCases.getOrgListByUsername(username, page, city, category);
+    return {
+      status: "success",
+      data: {
+        orgs: this.usersUseCases.getOrgListByUsername(username, page, city, category)
+      }
+    }
   }
 
   /*@Post('signin')
