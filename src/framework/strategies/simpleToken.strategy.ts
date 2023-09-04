@@ -11,11 +11,11 @@ class EmptyTokenError extends Error {
 }
 
 @Injectable()
-export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class SimpleTokenStrategy extends PassportStrategy(Strategy, 'simple-jwt') {
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        AccessTokenStrategy.extractJWTFromCookie,
+        SimpleTokenStrategy.extractJWTFromCookie,
       ]),     
       ignoreExpiration: false, 
       secretOrKey: process.env.ACCESS_KEY_SECRET,
@@ -26,6 +26,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     if (request.cookies && request.cookies.accessToken) {
       return request.cookies.accessToken;
     }
+    throw new EmptyTokenError("Empty")
   }
 
   validate(payload: any) {

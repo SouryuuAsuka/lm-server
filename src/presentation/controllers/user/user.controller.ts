@@ -2,6 +2,7 @@ import { Controller, Get, Param, UseGuards, Post, Body, Put, Query, Delete, Req 
 import { UsersUseCases } from '@application/use-cases/user/user.use-cases';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { SimpleUserGuard } from '@framework/nestjs/guards/auth.guards';
 
 @ApiTags('users')
 @Controller({

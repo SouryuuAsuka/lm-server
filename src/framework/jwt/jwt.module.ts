@@ -5,7 +5,7 @@ export class JwtModule {
   constructor(
     private jwtService: JwtService,
   ) { }
-  async generateAccessToken(userId, email, userRole) {
+  async generateAccessToken(userId: number, email: string, userRole: number) {
     try {
       const accessToken = this.jwtService.sign(
         {
@@ -24,7 +24,7 @@ export class JwtModule {
       throw err;
     }
   }
-  async generateRefreshToken(userId, tokenHash, tokenDate) {
+  async generateRefreshToken(userId: number, tokenHash: string, tokenDate) {
     try {
       const refreshToken = this.jwtService.sign(
         {

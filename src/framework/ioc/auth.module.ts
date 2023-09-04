@@ -3,7 +3,7 @@ import { AuthUseCases } from '@application/use-cases/auth/auth.use-cases';
 import { AuthController } from '@presentation/controllers/auth/auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { HashModule } from '@application/proxy/hash.module';
-import { LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy } from '@framework/strategies/';
+import { LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy, SimpleTokenStrategy, } from '@framework/strategies/';
 
 @Module({
   imports: [
@@ -19,6 +19,7 @@ import { LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy } from '@frame
     AuthUseCases, 
     LocalStrategy, 
     AccessTokenStrategy, 
+    SimpleTokenStrategy,
     RefreshTokenStrategy,
     HashModule,
   ],
