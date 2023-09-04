@@ -12,20 +12,20 @@ export class RefreshTokenStrategy extends PassportStrategy(
       jwtFromRequest: ExtractJwt.fromExtractors([
         RefreshTokenStrategy.extractJWTFromCookie,
       ]),
-      ignoreExpiration: false, 
+      ignoreExpiration: false,
       secretOrKey: process.env.REFRESH_KEY_SECRET,
       passReqToCallback: true,
     });
   }
 
-  private static extractJWTFromCookie( request: any): string | null {
-    if (request.cookies && request.cookies.access_token) {
-      return request.cookies.access_token;
+  private static extractJWTFromCookie(request: any): string | null {
+    if (request.cookies && request.cookies.refreshToken) {
+      return request.cookies.refreshToken;
     }
     return null;
   }
 
-  validate( payload: any) {
+  validate(payload: any) {
     return payload;
   }
 }

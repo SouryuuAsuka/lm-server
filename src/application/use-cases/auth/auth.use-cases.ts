@@ -40,11 +40,23 @@ export class AuthUseCases {
     }
     return { accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink }
   }
-  async signup(user) {
+  async signup(user: any) {
 
   }
-  async refreshToken() {
-
+  async refreshToken(decoded: any, ip: any) {
+    const user = await this.authRepository.searchRefreshToken(decoded.userId, decoded.date, decoded.hash);
+    const nowTime = new Date();
+    const tokenCreated = new Date(decoded.date);
+    const tokenTime = tokenCreated.setMonth(tokenCreated.getMonth() + 1);
+    if (tokenTime > nowTime.getTime()) {
+      const hash = await this.bcryptModule.generateHash(8);
+      const accessToken = await this.jwtService.generateAccessToken(user.userId, user.email, user.userRole);
+      const refreshToken = await this.jwtService.generateRefreshToken(user.userId, hash, nowTime);
+      await this.authRepository.updateRefreshTokenById(ip, nowTime, hash, user.tokenId);
+      return { accessToken: accessToken, refreshToken: refreshToken };
+    } else {
+      throw "Ошибка сервера"
+    }
   }
   async signout() {
 

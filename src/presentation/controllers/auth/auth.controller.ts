@@ -28,7 +28,12 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken, {
       domain: process.env.SERVER_DOMAIN,
     });
-    return res.send({ profile: profileLink });
+    return res.send({
+      status: "success",
+      data: {
+        profile: profileLink
+      }
+    });
   }
 
   @Post('signup')
@@ -40,9 +45,24 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt-refresh'))
   @Get('token')
-  async refreshToken() {
-    return this.authUseCases.refreshToken();
+  async refreshToken(
+    @Req() req: any,
+    @Res({ passthrough: true }) res: FastifyReply,
+    @Ip() ip: string
+  ) {
+    const { accessToken: accessToken, refreshToken: refreshToken } = await this.authUseCases.refreshToken(req.user, ip);
+    res.cookie('accessToken', accessToken, {
+      domain: process.env.SERVER_DOMAIN,
+    });
+    res.cookie('refreshToken', refreshToken, {
+      domain: process.env.SERVER_DOMAIN,
+    });
+    return res.send({
+      status: "success",
+      data: {}
+    });
   }
+
 
   @UseGuards(AuthGuard('jwt'))
   @Delete('token')
