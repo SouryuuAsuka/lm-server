@@ -23,7 +23,7 @@ export class ProductsUseCases {
     }
     if (fullAccess) {
       const productId = await this.productsRepository.createProduct(product);
-      await this.awsRepository.savePicture(file, productId, 'goods');
+      await this.awsRepository.savePicture(file, productId, 'products');
       return true;
     } else {
       throw "Ошибка доступа";
@@ -41,7 +41,7 @@ export class ProductsUseCases {
     }
     if (fullAccess) {
       await this.productsRepository.editProduct(product);
-      await this.awsRepository.savePicture(file, product.productId, 'goods');
+      await this.awsRepository.savePicture(file, product.productId, 'products');
       return true;
     } else {
       throw "Ошибка доступа";

@@ -22,7 +22,7 @@ export class OrgsRepository {
       org.public AS public, 
       json_agg( 
         json_build_object(
-          'id', g.good_id, 
+          'id', g.product_id, 
           'name', g.name, 
           'about',  g.about, 
           'price',  g.price, 
@@ -34,9 +34,9 @@ export class OrgsRepository {
           'catId', g.cat_id, 
           'preparationTime', g.preparation_time
         )
-      ) AS goods
+      ) AS products
       FROM organizations AS org 
-      LEFT JOIN goods AS g
+      LEFT JOIN products AS g
       ON g.org_id = org.org_id 
       WHERE org.org_id = $1 AND org.public = true AND g.active = true
       GROUP BY org.org_id`, [orgId]);
@@ -66,7 +66,7 @@ export class OrgsRepository {
             json_build_object(
             'quId', qu.qu_id,
             'statusCode', qu.status_code,
-            'products', qu.goods_array
+            'products', qu.products_array
             )
           )  
           FROM org_quests AS qu 
@@ -85,7 +85,7 @@ export class OrgsRepository {
         ) AS payments, 
         json_agg( 
           json_build_object(
-            'id', g.good_id, 
+            'id', g.product_id, 
             'name', g.name, 
             'about',  g.about, 
             'price',  g.price, 
@@ -97,9 +97,9 @@ export class OrgsRepository {
             'catId', g.cat_id, 
             'preparationTime', g.preparation_time
           )
-        ) AS goods
+        ) AS products
         FROM organizations AS org 
-        LEFT JOIN goods AS g
+        LEFT JOIN products AS g
         ON g.org_id = org.org_id
         WHERE org.org_id = $1 
         GROUP BY org.org_id
@@ -146,7 +146,7 @@ export class OrgsRepository {
         (SELECT 
           json_agg( 
             json_build_object(
-              'id', g.good_id, 
+              'id', g.product_id, 
               'name', g.name, 
               'about',  g.about, 
               'price',  g.price, 
@@ -159,10 +159,10 @@ export class OrgsRepository {
               'preparationTime', g.preparation_time
             )
           )  
-          FROM goods AS g 
+          FROM products AS g 
           WHERE g.org_id = org.org_id
           GROUP BY g.org_id
-        ) AS goods
+        ) AS products
         FROM organizations AS org 
         WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
         GROUP BY org.org_id
@@ -242,7 +242,7 @@ export class OrgsRepository {
         SELECT 
           qu.qu_id AS qu_id,
           qu.order_id AS order_id,
-          qu.goods_array AS goods,
+          qu.products_array AS products,
           qu.paid AS paid,
           qu.commission AS commission,
           qu.status_code AS status_code,
@@ -252,7 +252,7 @@ export class OrgsRepository {
         JOIN orders AS o
         ON o.order_id = qu.order_id
         WHERE qu.org_id = $1 AND qu.status_code = ANY($2) AND qu.paid = ANY($3)
-        GROUP BY qu.qu_id, qu.order_id, qu.goods_array, qu.paid, qu.status_code, o.created, o.date
+        GROUP BY qu.qu_id, qu.order_id, qu.products_array, qu.paid, qu.status_code, o.created, o.date
         OFFSET $4 LIMIT 20`, [orgId, sqlVar.status, sqlVar.page, sqlVar.paid]);
       return { quests: quRow.rows, count: count.rows[0].count }
     } catch (err) {

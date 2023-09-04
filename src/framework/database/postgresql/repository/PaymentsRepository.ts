@@ -66,7 +66,7 @@ export class PaymentsRepository {
       const quRow = await this.pool.query(`
         UPDATE org_quests
         SET paid=true
-        WHERE qu_id = ANY($1) AND paid=false AND status_code=5 RETURNING goods_array, commission`,
+        WHERE qu_id = ANY($1) AND paid=false AND status_code=5 RETURNING products_array, commission`,
         [quests]);
       if (quRow.rowCount === 0) throw new Error("Ошибка при регистрации выплат");
       return quRow.rows;
