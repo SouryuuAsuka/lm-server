@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Post, Body, Put, Query, Delete } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, Post, Body, Put, Query, Delete, Req } from '@nestjs/common';
 import { UsersUseCases } from '@application/use-cases/user/user.use-cases';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('users')
 @Controller({
@@ -10,9 +11,13 @@ import { ApiTags } from '@nestjs/swagger';
 export class UsersController {
   constructor(private usersUseCases: UsersUseCases) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
-  async getUser() {
+  async getUser(
+    @Req() req: any,
+  ) {
     const userId=0;
+    console.log(req.user);
     return this.usersUseCases.getUser(userId);
   }
 
