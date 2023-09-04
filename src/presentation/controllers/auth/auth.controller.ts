@@ -21,6 +21,7 @@ export class AuthController {
     @Req() req: any,
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
+    console.log("process.env.SERVER_HOST "+ process.env.SERVER_HOST)
     const { accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink } = await this.authUseCases.signin(req.user, ip);
     res.cookie('accessToken', accessToken, {
       domain: process.env.SERVER_HOST,
