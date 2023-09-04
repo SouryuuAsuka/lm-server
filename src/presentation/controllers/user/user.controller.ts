@@ -17,7 +17,7 @@ export class UsersController {
     @Req() req: any,
   ) {
     const userId=0;
-    console.log(req.user);
+    console.log("user: "+JSON.stringify(req.user));
     return this.usersUseCases.getUser(userId);
   }
 

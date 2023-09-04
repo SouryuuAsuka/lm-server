@@ -124,19 +124,16 @@ export class OrgsRepository {
   }
   async getOrgList(page: number, city: string, category: string) {
     try {
-      console.log(2)
       interface SqlVar {
         page: number;
         city: string;
         category: string;
       }
-      console.log(3)
       let sqlVar: SqlVar ={
         page: (page - 1) * 10,
         city,
         category:  "{" + category + "}"
       };
-      console.log(page)
       const orgRow = await this.pool.query(`
         SELECT 
         org.org_id AS id, 
@@ -170,7 +167,6 @@ export class OrgsRepository {
         WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
         GROUP BY org.org_id
         OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page]);
-        console.log("Tu ut tu")
       if (orgRow.rows.length != 0) {
         const count = await this.pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
         if (orgRow.rows.length == 0) {
