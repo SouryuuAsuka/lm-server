@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
@@ -33,5 +33,14 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
       const isAuth = true;
       return { ...user, isAdmin: isAdmin, isAuth: isAuth };
     }
+  }
+}
+
+export class RefreshTokenGuard extends AuthGuard('jwt') {
+  handleRequest(err: any, user: any) {
+    if (err) {
+      throw new ForbiddenException()
+    } 
+    return err;
   }
 }
