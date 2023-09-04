@@ -22,9 +22,13 @@ export class AuthController {
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
     const { accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink } = await this.authUseCases.signin(req.user, ip);
-    res.cookie('accessToken', accessToken);
-    res.cookie('refreshToken', refreshToken);
-    return { profile: profileLink };
+    res.cookie('accessToken', accessToken, {
+      domain: process.env.SERVER_HOST,
+    });
+    res.cookie('refreshToken', refreshToken, {
+      domain: process.env.SERVER_HOST,
+    });
+    return res.send({ profile: profileLink });
   }
 
   @Post('signup')
