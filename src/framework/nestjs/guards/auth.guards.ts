@@ -52,6 +52,7 @@ export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
     if (err || !user) {
       throw new ForbiddenException()
     }
+    console.log(user);
     return user;
   }
 }
