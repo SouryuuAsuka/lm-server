@@ -12,7 +12,7 @@ import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.gua
 export class UsersController {
   constructor(private usersUseCases: UsersUseCases) { }
 
-  @UseGuards(SimpleUserGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getUser(
     @Req() req: any,
