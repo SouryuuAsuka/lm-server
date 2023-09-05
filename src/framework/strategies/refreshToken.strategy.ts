@@ -14,7 +14,6 @@ export class RefreshTokenStrategy extends PassportStrategy(
       ]),
       ignoreExpiration: false,
       secretOrKey: process.env.REFRESH_KEY_SECRET,
-      passReqToCallback: true,
     });
   }
 
