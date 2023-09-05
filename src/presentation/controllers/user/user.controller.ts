@@ -30,11 +30,11 @@ export class UsersController {
   async getUserByUsername(
     @Param('username') username: string
   ) {
-    const user = await this.usersUseCases.getUserByUsername(username);
+    const profile = await this.usersUseCases.getUserByUsername(username);
     return {
       status: "success",
       data: {
-        user: user
+        profile: profile
       }
     }
   }
