@@ -52,6 +52,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: FastifyReply,
     @Ip() ip: string
   ) {
+    console.log(JSON.stringify(req.user))
     const { accessToken: accessToken, refreshToken: refreshToken } = await this.authUseCases.refreshToken(req.user, ip);
     res.cookie('accessToken', accessToken, {
       domain: process.env.SERVER_DOMAIN,
