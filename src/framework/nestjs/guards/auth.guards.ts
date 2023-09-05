@@ -7,7 +7,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (err) {
       const request = context.switchToHttp().getRequest();
       if (request.cookies && request.cookies.accessToken) {
-        return err;
+        throw err;
       } else {
         throw new ForbiddenException()
       }
@@ -32,7 +32,7 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
           isAdmin: false,
           isAuth: false
         };
-      } else return err
+      } else throw err
 
     } else {
       const isAdmin = user.userRole > 4 ? true : false;
