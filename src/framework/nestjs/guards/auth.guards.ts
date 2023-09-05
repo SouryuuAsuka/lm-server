@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException, ExecutionContext } from '@nestjs/common';
+import { Injectable, ForbiddenException, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
@@ -8,10 +8,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     console.log("user "+ user);
     console.log("info "+ info);
     console.log("context "+ context);
-    if (err) {
+    if (err || !user) {
       const request = context.switchToHttp().getRequest();
       if (request.cookies && request.cookies.accessToken) {
-        throw err;
+        throw err || new UnauthorizedException();;
       } else {
         throw new ForbiddenException()
       }
