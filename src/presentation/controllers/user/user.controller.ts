@@ -17,8 +17,6 @@ export class UsersController {
   async getUser(
     @Req() req: any,
   ) {
-    console.log("user: " + JSON.stringify(req.user));
-    console.log("zxczxc!!!!!!!!!!!!!!!!zxczxc");
     const user = await this.usersUseCases.getUser(req.user.userId);
     return {
       status: "success",
@@ -32,10 +30,11 @@ export class UsersController {
   async getUserByUsername(
     @Param('username') username: string
   ) {
+    const user = await this.usersUseCases.getUserByUsername(username);
     return {
       status: "success",
       data: {
-        user: this.usersUseCases.getUserByUsername(username)
+        user: user
       }
     }
   }
@@ -47,10 +46,11 @@ export class UsersController {
     @Body('city') city: string,
     @Body('category') category: string,
   ) {
+    const orgs = await this.usersUseCases.getOrgListByUsername(username, page, city, category);
     return {
       status: "success",
       data: {
-        orgs: this.usersUseCases.getOrgListByUsername(username, page, city, category)
+        orgs: orgs
       }
     }
   }
