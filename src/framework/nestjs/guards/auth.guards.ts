@@ -5,6 +5,9 @@ import { AuthGuard } from '@nestjs/passport';
 export class JwtAuthGuard extends AuthGuard('jwt') {
   handleRequest(err: any, user: any, info, context: ExecutionContext) {
     console.log("err "+ err);
+    console.log("user "+ user);
+    console.log("info "+ info);
+    console.log("context "+ context);
     if (err) {
       const request = context.switchToHttp().getRequest();
       if (request.cookies && request.cookies.accessToken) {
