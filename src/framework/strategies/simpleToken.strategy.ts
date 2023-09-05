@@ -2,14 +2,6 @@ import { Injectable,  Req, } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-class EmptyTokenError extends Error {
-  empty: boolean
-  constructor(message: string){
-    super(message)
-    this.empty = true;
-  }
-}
-
 @Injectable()
 export class SimpleTokenStrategy extends PassportStrategy(Strategy, 'simple-jwt') {
   constructor() {
@@ -26,7 +18,7 @@ export class SimpleTokenStrategy extends PassportStrategy(Strategy, 'simple-jwt'
     if (request.cookies && request.cookies.accessToken) {
       return request.cookies.accessToken;
     }
-    throw new EmptyTokenError("Empty")
+    return null;
   }
 
   validate(payload: any) {
