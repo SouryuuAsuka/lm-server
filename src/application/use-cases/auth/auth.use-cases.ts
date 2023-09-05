@@ -44,6 +44,7 @@ export class AuthUseCases {
 
   }
   async refreshToken(decoded: any, ip: any) {
+    console.log("user - "+ JSON.stringify(decoded));
     const user = await this.authRepository.searchRefreshToken(decoded.userId, decoded.date, decoded.hash);
     const nowTime = new Date();
     const tokenCreated = new Date(decoded.date);
