@@ -50,9 +50,9 @@ export class AuthUseCases {
     const tokenCreated = new Date(decoded.date);
     const tokenTime = tokenCreated.setMonth(+1);
     console.log("user - "+JSON.stringify(user));
-    console.log("tokenTime - "+tokenTime);
-    console.log("tokenCreated - "+tokenCreated);
-    if (new Date(tokenTime) > nowTime) {
+    console.log("tokenTime - "+new Date(tokenTime).getTime());
+    console.log("tokenCreated - "+nowTime.getTime());
+    if (new Date(tokenTime).getTime() > nowTime.getTime()) {
       const hash = await this.bcryptModule.generateHash(8);
       const accessToken = await this.jwtService.generateAccessToken(user.userId, user.email, user.userRole);
       const refreshToken = await this.jwtService.generateRefreshToken(user.userId, hash, nowTime);
