@@ -2,7 +2,7 @@ import { Controller, Get, Param, UseGuards, Post, Body, Put, Query, Delete, Req 
 import { UsersUseCases } from '@application/use-cases/user/user.use-cases';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { SimpleUserGuard } from '@framework/nestjs/guards/auth.guards';
+import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.guards';
 
 @ApiTags('users')
 @Controller({
@@ -17,12 +17,11 @@ export class UsersController {
   async getUser(
     @Req() req: any,
   ) {
-    const userId = 0;
     console.log("user: " + JSON.stringify(req.user));
     return {
       status: "success",
       data: {
-        user: this.usersUseCases.getUser(userId)
+        user: this.usersUseCases.getUser(req.user.userId)
       }
     }
   }
