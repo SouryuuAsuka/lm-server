@@ -48,7 +48,7 @@ export class AuthUseCases {
     const user = await this.authRepository.searchRefreshToken(decoded.userId, decoded.date, decoded.hash);
     const nowTime = new Date();
     const tokenCreated = new Date(decoded.date);
-    const tokenTime = tokenCreated.setMonth(+1);
+    const tokenTime = tokenCreated.setMonth(nowTime.getTime()+1);
     console.log("user - "+JSON.stringify(user));
     console.log("tokenTime - "+new Date(tokenTime).getTime());
     console.log("tokenCreated - "+nowTime.getTime());
