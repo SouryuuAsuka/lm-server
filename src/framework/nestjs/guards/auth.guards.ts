@@ -11,7 +11,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (err || !user) {
       const request = context.switchToHttp().getRequest();
       if (request.cookies && request.cookies.accessToken) {
-        throw err || new UnauthorizedException();;
+        throw err || new UnauthorizedException();
       } else {
         throw new ForbiddenException()
       }
@@ -27,7 +27,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 export class SimpleUserGuard extends AuthGuard('simple-jwt') {
   handleRequest(err: any, user: any, info, context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-    if (err) {
+    if (err || !user) {
       if (request.cookies && request.cookies.accessToken) {
         return {
           userId: null,
@@ -36,7 +36,8 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
           isAdmin: false,
           isAuth: false
         };
-      } else return err
+      } else 
+      throw err|| new UnauthorizedException();
 
     } else {
       const isAdmin = user.userRole > 4 ? true : false;
@@ -51,6 +52,6 @@ export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
     if (err || !user) {
       throw new ForbiddenException()
     }
-    return err;
+    return user;
   }
 }

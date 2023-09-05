@@ -4,6 +4,8 @@ import { AuthUseCases } from '@application/use-cases/auth/auth.use-cases';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { JwtAuthGuard, SimpleUserGuard, RefreshTokenGuard } from '@framework/nestjs/guards/auth.guards';
+
 
 @ApiTags('auth')
 @Controller({
@@ -43,7 +45,7 @@ export class AuthController {
     return this.authUseCases.signup(user);
   }
 
-  @UseGuards(AuthGuard('jwt-refresh'))
+  @UseGuards(RefreshTokenGuard)
   @Get('token')
   async refreshToken(
     @Req() req: any,
