@@ -46,9 +46,9 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
   }
 }
 
-export class RefreshTokenGuard extends AuthGuard('jwt') {
+export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
   handleRequest(err: any, user: any) {
-    if (err) {
+    if (err || !user) {
       throw new ForbiddenException()
     }
     return err;
