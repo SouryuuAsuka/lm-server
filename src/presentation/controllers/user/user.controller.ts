@@ -19,10 +19,11 @@ export class UsersController {
   ) {
     console.log("user: " + JSON.stringify(req.user));
     console.log("zxczxc!!!!!!!!!!!!!!!!zxczxc");
+    const user = await this.usersUseCases.getUser(req.user.userId);
     return {
       status: "success",
       data: {
-        user: this.usersUseCases.getUser(req.user.userId)
+        user: user
       }
     }
   }
