@@ -18,6 +18,7 @@ export class UsersController {
     @Req() req: any,
   ) {
     console.log("user: " + JSON.stringify(req.user));
+    console.log("zxczxc!!!!!!!!!!!!!!!!zxczxc");
     return {
       status: "success",
       data: {
