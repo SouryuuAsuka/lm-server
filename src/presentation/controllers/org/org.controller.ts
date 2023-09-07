@@ -1,7 +1,9 @@
-import { Controller, Get, Param, Post, Body, Put, Query, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, UseGuards, Param, Post, Body, Put, Query, Patch, Req, Res } from '@nestjs/common';
 import { OrgsUseCases } from '@application/use-cases/org/org.use-cases';
 import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';
+
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard, SimpleUserGuard, RefreshTokenGuard } from '@framework/nestjs/guards/auth.guards';
 
 @ApiTags('orgs')
 @Controller({
@@ -20,25 +22,28 @@ export class OrgsController {
     @Query('c') city?: string,
     @Query('t') category?: string,
   ) {
-    console.log(page)
     return this.orgsUseCases.getOrgList(page, city, category);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createOrg(
-    @Body() createOrg: CreateOrgDto
+    @Body() createOrg: CreateOrgDto,
+    @Req() req: any,
   ) {
-    const ownerId = 0; //TODO: add getting UserID
-    return this.orgsUseCases.createOrg(createOrg, ownerId);
+    return this.orgsUseCases.createOrg(createOrg, req.user.userId);
   }
 
+  @UseGuards(SimpleUserGuard)
   @Get(':orgId')
   async getOrgById(
-    @Param('orgId') orgId: number
+    @Param('orgId') orgId: number,
+    @Req() req: any,
   ) {
-    return this.orgsUseCases.getOrgById(orgId);
+    return this.orgsUseCases.getOrgById(orgId, req.user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':orgId')
   async editOrg(
     @Param('orgId') orgId: number,
@@ -47,6 +52,7 @@ export class OrgsController {
     return this.orgsUseCases.editOrg(orgId, updateOrg);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':orgId/public')
   async setPublic(
     @Param('orgId') orgId: number,
@@ -55,6 +61,7 @@ export class OrgsController {
     return this.orgsUseCases.setPublic(orgId, status);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/:orgId/quests')
   async getOrgQuestList(
     @Param('orgId') orgId: number,

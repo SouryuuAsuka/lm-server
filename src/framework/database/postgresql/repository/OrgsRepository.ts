@@ -20,6 +20,7 @@ export class OrgsRepository {
       org.avatar AS avatar, 
       org.city AS city, 
       org.public AS public, 
+      NULL as owner,
       json_agg( 
         json_build_object(
           'id', g.product_id, 
@@ -146,20 +147,20 @@ export class OrgsRepository {
         (SELECT 
           json_agg( 
             json_build_object(
-              'id', g.product_id, 
-              'name', g.name, 
-              'about',  g.about, 
-              'price',  g.price, 
-              'active', g.active, 
-              'picture', g.picture, 
-              'sold', g.sold, 
-              'created', g.created, 
-              'orders', g.orders, 
-              'catId', g.cat_id, 
-              'preparationTime', g.preparation_time
+              'id', p.product_id, 
+              'name', p.name, 
+              'about',  p.about, 
+              'price',  p.price, 
+              'active', p.active, 
+              'picture', p.picture, 
+              'sold', p.sold, 
+              'created', p.created, 
+              'orders', p.orders, 
+              'catId', p.cat_id, 
+              'preparationTime', p.preparation_time
             )
           )  
-          FROM products AS g 
+          FROM products AS p
           WHERE g.org_id = org.org_id
           GROUP BY g.org_id
         ) AS products

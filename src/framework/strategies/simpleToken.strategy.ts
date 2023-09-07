@@ -22,8 +22,6 @@ export class SimpleTokenStrategy extends PassportStrategy(Strategy, 'simple-jwt'
   }
 
   validate(payload: any) {
-    console.log("payload "+ JSON.stringify(payload));
-
     return payload;
   }
 }

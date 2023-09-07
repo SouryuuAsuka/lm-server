@@ -44,14 +44,10 @@ export class AuthUseCases {
 
   }
   async refreshToken(decoded: any, ip: any) {
-    console.log("user - "+ JSON.stringify(decoded));
     const user = await this.authRepository.searchRefreshToken(decoded.userId, decoded.date, decoded.hash);
     const nowTime = new Date();
     const tokenCreated = new Date(decoded.date);
     const tokenTime = tokenCreated.setMonth(nowTime.getMonth()+1);
-    console.log("user - "+JSON.stringify(user));
-    console.log("tokenTime - "+new Date(tokenTime).getTime());
-    console.log("tokenCreated - "+nowTime.getTime());
     if (new Date(tokenTime).getTime() > nowTime.getTime()) {
       const hash = await this.bcryptModule.generateHash(8);
       const accessToken = await this.jwtService.generateAccessToken(user.userId, user.email, user.userRole);

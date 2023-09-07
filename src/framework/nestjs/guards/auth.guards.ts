@@ -4,10 +4,6 @@ import { AuthGuard } from '@nestjs/passport';
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   handleRequest(err: any, user: any, info, context: ExecutionContext) {
-    console.log("err "+ err);
-    console.log("user "+ user);
-    console.log("info "+ info);
-    console.log("context "+ context);
     if (err || !user) {
       const request = context.switchToHttp().getRequest();
       if (request.cookies && request.cookies.accessToken) {
@@ -52,7 +48,6 @@ export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
     if (err || !user) {
       throw new ForbiddenException()
     }
-    console.log(user);
     return user;
   }
 }
