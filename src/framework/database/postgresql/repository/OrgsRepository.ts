@@ -162,7 +162,7 @@ export class OrgsRepository {
           )  
           FROM products AS p
           WHERE p.org_id = org.org_id
-          GROUP BY g.org_id
+          GROUP BY p.org_id
         ) AS products
         FROM organizations AS org 
         WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
