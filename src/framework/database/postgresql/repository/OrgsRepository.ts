@@ -223,7 +223,7 @@ export class OrgsRepository {
       const orgRow = await this.pool.query(`SELECT owner FROM organizations WHERE org_id = $1`, [orgId]);
       return orgRow.rows[0].owner;
     } catch (err) {
-      throw new this.exceptionService.DatabaseException(err.message);
+      this.exceptionService.DatabaseException(err.message);
     }
   }
   async getOrgQuestList(orgId: number, page = 1, status = '0, 1, 2, 3, 4, 5', paid = 'true, false') {
