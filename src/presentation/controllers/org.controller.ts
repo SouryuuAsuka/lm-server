@@ -1,10 +1,10 @@
 import { Controller, Get, UseGuards, Param, Post, Body, Put, Query, Patch, Req, Res } from '@nestjs/common';
 import { OrgsUseCases } from '@application/use-cases/org/org.use-cases';
 import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';
-
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard, SimpleUserGuard, RefreshTokenGuard } from '@framework/nestjs/guards/auth.guards';
-
+import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.guard';
+import RoleGuard from '@framework/nestjs/guards/role.guard';
+import Role from '@domain/enums/role.enum';
 @ApiTags('orgs')
 @Controller({
   path: 'orgs',
@@ -24,20 +24,22 @@ export class OrgsController {
   ) {
     return {
       status: "success",
-      data: {
-        orgs: await this.orgsUseCases.getOrgList(page, city, category)
-      }
+      data: await this.orgsUseCases.getOrgList(page, city, category)
     }
-    
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseGuards(RoleGuard(Role.User))
   @Post()
   async createOrg(
     @Body() createOrg: CreateOrgDto,
     @Req() req: any,
   ) {
-    return await this.orgsUseCases.createOrg(createOrg, req.user.userId);
+    await this.orgsUseCases.createOrg(createOrg, req.user);
+    return {
+      status: "success",
+      data: {}
+    }
   }
 
   @UseGuards(SimpleUserGuard)
@@ -55,6 +57,7 @@ export class OrgsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseGuards(RoleGuard(Role.Manager))
   @Patch(':orgId')
   async editOrg(
     @Param('orgId') orgId: number,
@@ -69,6 +72,7 @@ export class OrgsController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':orgId/public')
+  @UseGuards(RoleGuard(Role.Manager))
   async setPublic(
     @Param('orgId') orgId: number,
     @Body('public') status: boolean
@@ -82,6 +86,7 @@ export class OrgsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/:orgId/quests')
+  @UseGuards(RoleGuard(Role.Manager))
   async getOrgQuestList(
     @Param('orgId') orgId: number,
     @Query('page') page?: number,

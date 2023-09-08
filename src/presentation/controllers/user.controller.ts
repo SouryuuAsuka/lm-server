@@ -2,7 +2,9 @@ import { Controller, Get, Param, UseGuards, Post, Body, Put, Query, Delete, Req 
 import { UsersUseCases } from '@application/use-cases/user/user.use-cases';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.guards';
+import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.guard';
+import RoleGuard from '@framework/nestjs/guards/role.guard';
+import Role from '@domain/enums/role.enum';
 
 @ApiTags('users')
 @Controller({
@@ -26,6 +28,8 @@ export class UsersController {
     }
   }
 
+  @UseGuards(SimpleUserGuard)
+  @UseGuards(RoleGuard(Role.User))
   @Get(':username')
   async getUserByUsername(
     @Param('username') username: string
@@ -38,7 +42,9 @@ export class UsersController {
       }
     }
   }
-
+  
+  @UseGuards(SimpleUserGuard)
+  @UseGuards(RoleGuard(Role.User))
   @Get(':username/orgs')
   async getOrgListByUsername(
     @Param('username') username: string,

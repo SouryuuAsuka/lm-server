@@ -72,9 +72,9 @@ export class RequestsRepository {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async setOrgComment(requestId: number, comment: string) {
+  async setRequestComment(requestId: number, comment: string) {
     try {
-      const requestRow = await this.pool.query(`UPDATE organizations_request SET moderator_comment = $1 WHERE org_id = $2 RETURNING app_id AS "addId";`, [comment, requestId]);
+      const requestRow = await this.pool.query(`UPDATE organizations_request SET moderator_comment = $1 WHERE org_id = $2 RETURNING app_id AS "appId";`, [comment, requestId]);
       if (requestRow.rowCount === 0) throw new Error("Ошибка при переносе организации");
       return requestRow.rows[0];
     } catch (err) {

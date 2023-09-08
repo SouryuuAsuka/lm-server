@@ -12,7 +12,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         throw new ForbiddenException()
       }
     } else {
-      const isAdmin = user.userRole > 4 ? true : false;
+      const isAdmin = user.role > 4 ? true : false;
       const isAuth = true;
       return { ...user, isAdmin: isAdmin, isAuth: isAuth };
     }
@@ -26,8 +26,8 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
     if (err || !user) {
       if (!request.cookies.accessToken) {
         return {
-          userId: null,
-          userRole: 0,
+          id: null,
+          role: 0,
           email: null,
           isAdmin: false,
           isAuth: false
@@ -35,7 +35,7 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
       } else 
       throw err || new UnauthorizedException();
     } else {
-      const isAdmin = user.userRole > 4 ? true : false;
+      const isAdmin = user.role > 4 ? true : false;
       const isAuth = true;
       return { ...user, isAdmin: isAdmin, isAuth: isAuth };
     }

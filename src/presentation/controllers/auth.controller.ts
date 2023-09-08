@@ -4,7 +4,7 @@ import { AuthUseCases } from '@application/use-cases/auth/auth.use-cases';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { JwtAuthGuard, SimpleUserGuard, RefreshTokenGuard } from '@framework/nestjs/guards/auth.guards';
+import { JwtAuthGuard, SimpleUserGuard, RefreshTokenGuard } from '@framework/nestjs/guards/auth.guard';
 
 
 @ApiTags('auth')
@@ -37,6 +37,7 @@ export class AuthController {
     });
   }
 
+  @UseGuards(SimpleUserGuard)
   @Post('signup')
   async signup(
     @Body() user: SignupDto
@@ -64,7 +65,7 @@ export class AuthController {
     });
   }
 
-
+  @UseGuards(JwtAuthGuard)
   @UseGuards(AuthGuard('jwt'))
   @Delete('token')
   async signout() {

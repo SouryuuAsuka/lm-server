@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthUseCases } from '@application/use-cases/auth/auth.use-cases';
-import { AuthController } from '@presentation/controllers/auth/auth.controller';
+import { AuthController } from '@presentation/controllers/';
 import { JwtModule } from '@nestjs/jwt';
 import { HashModule } from '@application/proxy/hash.module';
 import { LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy, SimpleTokenStrategy, } from '@framework/strategies/';
