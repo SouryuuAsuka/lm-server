@@ -50,7 +50,7 @@ export class AuthUseCases {
     const tokenTime = tokenCreated.setMonth(nowTime.getMonth()+1);
     if (new Date(tokenTime).getTime() > nowTime.getTime()) {
       const hash = await this.bcryptModule.generateHash(8);
-      const accessToken = await this.jwtService.generateAccessToken(user.id, user.email, user.rle);
+      const accessToken = await this.jwtService.generateAccessToken(user.id, user.email, user.role);
       const refreshToken = await this.jwtService.generateRefreshToken(user.id, hash, nowTime);
       await this.authRepository.updateRefreshTokenById(ip, nowTime, hash, user.tokenId);
       return { accessToken: accessToken, refreshToken: refreshToken };
