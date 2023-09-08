@@ -10,9 +10,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(), {
-      cors: true,
-    }
+    new FastifyAdapter()
   );
   await app.register(fastifyCookie);
   app.useGlobalFilters(new HttpExceptionFilter());
