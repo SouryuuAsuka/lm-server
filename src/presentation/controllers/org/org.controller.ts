@@ -49,7 +49,7 @@ export class OrgsController {
     return {
       status: "success",
       data: {
-        orgs: await this.orgsUseCases.getOrgById(orgId, req.user)
+        org: await this.orgsUseCases.getOrgById(orgId, req.user)
       }
     }
   }
