@@ -29,6 +29,7 @@ export class UsersController {
   }
 
   @UseGuards(SimpleUserGuard)
+  @UseGuards(RoleGuard(Role.User))
   @Get(':username')
   async getUserByUsername(
     @Param('username') username: string,

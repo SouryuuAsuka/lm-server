@@ -77,8 +77,8 @@ export class AuthRepository {
     try {
       const response = await this.pool.query(`
       SELECT 
-      u.user_role AS "userRole"
-      , r.user_id AS "userId"
+      u.user_role AS role
+      , r.user_id AS id
       , u.email AS email
       , r.token_id AS "tokenId"
       FROM refresh_tokens AS r 
