@@ -29,11 +29,12 @@ export class UsersController {
   }
 
   @UseGuards(SimpleUserGuard)
-  @UseGuards(RoleGuard(Role.User))
   @Get(':username')
   async getUserByUsername(
-    @Param('username') username: string
+    @Param('username') username: string,
+    @Req() req: any,
   ) {
+    console.log(JSON.stringify(req.user))
     const profile = await this.usersUseCases.getUserByUsername(username);
     return {
       status: "success",
