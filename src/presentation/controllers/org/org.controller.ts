@@ -22,7 +22,13 @@ export class OrgsController {
     @Query('c') city?: string,
     @Query('t') category?: string,
   ) {
-    return this.orgsUseCases.getOrgList(page, city, category);
+    return {
+      status: "success",
+      data: {
+        orgs: await this.orgsUseCases.getOrgList(page, city, category)
+      }
+    }
+    
   }
 
   @UseGuards(JwtAuthGuard)
@@ -31,7 +37,7 @@ export class OrgsController {
     @Body() createOrg: CreateOrgDto,
     @Req() req: any,
   ) {
-    return this.orgsUseCases.createOrg(createOrg, req.user.userId);
+    return await this.orgsUseCases.createOrg(createOrg, req.user.userId);
   }
 
   @UseGuards(SimpleUserGuard)
@@ -40,7 +46,12 @@ export class OrgsController {
     @Param('orgId') orgId: number,
     @Req() req: any,
   ) {
-    return this.orgsUseCases.getOrgById(orgId, req.user);
+    return {
+      status: "success",
+      data: {
+        orgs: await this.orgsUseCases.getOrgById(orgId, req.user)
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -49,7 +60,11 @@ export class OrgsController {
     @Param('orgId') orgId: number,
     @Body() updateOrg: UpdateOrgDto
   ) {
-    return this.orgsUseCases.editOrg(orgId, updateOrg);
+    await this.orgsUseCases.editOrg(orgId, updateOrg);
+    return {
+      status: "success",
+      data: {}
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -58,7 +73,11 @@ export class OrgsController {
     @Param('orgId') orgId: number,
     @Body('public') status: boolean
   ) {
-    return this.orgsUseCases.setPublic(orgId, status);
+    await this.orgsUseCases.setPublic(orgId, status);
+    return {
+      status: "success",
+      data: {}
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -69,7 +88,12 @@ export class OrgsController {
     @Query('status') status?: string,
     @Query('paid') paid?: string
   ) {
-    return this.orgsUseCases.getOrgQuestList(true, 0, orgId, page, status, paid);
+    return {
+      status: "success",
+      data: {
+        quests: await this.orgsUseCases.getOrgQuestList(true, 0, orgId, page, status, paid)
+      }
+    }
   }
 
 
