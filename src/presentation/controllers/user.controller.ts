@@ -19,7 +19,7 @@ export class UsersController {
   async getUser(
     @Req() req: any,
   ) {
-    const user = await this.usersUseCases.getUser(req.user.userId);
+    const user = await this.usersUseCases.getUser(req.user.id);
     return {
       status: "success",
       data: {

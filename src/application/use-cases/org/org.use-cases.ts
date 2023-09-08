@@ -17,9 +17,9 @@ export class OrgsUseCases {
   async getOrgById(orgId: number, user: any) {
     let fullAccess = false;
     if (user.isAdmin) fullAccess = true;
-    else if (user.isAuth && (user.userRole === 3 || user.userRole === 4)) {
-      const owner = this.orgsRepository.getOwner(user.userId);
-      if (owner === user.userId) {
+    else if (user.isAuth && (user.role === 3 || user.role === 4)) {
+      const owner = this.orgsRepository.getOwner(user.id);
+      if (owner === user.id) {
         fullAccess = true;
       }
     }

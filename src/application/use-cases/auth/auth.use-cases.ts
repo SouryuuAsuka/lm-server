@@ -29,14 +29,14 @@ export class AuthUseCases {
   async signin(user: any, ip: string) {
     const tokenHash = await this.bcryptModule.generateHash(8);
     const tokenDate = new Date();
-    await this.authRepository.createRefreshToken(user.userId, tokenDate, tokenHash, ip);
-    const accessToken = await this.jwtService.generateAccessToken(user.userId, user.email, user.userRole);
-    const refreshToken = await this.jwtService.generateRefreshToken(user.userId, tokenHash, tokenDate);
+    await this.authRepository.createRefreshToken(user.id, tokenDate, tokenHash, ip);
+    const accessToken = await this.jwtService.generateAccessToken(user.id, user.email, user.role);
+    const refreshToken = await this.jwtService.generateRefreshToken(user.id, tokenHash, tokenDate);
     let profileLink: string;
     if (user.username !== '') {
       profileLink = user.username;
     } else {
-      profileLink = "id" + user.userId;
+      profileLink = "id" + user.id;
     }
     return { accessToken: accessToken, refreshToken: refreshToken, profileLink: profileLink }
   }
@@ -44,14 +44,14 @@ export class AuthUseCases {
 
   }
   async refreshToken(decoded: any, ip: any) {
-    const user = await this.authRepository.searchRefreshToken(decoded.userId, decoded.date, decoded.hash);
+    const user = await this.authRepository.searchRefreshToken(decoded.id, decoded.date, decoded.hash);
     const nowTime = new Date();
     const tokenCreated = new Date(decoded.date);
     const tokenTime = tokenCreated.setMonth(nowTime.getMonth()+1);
     if (new Date(tokenTime).getTime() > nowTime.getTime()) {
       const hash = await this.bcryptModule.generateHash(8);
-      const accessToken = await this.jwtService.generateAccessToken(user.userId, user.email, user.userRole);
-      const refreshToken = await this.jwtService.generateRefreshToken(user.userId, hash, nowTime);
+      const accessToken = await this.jwtService.generateAccessToken(user.id, user.email, user.rle);
+      const refreshToken = await this.jwtService.generateRefreshToken(user.id, hash, nowTime);
       await this.authRepository.updateRefreshTokenById(ip, nowTime, hash, user.tokenId);
       return { accessToken: accessToken, refreshToken: refreshToken };
     } else {
