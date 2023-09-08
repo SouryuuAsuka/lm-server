@@ -241,14 +241,14 @@ export class OrgsRepository {
       const count = await this.pool.query(`SELECT COUNT(*) AS count FROM org_quests WHERE org_id = $1 AND status_code = ANY($2)`, [orgId, sqlVar.status]);
       const quRow = await this.pool.query(`
         SELECT 
-          qu.qu_id AS qu_id,
-          qu.order_id AS order_id,
-          qu.products_array AS products,
-          qu.paid AS paid,
-          qu.commission AS commission,
-          qu.status_code AS status_code,
-          o.created AS created,
-          o.date AS date
+          qu.qu_id AS qu_id
+          , qu.order_id AS order_id
+          , qu.products_array AS products
+          , qu.paid AS paid
+          , qu.commission AS commission
+          , qu.status_code AS status_code
+          , o.created AS created
+          , o.date AS date
         FROM org_quests AS qu
         JOIN orders AS o
         ON o.order_id = qu.order_id

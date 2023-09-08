@@ -9,9 +9,9 @@ export class JwtModule {
     try {
       const accessToken = this.jwtService.sign(
         {
-          userId: userId,
+          id: userId,
           email: email,
-          userRole: userRole
+          role: userRole
         },
         {
           secret: process.env.ACCESS_KEY_SECRET,
@@ -28,7 +28,7 @@ export class JwtModule {
     try {
       const refreshToken = this.jwtService.sign(
         {
-          userId: userId,
+          id: userId,
           date: tokenDate,
           hash: tokenHash
         },

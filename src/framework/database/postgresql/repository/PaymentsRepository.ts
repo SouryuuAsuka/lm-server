@@ -47,11 +47,11 @@ export class PaymentsRepository {
       sqlVar.offset = (page - 1) * 10;
       const orgRow = await this.pool.query(`
         SELECT 
-          COUNT(*) AS count,
-          p.pay_id AS pay_id,
-          p.usd_sum AS usd_sum,
-          p.canceled AS canceled,
-          p.created AS created
+          COUNT(*) AS count
+          , p.pay_id AS pay_id
+          , p.usd_sum AS usd_sum
+          , p.canceled AS canceled
+          , p.created AS created
         FROM org_payments AS p
         WHERE p.org_id = $1
         GROUP BY p.pay_id
@@ -66,7 +66,8 @@ export class PaymentsRepository {
       const quRow = await this.pool.query(`
         UPDATE org_quests
         SET paid=true
-        WHERE qu_id = ANY($1) AND paid=false AND status_code=5 RETURNING products_array, commission`,
+        WHERE qu_id = ANY($1) AND paid=false AND status_code=5 
+        RETURNING products_array, commission`,
         [quests]);
       if (quRow.rowCount === 0) throw new Error("Ошибка при регистрации выплат");
       return quRow.rows;
