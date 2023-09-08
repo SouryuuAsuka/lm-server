@@ -7,6 +7,11 @@ export class JwtModule {
   ) { }
   async generateAccessToken(userId: number, email: string, userRole: number) {
     try {
+      console.log(JSON.stringify({
+        id: userId,
+        email: email,
+        role: userRole
+      }))
       const accessToken = this.jwtService.sign(
         {
           id: userId,
@@ -26,6 +31,11 @@ export class JwtModule {
   }
   async generateRefreshToken(userId: number, tokenHash: string, tokenDate) {
     try {
+      console.log(JSON.stringify({
+        id: userId,
+        date: tokenDate,
+        hash: tokenHash
+      }));
       const refreshToken = this.jwtService.sign(
         {
           id: userId,
