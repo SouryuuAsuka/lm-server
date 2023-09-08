@@ -24,7 +24,7 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
   handleRequest(err: any, user: any, info, context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
     if (err || !user) {
-      if (request.cookies && request.cookies.accessToken) {
+      if (!request.cookies.accessToken) {
         return {
           userId: null,
           userRole: 0,
@@ -33,8 +33,7 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
           isAuth: false
         };
       } else 
-      throw err|| new UnauthorizedException();
-
+      throw err || new UnauthorizedException();
     } else {
       const isAdmin = user.userRole > 4 ? true : false;
       const isAuth = true;
