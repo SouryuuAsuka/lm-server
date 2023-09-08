@@ -24,12 +24,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  app.enableCors({
-    credentials: true, 
-    origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,OPTIONS,POST,DELETE',
-    allowedHeaders: 'Content-Type, Accept',
-  });
+  app.enableCors();
 
   await app.listen(3000, "0.0.0.0", () => {
     console.log(`⛱ Lampy Server listening on port 3000`);
