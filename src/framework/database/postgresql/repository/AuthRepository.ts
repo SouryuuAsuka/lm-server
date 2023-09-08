@@ -12,10 +12,10 @@ export class AuthRepository {
     try {
       const userRow = await this.pool.query(`
         SELECT 
-        u.user_id AS "userId"
+        u.user_id AS id
         , u.username AS username
         , u.email AS email
-        , u.user_role AS "userRole"
+        , u.user_role AS role
         , u.password AS password
         , u.pass_salt AS "passSalt"
         FROM users AS u WHERE email = $1`
@@ -29,10 +29,10 @@ export class AuthRepository {
     try {
       const userRow = await this.pool.query(`
         SELECT 
-        u.user_id AS "userId"
+        u.user_id AS id
         , u.username AS username
         , u.email AS email
-        , u.user_role AS "userRole"
+        , u.user_role AS role
         , u.password AS password
         , u.pass_salt AS "passSalt"
         FROM users AS u WHERE username = $1`
