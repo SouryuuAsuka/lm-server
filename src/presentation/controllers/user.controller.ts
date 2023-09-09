@@ -50,9 +50,9 @@ export class UsersController {
   @Get(':username/orgs')
   async getOrgListByUsername(
     @Param('username') username: string,
-    @Body('page') page: number,
-    @Body('city') city: string,
-    @Body('category') category: string,
+    @Body('page') page?: number,
+    @Body('city') city?: string,
+    @Body('category') category?: string,
   ) {
     const orgs = await this.usersUseCases.getOrgListByUsername(username, page, city, category);
     return {
