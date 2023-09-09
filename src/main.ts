@@ -31,7 +31,7 @@ async function bootstrap() {
   });
 
   await app.listen(3000, "0.0.0.0", () => {
-    console.log(`⛱ Lampy Server listening on port 3000`);
+    console.log(`⛱  Lampy Server listening on port 3000`);
     console.log('Press Ctrl+C to quit.');
   });
 }
