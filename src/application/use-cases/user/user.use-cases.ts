@@ -12,6 +12,7 @@ export class UsersUseCases {
     return this.usersRepository.getUserByUsername(username);
   }
   async getOrgListByUsername(username: string, page: number, city:string, category:string){
+    console.log("page 0 -" + page)
     return this.usersRepository.getOrgListByUsername(username, page, city, category);
   }
 
