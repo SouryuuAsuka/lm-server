@@ -43,17 +43,12 @@ export class UsersRepository {
   }
   async getOrgListByUsername(username: string, page: number = 1, city: string = '%', category: string = '0, 1, 2') {
     try {
-      interface SqlVar {
-        page: number;
-        city: string;
-        category: string;
+      console.log(" page: " + page + " city: " + city + " category: " + category)
+      let sqlVar = {
+        page: (page - 1) * 10,
+        city: city,
+        category: "{" + category + "}"
       }
-      console.log(" page: " + page+" city: " + city + " category: "+ category)
-      let sqlVar: SqlVar;
-      sqlVar.page = (page - 1) * 10;
-      sqlVar.city = city;
-      sqlVar.category = "{" + category + "}";
-      console.log("(page - 1) * 10 - "+(page - 1) * 10)
       console.log(JSON.stringify(sqlVar))
       const orgRow = await this.pool.query(`
         SELECT 
