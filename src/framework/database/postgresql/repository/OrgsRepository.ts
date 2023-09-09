@@ -125,17 +125,11 @@ export class OrgsRepository {
   }
   async getOrgList(page: number, city: string, category: string) {
     try {
-      console.log("page - "+page);
-      interface SqlVar {
-        page: number;
-        city: string;
-        category: string;
-      }
-      let sqlVar: SqlVar = {
+      let sqlVar = {
         page: (page - 1) * 10,
-        city,
+        city: city,
         category: "{" + category + "}"
-      };
+      }
       const orgRow = await this.pool.query(`
         SELECT 
         org.org_id AS id, 

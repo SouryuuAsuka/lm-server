@@ -44,7 +44,7 @@ export class UsersController {
       }
     }
   }
-  
+
   @UseGuards(RoleGuard(Role.User))
   @UseGuards(SimpleUserGuard)
   @Get(':username/orgs')
@@ -54,12 +54,9 @@ export class UsersController {
     @Query('city') city?: string,
     @Query('category') category?: string,
   ) {
-    const orgs = await this.usersUseCases.getOrgListByUsername(username, page, city, category);
     return {
       status: "success",
-      data: {
-        orgs: orgs
-      }
+      data: await this.usersUseCases.getOrgListByUsername(username, page, city, category)
     }
   }
 

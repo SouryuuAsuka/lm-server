@@ -20,8 +20,7 @@ export class PaymentsRepository {
   }
   async getFullPaymentList(orgId: number, page: number = 1) {
     try {
-      let sqlVar;
-      sqlVar.offset = (page - 1) * 10;
+      let sqlVar = { offset: (page - 1) * 10 };
       const orgRow = await this.pool.query(`
           SELECT 
             COUNT(*) AS count
@@ -43,8 +42,7 @@ export class PaymentsRepository {
   }
   async getPaymentList(orgId: number, page: number = 1) {
     try {
-      let sqlVar;
-      sqlVar.offset = (page - 1) * 10;
+      let sqlVar = { offset: (page - 1) * 10 };
       const orgRow = await this.pool.query(`
         SELECT 
           COUNT(*) AS count

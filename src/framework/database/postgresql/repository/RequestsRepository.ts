@@ -54,8 +54,7 @@ export class RequestsRepository {
   }
   async getRequestList(page: number) {
     try {
-      let sqlVar;
-      sqlVar.page = (page - 1) * 10;
+      let sqlVar = {page: (page - 1) * 10}
       const requestRow = await this.pool.query(`
         SELECT 
         o.org_id AS id,
