@@ -28,8 +28,8 @@ export class OrgsController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(Role.User))
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createOrg(
     @Body() createOrg: CreateOrgDto,
@@ -56,8 +56,8 @@ export class OrgsController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(Role.Manager))
+  @UseGuards(JwtAuthGuard)
   @Patch(':orgId')
   async editOrg(
     @Param('orgId') orgId: number,
@@ -70,9 +70,9 @@ export class OrgsController {
     }
   }
 
+  @UseGuards(RoleGuard(Role.Manager))
   @UseGuards(JwtAuthGuard)
   @Patch(':orgId/public')
-  @UseGuards(RoleGuard(Role.Manager))
   async setPublic(
     @Param('orgId') orgId: number,
     @Body('public') status: boolean
@@ -83,10 +83,10 @@ export class OrgsController {
       data: {}
     }
   }
-
+  
+  @UseGuards(RoleGuard(Role.Manager))
   @UseGuards(JwtAuthGuard)
   @Get('/:orgId/quests')
-  @UseGuards(RoleGuard(Role.Manager))
   async getOrgQuestList(
     @Param('orgId') orgId: number,
     @Query('page') page?: number,

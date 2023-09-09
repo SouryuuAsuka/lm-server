@@ -12,9 +12,9 @@ import Role from '@domain/enums/role.enum';
 })
 export class PaymentsController {
   constructor(private paymentsUseCases: PaymentsUseCases) { }
-  
-  @UseGuards(JwtAuthGuard)
+
   @UseGuards(RoleGuard(Role.Manager))
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getPaymentList(
     @Param('orgId') orgId: number,
@@ -27,8 +27,8 @@ export class PaymentsController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(Role.Moderator))
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createPayment(
     @Param('orgId') orgId: number,
@@ -40,9 +40,9 @@ export class PaymentsController {
       data: {}
     } 
   }
-
-  @UseGuards(JwtAuthGuard)
+  
   @UseGuards(RoleGuard(Role.Moderator))
+  @UseGuards(JwtAuthGuard)
   @Delete(':payId')
   async cancelPayment(
     @Param('payId') payId: number

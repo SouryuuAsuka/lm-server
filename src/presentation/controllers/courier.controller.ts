@@ -12,8 +12,8 @@ import Role from '@domain/enums/role.enum';
 export class CouriersController {
   constructor(private couriersUseCases: CouriersUseCases) { }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(Role.Moderator))
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getCourierList(
   ) {
@@ -23,8 +23,8 @@ export class CouriersController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(Role.Moderator))
+  @UseGuards(JwtAuthGuard)
   @Put(':tgId/confirm')
   async confirmCourier(
     @Param('tgId') tgId: number,

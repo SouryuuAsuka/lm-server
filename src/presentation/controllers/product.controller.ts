@@ -14,8 +14,8 @@ import Role from '@domain/enums/role.enum';
 export class ProductsController {
   constructor(private productsUseCases: ProductsUseCases) { }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(Role.Manager))
+  @UseGuards(JwtAuthGuard)
   @Get()
   async createProduct(
     @Body() createProductDto: CreateProductDto,
@@ -28,8 +28,9 @@ export class ProductsController {
       data: {}
     } 
   }
-  @UseGuards(JwtAuthGuard)
+
   @UseGuards(RoleGuard(Role.Manager))
+  @UseGuards(JwtAuthGuard)
   @Patch(':productId')
   async editProduct(
     @Param('productId') productId: number,
@@ -43,8 +44,9 @@ export class ProductsController {
       data: {}
     } 
   }
-  @UseGuards(JwtAuthGuard)
+  
   @UseGuards(RoleGuard(Role.Manager))
+  @UseGuards(JwtAuthGuard)
   @Patch(':productId/active')
   async setActiveProduct(
     @Param('productId') productId: number,

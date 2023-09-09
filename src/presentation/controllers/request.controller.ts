@@ -12,8 +12,8 @@ import Role from '@domain/enums/role.enum';
 export class RequestsController {
   constructor(private requestsUseCases: RequestsUseCases) { }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(Role.Moderator))
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getRequestList(
     @Query('p') page: number
@@ -27,8 +27,8 @@ export class RequestsController {
   }
 
   //TODO: Дать возможность пользователям просматривать собственные заявки
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(Role.Moderator))
+  @UseGuards(JwtAuthGuard)
   @Get(':requestId')
   async getRequest(
     @Param('requestId') requestId: number
@@ -41,8 +41,8 @@ export class RequestsController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(Role.Moderator))
+  @UseGuards(JwtAuthGuard)
   @Patch(':requestId/confirm')
   async confirmRequest(
     @Param('requestId') requestId: number
@@ -54,9 +54,9 @@ export class RequestsController {
       }
     }
   }
-
-  @UseGuards(JwtAuthGuard)
+  
   @UseGuards(RoleGuard(Role.Moderator))
+  @UseGuards(JwtAuthGuard)
   @Patch(':requestId/comment')
   async setRequestComment(
     @Param('requestId') requestId: number,
