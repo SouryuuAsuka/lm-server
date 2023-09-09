@@ -22,7 +22,7 @@ export class UsersRepository {
         , tech_telegram AS "techTelegram"
         , telegram AS telegram
         , avatar AS avatar
-        , pass_salt AS passSalt
+        , pass_salt AS "passSalt"
         FROM users WHERE LOWER(username) = $1`
         , [username.toLowerCase()]);
       if (userRow.rowCount === 0) throw new Error("Пользователь не найден");
