@@ -48,10 +48,13 @@ export class UsersRepository {
         city: string;
         category: string;
       }
+      console.log(" page: " + page+" city: " + city + " category: "+ category)
       let sqlVar: SqlVar;
       sqlVar.page = (page - 1) * 10;
       sqlVar.city = city;
       sqlVar.category = "{" + category + "}";
+      console.log("(page - 1) * 10 - "+(page - 1) * 10)
+      console.log(JSON.stringify(sqlVar))
       const orgRow = await this.pool.query(`
         SELECT 
         org.org_id AS id
