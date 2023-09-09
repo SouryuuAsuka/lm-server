@@ -8,7 +8,6 @@ const RoleGuard = (role: Role): Type<CanActivate> => {
     canActivate(context: ExecutionContext) {
       const request = context.switchToHttp().getRequest<RequestWithUser>();
       const user = request.user;
-      console.log("user-role "+JSON.stringify(user))
       return user.role >= role;
     }
   }
