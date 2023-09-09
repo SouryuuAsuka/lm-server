@@ -14,8 +14,8 @@ import Role from '@domain/enums/role.enum';
 export class UsersController {
   constructor(private usersUseCases: UsersUseCases) { }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getUser(
     @Req() req: any,
   ) {
@@ -28,9 +28,10 @@ export class UsersController {
     }
   }
 
+
+  @Get(':username')
   @UseGuards(SimpleUserGuard)
   @UseGuards(RoleGuard(Role.User))
-  @Get(':username')
   async getUserByUsername(
     @Param('username') username: string,
     @Req() req: any,
@@ -45,9 +46,9 @@ export class UsersController {
     }
   }
   
+  @Get(':username/orgs')
   @UseGuards(SimpleUserGuard)
   @UseGuards(RoleGuard(Role.User))
-  @Get(':username/orgs')
   async getOrgListByUsername(
     @Param('username') username: string,
     @Body('page') page: number,
