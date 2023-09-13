@@ -1,7 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import fastifyCookie from '@fastify/cookie';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 import { HttpExceptionFilter } from '@framework/nestjs/filters/http-exeptions.filter';
 import { VersioningType } from '@nestjs/common';
 
@@ -10,7 +13,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
   );
   await app.register(fastifyCookie);
   app.useGlobalFilters(new HttpExceptionFilter());
@@ -25,12 +28,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   app.enableCors({
-    credentials: true, 
+    credentials: true,
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,OPTIONS,POST,DELETE',
   });
 
-  await app.listen(3000, "0.0.0.0", () => {
+  await app.listen(3000, '0.0.0.0', () => {
     console.log(`⛱  Lampy Server listening on port 3000`);
     console.log('Press Ctrl+C to quit.');
   });

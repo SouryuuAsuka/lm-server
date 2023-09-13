@@ -7,11 +7,11 @@ export class OrgsRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
-
-  ) { }
+  ) {}
   async getOrgById(orgId: number) {
     try {
-      const orgRow = await this.pool.query(`
+      const orgRow = await this.pool.query(
+        `
       SELECT 
       org.org_id AS "orgId", 
       org.name AS name, 
@@ -40,7 +40,9 @@ export class OrgsRepository {
       LEFT JOIN products AS g
       ON g.org_id = org.org_id 
       WHERE org.org_id = $1 AND org.public = true AND g.active = true
-      GROUP BY org.org_id`, [orgId]);
+      GROUP BY org.org_id`,
+        [orgId],
+      );
       if (orgRow.rows.length != 0) {
         return orgRow.rows[0];
       } else {
@@ -52,7 +54,8 @@ export class OrgsRepository {
   }
   async getFullOrgById(orgId: number) {
     try {
-      const orgRow = await this.pool.query(`
+      const orgRow = await this.pool.query(
+        `
         SELECT 
         org.org_id AS "orgId", 
         org.name AS name, 
@@ -105,7 +108,8 @@ export class OrgsRepository {
         WHERE org.org_id = $1 
         GROUP BY org.org_id
         ORDER BY org.created DESC`,
-        [orgId])
+        [orgId],
+      );
       if (orgRow.rows.length != 0) {
         return orgRow.rows[0];
       } else {
@@ -117,7 +121,10 @@ export class OrgsRepository {
   }
   async getOwnerId(orgId: number) {
     try {
-      const selOrgRow = await this.pool.query(`SELECT owner FROM organizations WHERE org_id = $1`, [orgId]);
+      const selOrgRow = await this.pool.query(
+        `SELECT owner FROM organizations WHERE org_id = $1`,
+        [orgId],
+      );
       return selOrgRow.rows[0].owner;
     } catch (err) {
       this.exceptionService.DatabaseException(err.message);
@@ -125,12 +132,13 @@ export class OrgsRepository {
   }
   async getOrgList(page: number, city: string, category: string) {
     try {
-      let sqlVar = {
+      const sqlVar = {
         page: (page - 1) * 10,
         city: city,
-        category: "{" + category + "}"
-      }
-      const orgRow = await this.pool.query(`
+        category: '{' + category + '}',
+      };
+      const orgRow = await this.pool.query(
+        `
         SELECT 
         org.org_id AS id, 
         org.name AS name, 
@@ -162,9 +170,14 @@ export class OrgsRepository {
         FROM organizations AS org 
         WHERE org.city LIKE $1 AND org.category = ANY($2) AND org.public = true
         GROUP BY org.org_id
-        OFFSET $3 LIMIT 10`, [sqlVar.city, sqlVar.category, sqlVar.page]);
+        OFFSET $3 LIMIT 10`,
+        [sqlVar.city, sqlVar.category, sqlVar.page],
+      );
       if (orgRow.rows.length != 0) {
-        const count = await this.pool.query("SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)", [sqlVar.city, sqlVar.category])
+        const count = await this.pool.query(
+          'SELECT COUNT(*) FROM organizations AS org WHERE org.city LIKE $1 AND org.category = ANY($2)',
+          [sqlVar.city, sqlVar.category],
+        );
         if (orgRow.rows.length == 0) {
           return { orgs: [], count: 0 };
         } else {
@@ -175,16 +188,33 @@ export class OrgsRepository {
       }
     } catch (err) {
       this.exceptionService.DatabaseException(err.message);
-    };
+    }
   }
   async newOrg(org, ownerId: number) {
     try {
-      const user = await this.pool.query(`SELECT * FROM users WHERE user_id = $1`, [ownerId])
+      const user = await this.pool.query(
+        `SELECT * FROM users WHERE user_id = $1`,
+        [ownerId],
+      );
       if (user.rows[0].user_role === 0 || user.rows[0].telegram === false) {
-        throw "Недостаточно прав для создания организации";
+        throw 'Недостаточно прав для создания организации';
       }
-      const orgInsertString = "INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, country, street, house, flat, comission) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING org_id"
-      await this.pool.query(orgInsertString, [[{ lang: org.lang, text: org.name }], [{ lang: org.lang, text: org.about }], ownerId, org.category, 1, org.city, "NOW()", org.country, org.street, org.house, org.flat, 20]);
+      const orgInsertString =
+        'INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, country, street, house, flat, comission) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING org_id';
+      await this.pool.query(orgInsertString, [
+        [{ lang: org.lang, text: org.name }],
+        [{ lang: org.lang, text: org.about }],
+        ownerId,
+        org.category,
+        1,
+        org.city,
+        'NOW()',
+        org.country,
+        org.street,
+        org.house,
+        org.flat,
+        20,
+      ]);
       return true;
     } catch (err) {
       this.exceptionService.DatabaseException(err.message);
@@ -192,8 +222,17 @@ export class OrgsRepository {
   }
   async editOrg(org, ownerId: number, avatar) {
     try {
-      const orgInsertString = "UPDATE organizations SET name = $1, about = $2, category = $3, avatar = avatar + $4, city = $5 WHERE owner = $6 AND org_id = $7 RETURNING org_id"
-      await this.pool.query(orgInsertString, [org.name, org.about, org.category, avatar, org.city, ownerId, org.orgId]);
+      const orgInsertString =
+        'UPDATE organizations SET name = $1, about = $2, category = $3, avatar = avatar + $4, city = $5 WHERE owner = $6 AND org_id = $7 RETURNING org_id';
+      await this.pool.query(orgInsertString, [
+        org.name,
+        org.about,
+        org.category,
+        avatar,
+        org.city,
+        ownerId,
+        org.orgId,
+      ]);
       return true;
     } catch (err) {
       this.exceptionService.DatabaseException(err.message);
@@ -202,10 +241,12 @@ export class OrgsRepository {
   async setPublic(publicType, orgId: number, owner = null) {
     try {
       if (owner === null) {
-        const orgInsertString = "UPDATE organizations SET public = $1 WHERE org_id = $2"
-        await this.pool.query(orgInsertString, [publicType, orgId])
+        const orgInsertString =
+          'UPDATE organizations SET public = $1 WHERE org_id = $2';
+        await this.pool.query(orgInsertString, [publicType, orgId]);
       } else {
-        const orgInsertString = "UPDATE organizations SET public = $1 WHERE owner = $2 AND org_id = $3"
+        const orgInsertString =
+          'UPDATE organizations SET public = $1 WHERE owner = $2 AND org_id = $3';
         await this.pool.query(orgInsertString, [publicType, owner, orgId]);
       }
       return true;
@@ -215,26 +256,38 @@ export class OrgsRepository {
   }
   async getOwner(orgId: number) {
     try {
-      const orgRow = await this.pool.query(`SELECT owner FROM organizations WHERE org_id = $1`, [orgId]);
+      const orgRow = await this.pool.query(
+        `SELECT owner FROM organizations WHERE org_id = $1`,
+        [orgId],
+      );
       return orgRow.rows[0].owner;
     } catch (err) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getOrgQuestList(orgId: number, page = 1, status = '0, 1, 2, 3, 4, 5', paid = 'true, false') {
+  async getOrgQuestList(
+    orgId: number,
+    page = 1,
+    status = '0, 1, 2, 3, 4, 5',
+    paid = 'true, false',
+  ) {
     try {
       interface SqlVar {
         page: number;
         status: string;
         paid: string;
       }
-      let sqlVar: SqlVar = {
+      const sqlVar: SqlVar = {
         page: (Number(page) - 1) * 20,
-        status: "{" + status + "}",
-        paid: "{" + paid + "}",
-      }
-      const count = await this.pool.query(`SELECT COUNT(*) AS count FROM org_quests WHERE org_id = $1 AND status_code = ANY($2)`, [orgId, sqlVar.status]);
-      const quRow = await this.pool.query(`
+        status: '{' + status + '}',
+        paid: '{' + paid + '}',
+      };
+      const count = await this.pool.query(
+        `SELECT COUNT(*) AS count FROM org_quests WHERE org_id = $1 AND status_code = ANY($2)`,
+        [orgId, sqlVar.status],
+      );
+      const quRow = await this.pool.query(
+        `
         SELECT 
           qu.qu_id AS qu_id
           , qu.order_id AS order_id
@@ -249,8 +302,10 @@ export class OrgsRepository {
         ON o.order_id = qu.order_id
         WHERE qu.org_id = $1 AND qu.status_code = ANY($2) AND qu.paid = ANY($3)
         GROUP BY qu.qu_id, qu.order_id, qu.products_array, qu.paid, qu.status_code, o.created, o.date
-        OFFSET $4 LIMIT 20`, [orgId, sqlVar.status, sqlVar.page, sqlVar.paid]);
-      return { quests: quRow.rows, count: count.rows[0].count }
+        OFFSET $4 LIMIT 20`,
+        [orgId, sqlVar.status, sqlVar.page, sqlVar.paid],
+      );
+      return { quests: quRow.rows, count: count.rows[0].count };
     } catch (err) {
       this.exceptionService.DatabaseException(err.message);
     }

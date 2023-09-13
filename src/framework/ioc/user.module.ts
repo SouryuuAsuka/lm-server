@@ -6,8 +6,6 @@ import { UsersController } from '@presentation/controllers/';
 @Module({
   imports: [],
   controllers: [UsersController],
-  providers: [
-    UsersUseCases,
-  ],
+  providers: [UsersUseCases],
 })
 export class UsersModule {}

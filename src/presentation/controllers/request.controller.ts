@@ -1,7 +1,21 @@
-import { Controller, Get, Param, UseGuards, Post, Body, Put, Query, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  Post,
+  Body,
+  Put,
+  Query,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { RequestsUseCases } from '@application/use-cases/request/request.use-cases';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.guard';
+import {
+  JwtAuthGuard,
+  SimpleUserGuard,
+} from '@framework/nestjs/guards/auth.guard';
 import RoleGuard from '@framework/nestjs/guards/role.guard';
 import Role from '@domain/enums/role.enum';
 @ApiTags('requests')
@@ -10,64 +24,60 @@ import Role from '@domain/enums/role.enum';
   version: '1',
 })
 export class RequestsController {
-  constructor(private requestsUseCases: RequestsUseCases) { }
+  constructor(private requestsUseCases: RequestsUseCases) {}
 
   @UseGuards(RoleGuard(Role.Moderator))
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getRequestList(
-    @Query('p') page: number
-  ) {
+  async getRequestList(@Query('p') page: number) {
     return {
-      status: "success",
-      data:{
-        requests:  this.requestsUseCases.getRequestList(page)
-      }
-    }
+      status: 'success',
+      data: {
+        requests: this.requestsUseCases.getRequestList(page),
+      },
+    };
   }
 
   //TODO: Дать возможность пользователям просматривать собственные заявки
   @UseGuards(RoleGuard(Role.Moderator))
   @UseGuards(JwtAuthGuard)
   @Get(':requestId')
-  async getRequest(
-    @Param('requestId') requestId: number
-  ) {
+  async getRequest(@Param('requestId') requestId: number) {
     return {
-      status: "success",
+      status: 'success',
       data: {
-        request: await this.requestsUseCases.getRequest(requestId)
-      }
-    }
+        request: await this.requestsUseCases.getRequest(requestId),
+      },
+    };
   }
 
   @UseGuards(RoleGuard(Role.Moderator))
   @UseGuards(JwtAuthGuard)
   @Patch(':requestId/confirm')
-  async confirmRequest(
-    @Param('requestId') requestId: number
-  ) {
+  async confirmRequest(@Param('requestId') requestId: number) {
     return {
-      status: "success",
+      status: 'success',
       data: {
-        org: await this.requestsUseCases.confirmRequest(requestId)
-      }
-    }
+        org: await this.requestsUseCases.confirmRequest(requestId),
+      },
+    };
   }
-  
+
   @UseGuards(RoleGuard(Role.Moderator))
   @UseGuards(JwtAuthGuard)
   @Patch(':requestId/comment')
   async setRequestComment(
     @Param('requestId') requestId: number,
-    @Body() comment: string
+    @Body() comment: string,
   ) {
     return {
-      status: "success",
+      status: 'success',
       data: {
-        request: await this.requestsUseCases.setRequestComment(requestId, comment)
-      }
-    }
+        request: await this.requestsUseCases.setRequestComment(
+          requestId,
+          comment,
+        ),
+      },
+    };
   }
-
 }

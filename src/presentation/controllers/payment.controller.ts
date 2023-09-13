@@ -1,4 +1,16 @@
-import { Controller, UseGuards, Get, Param, Post, Body, Put, Query, Patch, Delete, Req } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Param,
+  Post,
+  Body,
+  Put,
+  Query,
+  Patch,
+  Delete,
+  Req,
+} from '@nestjs/common';
 import { PaymentsUseCases } from '@application/use-cases/payment/payment.use-cases';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@framework/nestjs/guards/auth.guard';
@@ -11,7 +23,7 @@ import Role from '@domain/enums/role.enum';
   version: '1',
 })
 export class PaymentsController {
-  constructor(private paymentsUseCases: PaymentsUseCases) { }
+  constructor(private paymentsUseCases: PaymentsUseCases) {}
 
   @UseGuards(RoleGuard(Role.Manager))
   @UseGuards(JwtAuthGuard)
@@ -22,35 +34,30 @@ export class PaymentsController {
     @Query('p') page?: number,
   ) {
     return {
-      status: "success",
-      data: await this.paymentsUseCases.getPaymentList(orgId, page, req.user)
-    }
+      status: 'success',
+      data: await this.paymentsUseCases.getPaymentList(orgId, page, req.user),
+    };
   }
 
   @UseGuards(RoleGuard(Role.Moderator))
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createPayment(
-    @Param('orgId') orgId: number,
-    @Body() quests: number[]
-  ) {
+  async createPayment(@Param('orgId') orgId: number, @Body() quests: number[]) {
     await this.paymentsUseCases.createPayment(orgId, quests);
     return {
-      status: "success",
-      data: {}
-    } 
+      status: 'success',
+      data: {},
+    };
   }
-  
+
   @UseGuards(RoleGuard(Role.Moderator))
   @UseGuards(JwtAuthGuard)
   @Delete(':payId')
-  async cancelPayment(
-    @Param('payId') payId: number
-  ) {
+  async cancelPayment(@Param('payId') payId: number) {
     await this.paymentsUseCases.cancelPayment(payId);
     return {
-      status: "success",
-      data: {}
-    }
+      status: 'success',
+      data: {},
+    };
   }
 }

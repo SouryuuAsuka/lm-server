@@ -2,21 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class JwtModule {
-  constructor(
-    private jwtService: JwtService,
-  ) { }
+  constructor(private jwtService: JwtService) {}
   async generateAccessToken(userId: number, email: string, userRole: number) {
     try {
       const accessToken = this.jwtService.sign(
         {
           id: userId,
           email: email,
-          role: userRole
+          role: userRole,
         },
         {
           secret: process.env.ACCESS_KEY_SECRET,
-          expiresIn: '5m'
-        }
+          expiresIn: '5m',
+        },
       );
       return accessToken;
     } catch (err) {
@@ -30,12 +28,12 @@ export class JwtModule {
         {
           id: userId,
           date: tokenDate,
-          hash: tokenHash
+          hash: tokenHash,
         },
         {
           secret: process.env.REFRESH_KEY_SECRET,
-          expiresIn: '30d'
-        }
+          expiresIn: '30d',
+        },
       );
       return refreshToken;
     } catch (err) {
@@ -45,7 +43,9 @@ export class JwtModule {
   }
   async verifyRefreshToken(token) {
     try {
-      return await this.jwtService.verify(token, {publicKey: process.env.REFRESH_KEY_SECRET});
+      return await this.jwtService.verify(token, {
+        publicKey: process.env.REFRESH_KEY_SECRET,
+      });
     } catch (err) {
       console.log(err);
       throw err;

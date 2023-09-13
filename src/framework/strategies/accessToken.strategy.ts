@@ -1,11 +1,11 @@
-import { Injectable,  Req, } from '@nestjs/common';
+import { Injectable, Req } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 class EmptyTokenError extends Error {
-  empty: boolean
-  constructor(message: string){
-    super(message)
+  empty: boolean;
+  constructor(message: string) {
+    super(message);
     this.empty = true;
   }
 }
@@ -16,19 +16,19 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         AccessTokenStrategy.extractJWTFromCookie,
-      ]),     
-      ignoreExpiration: false, 
+      ]),
+      ignoreExpiration: false,
       secretOrKey: process.env.ACCESS_KEY_SECRET,
     });
   }
 
-  private static extractJWTFromCookie( request: any): string | null {
+  private static extractJWTFromCookie(request: any): string | null {
     if (request.cookies && request.cookies.accessToken) {
       return request.cookies.accessToken;
     }
   }
 
-  validate(payload: any) {
+  validate(payload: AccessTokenStrategy) {
     return payload;
   }
 }

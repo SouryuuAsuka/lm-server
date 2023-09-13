@@ -1,7 +1,6 @@
 import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
 
 export class UpdateProductDto {
-
   @IsNumber()
   @IsNotEmpty()
   productId: number;
@@ -25,5 +24,4 @@ export class UpdateProductDto {
   @IsString()
   @IsNotEmpty()
   lang: string;
-
 }

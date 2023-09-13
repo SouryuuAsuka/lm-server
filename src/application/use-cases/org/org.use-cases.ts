@@ -4,11 +4,13 @@ import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';
 
 @Injectable()
 export class OrgsUseCases {
-  constructor(
-    private readonly orgsRepository: IOrgsRepository,
-  ) { }
+  constructor(private readonly orgsRepository: IOrgsRepository) {}
 
-  async getOrgList(page: number = 1, city: string = '%', category: string = '0, 1, 2') {
+  async getOrgList(
+    page: number = 1,
+    city: string = '%',
+    category: string = '0, 1, 2',
+  ) {
     return await this.orgsRepository.getOrgList(page, city, category);
   }
   async createOrg(createOrg: CreateOrgDto, ownerId: number) {
@@ -35,7 +37,14 @@ export class OrgsUseCases {
   async setPublic(orgId: number, status: boolean) {
     return await this.orgsRepository.setPublic(orgId, status);
   }
-  async getOrgQuestList(isAdmin: boolean, userId: number, orgId: number, page: number, status: string, paid: string) {
+  async getOrgQuestList(
+    isAdmin: boolean,
+    userId: number,
+    orgId: number,
+    page: number,
+    status: string,
+    paid: string,
+  ) {
     let fullAccess = false;
     if (isAdmin) {
       fullAccess = true;
@@ -44,7 +53,12 @@ export class OrgsUseCases {
       if (owner == userId) fullAccess = true;
     }
     if (fullAccess) {
-      const quests = await this.orgsRepository.getOrgQuestList(orgId, page, status, paid);
+      const quests = await this.orgsRepository.getOrgQuestList(
+        orgId,
+        page,
+        status,
+        paid,
+      );
       return quests;
     } else {
       throw { error: 'Огранизация не найдена' };

@@ -3,9 +3,7 @@ import { ExceptionsService } from './exceptions.service';
 
 @Global()
 @Module({
-  providers: [
-    ExceptionsService
-  ],
+  providers: [ExceptionsService],
   exports: [ExceptionsService],
 })
 export class ExceptionsModule {}

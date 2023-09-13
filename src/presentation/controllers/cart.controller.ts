@@ -1,9 +1,22 @@
-import { Controller, Get, UseGuards, Post, Body, Put, Query, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Post,
+  Body,
+  Put,
+  Query,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { CartsUseCases } from '@application/use-cases/cart/cart.use-cases';
 import { CartCookiesDto } from '@domain/dtos/cart';
 import { Cookies } from '@framework/nestjs/decorators';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.guard';
+import {
+  JwtAuthGuard,
+  SimpleUserGuard,
+} from '@framework/nestjs/guards/auth.guard';
 
 @ApiTags('carts')
 @Controller({
@@ -11,40 +24,39 @@ import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.gua
   version: '1',
 })
 export class CartsController {
-  constructor(private cartsUseCases: CartsUseCases) { }
+  constructor(private cartsUseCases: CartsUseCases) {}
 
   @UseGuards(SimpleUserGuard)
   @Get()
-  async getCart(
-    @Query() type: string,
-    @Cookies() cartCookies: CartCookiesDto
-  ) {
+  async getCart(@Query() type: string, @Cookies() cartCookies: CartCookiesDto) {
     return {
-      status: "success",
-      data: await this.cartsUseCases.getCart(type, cartCookies)
-    }
+      status: 'success',
+      data: await this.cartsUseCases.getCart(type, cartCookies),
+    };
   }
 
   @UseGuards(SimpleUserGuard)
   @Post()
-  async createCart(
-    @Body('productId') productId: number
-  ) {
+  async createCart(@Body('productId') productId: number) {
     return {
-      status: "success",
-      data: await this.cartsUseCases.createCart(productId)
-    }
+      status: 'success',
+      data: await this.cartsUseCases.createCart(productId),
+    };
   }
 
   @UseGuards(SimpleUserGuard)
   @Patch()
   async addProductToCart(
     @Body('cart') cart: any,
-    @Cookies() cartCookies: CartCookiesDto
+    @Cookies() cartCookies: CartCookiesDto,
   ) {
     return {
-      status: "success",
-      data: await this.cartsUseCases.addProductToCart(cart, cartCookies.cart_token, cartCookies.cart_id)
-    }
+      status: 'success',
+      data: await this.cartsUseCases.addProductToCart(
+        cart,
+        cartCookies.cart_token,
+        cartCookies.cart_id,
+      ),
+    };
   }
 }

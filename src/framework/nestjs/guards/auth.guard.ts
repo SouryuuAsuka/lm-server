@@ -1,4 +1,9 @@
-import { Injectable, ForbiddenException, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  ForbiddenException,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
@@ -9,7 +14,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       if (request.cookies && request.cookies.accessToken) {
         throw err || new UnauthorizedException();
       } else {
-        throw new ForbiddenException()
+        throw new ForbiddenException();
       }
     } else {
       const isAdmin = user.role > 4 ? true : false;
@@ -30,10 +35,9 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
           role: 0,
           email: null,
           isAdmin: false,
-          isAuth: false
+          isAuth: false,
         };
-      } else 
-      throw err || new UnauthorizedException();
+      } else throw err || new UnauthorizedException();
     } else {
       const isAdmin = user.role > 4 ? true : false;
       const isAuth = true;
@@ -45,7 +49,7 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
 export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
   handleRequest(err: any, user: any) {
     if (err || !user) {
-      throw new ForbiddenException()
+      throw new ForbiddenException();
     }
     return user;
   }

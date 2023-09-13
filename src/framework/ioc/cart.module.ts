@@ -6,8 +6,6 @@ import { CartsController } from '@presentation/controllers/';
 @Module({
   imports: [],
   controllers: [CartsController],
-  providers: [
-    CartsUseCases,
-  ],
+  providers: [CartsUseCases],
 })
 export class CartsModule {}

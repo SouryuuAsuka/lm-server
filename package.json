@@ -54,7 +54,8 @@
     "@domain": "src/domain",
     "@configuration": "src/configuration",
     "@framework": "src/framework",
-    "@presentation": "src/presentation"
+    "@presentation": "src/presentation",
+    "@tmp": "tmp"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

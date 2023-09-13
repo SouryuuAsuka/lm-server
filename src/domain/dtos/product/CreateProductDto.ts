@@ -1,7 +1,6 @@
 import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
 
 export class CreateProductDto {
-    
   @IsNumber()
   @IsNotEmpty()
   orgId: string;
@@ -25,5 +24,4 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   lang: string;
-
 }

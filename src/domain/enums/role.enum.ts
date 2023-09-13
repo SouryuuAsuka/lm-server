@@ -4,4 +4,4 @@ enum Role {
   Moderator = 4,
 }
 
-export default Role
+export default Role;

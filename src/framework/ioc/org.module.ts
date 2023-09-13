@@ -6,8 +6,6 @@ import { OrgsController } from '@presentation/controllers/';
 @Module({
   imports: [],
   controllers: [OrgsController],
-  providers: [
-    OrgsUseCases,
-  ],
+  providers: [OrgsUseCases],
 })
 export class OrgsModule {}

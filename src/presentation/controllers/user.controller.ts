@@ -1,8 +1,22 @@
-import { Controller, Get, Param, UseGuards, Post, Body, Put, Query, Delete, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  Post,
+  Body,
+  Put,
+  Query,
+  Delete,
+  Req,
+} from '@nestjs/common';
 import { UsersUseCases } from '@application/use-cases/user/user.use-cases';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.guard';
+import {
+  JwtAuthGuard,
+  SimpleUserGuard,
+} from '@framework/nestjs/guards/auth.guard';
 import RoleGuard from '@framework/nestjs/guards/role.guard';
 import Role from '@domain/enums/role.enum';
 
@@ -12,20 +26,18 @@ import Role from '@domain/enums/role.enum';
   version: '1',
 })
 export class UsersController {
-  constructor(private usersUseCases: UsersUseCases) { }
+  constructor(private usersUseCases: UsersUseCases) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getUser(
-    @Req() req: any,
-  ) {
+  async getUser(@Req() req: any) {
     const user = await this.usersUseCases.getUser(req.user.id);
     return {
-      status: "success",
+      status: 'success',
       data: {
-        user: user
-      }
-    }
+        user: user,
+      },
+    };
   }
 
   @UseGuards(RoleGuard(Role.User))
@@ -35,14 +47,14 @@ export class UsersController {
     @Param('username') username: string,
     @Req() req: any,
   ) {
-    console.log(JSON.stringify(req.user))
+    console.log(JSON.stringify(req.user));
     const profile = await this.usersUseCases.getUserByUsername(username);
     return {
-      status: "success",
+      status: 'success',
       data: {
-        profile: profile
-      }
-    }
+        profile: profile,
+      },
+    };
   }
 
   @UseGuards(RoleGuard(Role.User))
@@ -55,9 +67,14 @@ export class UsersController {
     @Query('category') category?: string,
   ) {
     return {
-      status: "success",
-      data: await this.usersUseCases.getOrgListByUsername(username, page, city, category)
-    }
+      status: 'success',
+      data: await this.usersUseCases.getOrgListByUsername(
+        username,
+        page,
+        city,
+        category,
+      ),
+    };
   }
 
   /*@Post('signin')

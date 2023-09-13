@@ -6,9 +6,6 @@ import { CouriersController } from '@presentation/controllers';
 @Module({
   imports: [],
   controllers: [CouriersController],
-  providers: [
-    CouriersUseCases,
-  ],
-  
+  providers: [CouriersUseCases],
 })
 export class CouriersModule {}

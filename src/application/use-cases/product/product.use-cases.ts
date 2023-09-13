@@ -10,8 +10,13 @@ export class ProductsUseCases {
     private readonly productsRepository: IProductsRepository,
     private readonly orgsRepository: IOrgsRepository,
     private readonly awsRepository: IAwsService,
-  ) { }
-  async createProduct(isAdmin: boolean, userId: number, product: CreateProductDto, file: any) {
+  ) {}
+  async createProduct(
+    isAdmin: boolean,
+    userId: number,
+    product: CreateProductDto,
+    file: any,
+  ) {
     let fullAccess = false;
     if (isAdmin) {
       fullAccess = true;
@@ -26,15 +31,22 @@ export class ProductsUseCases {
       await this.awsRepository.savePicture(file, productId, 'products');
       return true;
     } else {
-      throw "Ошибка доступа";
+      throw 'Ошибка доступа';
     }
   }
-  async editProduct(isAdmin: boolean, userId: number, productId: number, product: UpdateProductDto, file: any) {
+  async editProduct(
+    isAdmin: boolean,
+    userId: number,
+    productId: number,
+    product: UpdateProductDto,
+    file: any,
+  ) {
     let fullAccess = false;
     if (isAdmin) {
       fullAccess = true;
     } else {
-      const ownerId = await this.productsRepository.getOwnerOfProduct(productId)
+      const ownerId =
+        await this.productsRepository.getOwnerOfProduct(productId);
       if (userId == ownerId) {
         fullAccess = true;
       }
@@ -44,15 +56,21 @@ export class ProductsUseCases {
       await this.awsRepository.savePicture(file, product.productId, 'products');
       return true;
     } else {
-      throw "Ошибка доступа";
+      throw 'Ошибка доступа';
     }
   }
-  async setActiveProduct(isAdmin: boolean, userId: number, productId: number, status: string) {
+  async setActiveProduct(
+    isAdmin: boolean,
+    userId: number,
+    productId: number,
+    status: string,
+  ) {
     let fullAccess = false;
     if (isAdmin) {
       fullAccess = true;
     } else {
-      const ownerId = await this.productsRepository.getOwnerOfProduct(productId)
+      const ownerId =
+        await this.productsRepository.getOwnerOfProduct(productId);
       if (userId == ownerId) {
         fullAccess = true;
       }
@@ -61,7 +79,7 @@ export class ProductsUseCases {
       await this.productsRepository.setActiveProduct(status, productId);
       return true;
     } else {
-      throw "Ошибка доступа";
+      throw 'Ошибка доступа';
     }
   }
 }

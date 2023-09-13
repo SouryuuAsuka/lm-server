@@ -24,7 +24,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     return null;
   }
 
-  validate(payload: any) {
+  validate(payload: RefreshTokenStrategy) {
     return payload;
   }
 }

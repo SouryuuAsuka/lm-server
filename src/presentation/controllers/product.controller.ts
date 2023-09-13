@@ -1,8 +1,22 @@
-import { Controller, Get, Param, UseGuards, Post, Body, Put, Query, Patch, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  Post,
+  Body,
+  Put,
+  Query,
+  Patch,
+  Req,
+} from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from '@domain/dtos/product';
 import { ProductsUseCases } from '@application/use-cases/product/product.use-cases';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard, SimpleUserGuard } from '@framework/nestjs/guards/auth.guard';
+import {
+  JwtAuthGuard,
+  SimpleUserGuard,
+} from '@framework/nestjs/guards/auth.guard';
 import RoleGuard from '@framework/nestjs/guards/role.guard';
 import Role from '@domain/enums/role.enum';
 
@@ -12,7 +26,7 @@ import Role from '@domain/enums/role.enum';
   version: '1',
 })
 export class ProductsController {
-  constructor(private productsUseCases: ProductsUseCases) { }
+  constructor(private productsUseCases: ProductsUseCases) {}
 
   @UseGuards(RoleGuard(Role.Manager))
   @UseGuards(JwtAuthGuard)
@@ -22,11 +36,16 @@ export class ProductsController {
     @Req() req: any,
   ) {
     const file = null;
-    await this.productsUseCases.createProduct(req.user.isAdmin, req.user.id, createProductDto, file);
+    await this.productsUseCases.createProduct(
+      req.user.isAdmin,
+      req.user.id,
+      createProductDto,
+      file,
+    );
     return {
-      status: "success",
-      data: {}
-    } 
+      status: 'success',
+      data: {},
+    };
   }
 
   @UseGuards(RoleGuard(Role.Manager))
@@ -38,13 +57,19 @@ export class ProductsController {
     @Req() req: any,
   ) {
     const file = null;
-    await this.productsUseCases.editProduct(req.user.isAdmin, req.user.id, productId, updateProductDto, file);
+    await this.productsUseCases.editProduct(
+      req.user.isAdmin,
+      req.user.id,
+      productId,
+      updateProductDto,
+      file,
+    );
     return {
-      status: "success",
-      data: {}
-    } 
+      status: 'success',
+      data: {},
+    };
   }
-  
+
   @UseGuards(RoleGuard(Role.Manager))
   @UseGuards(JwtAuthGuard)
   @Patch(':productId/active')
@@ -53,10 +78,15 @@ export class ProductsController {
     @Body('status') status: string,
     @Req() req: any,
   ) {
-    await this.productsUseCases.setActiveProduct(req.user.isAdmin, req.user.id, productId, status);
+    await this.productsUseCases.setActiveProduct(
+      req.user.isAdmin,
+      req.user.id,
+      productId,
+      status,
+    );
     return {
-      status: "success",
-      data: {}
-    }
+      status: 'success',
+      data: {},
+    };
   }
 }

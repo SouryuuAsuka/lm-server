@@ -10,11 +10,11 @@ import {
   CartsModule,
   AuthModule,
 } from 'src/framework/ioc';
-import { 
-  HashModule, 
-  DatabaseModule, 
-  JwtServicesModule, 
-  AwsModule 
+import {
+  HashModule,
+  DatabaseModule,
+  JwtServicesModule,
+  AwsModule,
 } from '@application/proxy';
 import { ExceptionsModule } from '@presentation/exceptions/exceptions.module';
 
@@ -23,8 +23,8 @@ import { ExceptionsModule } from '@presentation/exceptions/exceptions.module';
     AwsModule,
     ExceptionsModule,
     JwtServicesModule,
-    HashModule, 
-    DatabaseModule, 
+    HashModule,
+    DatabaseModule,
     UsersModule,
     RequestsModule,
     PaymentsModule,
@@ -37,4 +37,4 @@ import { ExceptionsModule } from '@presentation/exceptions/exceptions.module';
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

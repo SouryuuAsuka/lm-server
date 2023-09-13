@@ -9,4 +9,3 @@ export class CartCookiesDto {
   @IsNotEmpty()
   cart_token: string;
 }
-

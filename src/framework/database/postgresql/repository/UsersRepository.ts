@@ -7,10 +7,11 @@ export class UsersRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
-  ) { }
+  ) {}
   async getUserByUsername(username: string) {
     try {
-      const userRow = await this.pool.query(`
+      const userRow = await this.pool.query(
+        `
         SELECT 
         user_id AS "userId"
         , username AS username
@@ -23,16 +24,20 @@ export class UsersRepository {
         , telegram AS telegram
         , avatar AS avatar
         , pass_salt AS "passSalt"
-        FROM users WHERE LOWER(username) = $1`
-        , [username.toLowerCase()]);
-      if (userRow.rowCount === 0) throw new Error("Пользователь не найден");
-      let user = userRow.rows[0];
+        FROM users WHERE LOWER(username) = $1`,
+        [username.toLowerCase()],
+      );
+      if (userRow.rowCount === 0) throw new Error('Пользователь не найден');
+      const user = userRow.rows[0];
       if (!user.telegram) {
         const salt = user.passSalt;
         user.tgCode = salt.substring(salt.length - 6);
       } else {
-        const tgUserRow = await this.pool.query(`SELECT * FROM tg_users WHERE user_id = $1`, [user.userId]);
-        if (tgUserRow.rowCount === 0) throw new Error("Пользователь не найден");
+        const tgUserRow = await this.pool.query(
+          `SELECT * FROM tg_users WHERE user_id = $1`,
+          [user.userId],
+        );
+        if (tgUserRow.rowCount === 0) throw new Error('Пользователь не найден');
         user.tgUsername = tgUserRow.rows[0].username;
       }
       delete user.passSalt;
@@ -41,16 +46,24 @@ export class UsersRepository {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getOrgListByUsername(username: string, page: number = 1, city: string = '%', category: string = '0, 1, 2') {
+  async getOrgListByUsername(
+    username: string,
+    page: number = 1,
+    city: string = '%',
+    category: string = '0, 1, 2',
+  ) {
     try {
-      console.log(" page: " + page + " city: " + city + " category: " + category)
-      let sqlVar = {
+      console.log(
+        ' page: ' + page + ' city: ' + city + ' category: ' + category,
+      );
+      const sqlVar = {
         page: (page - 1) * 10,
         city: city,
-        category: "{" + category + "}"
-      }
-      console.log(JSON.stringify(sqlVar))
-      const orgRow = await this.pool.query(`
+        category: '{' + category + '}',
+      };
+      console.log(JSON.stringify(sqlVar));
+      const orgRow = await this.pool.query(
+        `
         SELECT 
         org.org_id AS id
         , org.name AS name
@@ -63,13 +76,18 @@ export class UsersRepository {
         LEFT JOIN users AS u
         ON org.owner = u.user_id
         WHERE org.city LIKE $1 AND org.category = ANY($2) AND u.username = $3
-        OFFSET $4 LIMIT 10`, [sqlVar.city, sqlVar.category, username, sqlVar.page]);
-      const orgCount = await this.pool.query(`
+        OFFSET $4 LIMIT 10`,
+        [sqlVar.city, sqlVar.category, username, sqlVar.page],
+      );
+      const orgCount = await this.pool.query(
+        `
         SELECT COUNT(*)  
         FROM organizations AS org 
         LEFT JOIN users AS u
         ON org.owner = u.user_id
-        WHERE org.city LIKE $1 AND org.category = ANY($2) AND u.username = $3`, [sqlVar.city, sqlVar.category, username]);
+        WHERE org.city LIKE $1 AND org.category = ANY($2) AND u.username = $3`,
+        [sqlVar.city, sqlVar.category, username],
+      );
       if (orgRow.rowCount === 0) {
         return { orgs: [], count: 0 };
       } else {
@@ -81,8 +99,11 @@ export class UsersRepository {
   }
   async updateUserRole(userId: number, userRole) {
     try {
-      const response = await this.pool.query(`UPDATE users SET user_role = $1 WHERE user_id = $2;`, [userRole, userId]);
-      if (response.rowCount === 0) throw new Error("Пользователь не найден");
+      const response = await this.pool.query(
+        `UPDATE users SET user_role = $1 WHERE user_id = $2;`,
+        [userRole, userId],
+      );
+      if (response.rowCount === 0) throw new Error('Пользователь не найден');
       return true;
     } catch (err) {
       this.exceptionService.DatabaseException(err.message);
@@ -90,7 +111,10 @@ export class UsersRepository {
   }
   async getUserById(userId: number) {
     try {
-      const userRow = await this.pool.query(`SELECT * FROM users WHERE user_id = $1`, [userId]);
+      const userRow = await this.pool.query(
+        `SELECT * FROM users WHERE user_id = $1`,
+        [userId],
+      );
       if (userRow.rows[0] != undefined) {
         const user = {
           id: userRow.rows[0].user_id,
@@ -104,14 +128,17 @@ export class UsersRepository {
           telegram: userRow.rows[0].telegram,
           avatar: userRow.rows[0].avatar,
           tgCode: null,
-          tgUsername: null
-        }
+          tgUsername: null,
+        };
         if (!userRow.rows[0].tech_telegram) {
-          let salt = userRow.rows[0].pass_salt;
-          user.tgCode = salt.substring(salt.length - 6)
+          const salt = userRow.rows[0].pass_salt;
+          user.tgCode = salt.substring(salt.length - 6);
           return user;
         } else {
-          const tgUserRow = await this.pool.query(`SELECT * FROM tg_tech_users WHERE user_id = $1`, [userRow.rows[0].user_id]);
+          const tgUserRow = await this.pool.query(
+            `SELECT * FROM tg_tech_users WHERE user_id = $1`,
+            [userRow.rows[0].user_id],
+          );
           if (tgUserRow.rows[0] != undefined) {
             user.tgUsername = tgUserRow.rows[0].username;
             return user;
@@ -128,9 +155,15 @@ export class UsersRepository {
   }
   async createUser(username, email, hash, salt) {
     try {
-      const userInsertString = `INSERT INTO users (username, email, password, pass_salt, regtime) VALUES ($1, $2, $3, $4, $5) RETURNING user_id AS "userId";`
-      const response = await this.pool.query(userInsertString, [username, email, hash, salt, "NOW()"]);
-      if (response.rowCount === 0) throw new Error("Юзер не создан");
+      const userInsertString = `INSERT INTO users (username, email, password, pass_salt, regtime) VALUES ($1, $2, $3, $4, $5) RETURNING user_id AS "userId";`;
+      const response = await this.pool.query(userInsertString, [
+        username,
+        email,
+        hash,
+        salt,
+        'NOW()',
+      ]);
+      if (response.rowCount === 0) throw new Error('Юзер не создан');
       return response.rows[0];
     } catch (err) {
       this.exceptionService.DatabaseException(err.message);
@@ -139,8 +172,13 @@ export class UsersRepository {
   async createMailToken(userId, mailToken, mailKeyHash) {
     try {
       const mailInsertString = `INSERT INTO mail_confirm_tokens (user_id, mail_token, mail_key, created) VALUES ($1, $2, $3, $4);`;
-      const response = await this.pool.query(mailInsertString, [userId, mailToken, mailKeyHash, "NOW()"]);
-      if (response.rowCount === 0) throw new Error("Почтовый токен не создан");
+      const response = await this.pool.query(mailInsertString, [
+        userId,
+        mailToken,
+        mailKeyHash,
+        'NOW()',
+      ]);
+      if (response.rowCount === 0) throw new Error('Почтовый токен не создан');
       return true;
     } catch (err) {
       this.exceptionService.DatabaseException(err.message);
@@ -148,12 +186,14 @@ export class UsersRepository {
   }
   async getMailConfirm(mailToken, mailKey) {
     try {
-      const response = await this.pool.query(`
+      const response = await this.pool.query(
+        `
       SELECT 
       user_id AS "userId"
       , mail_key AS "mailKey"
-      FROM mail_confirm_tokens WHERE mail_token = $1;`
-        , [mailToken, mailKey]);
+      FROM mail_confirm_tokens WHERE mail_token = $1;`,
+        [mailToken, mailKey],
+      );
       if (response.rowCount === 0) throw new Error('Токен валидации не найден');
       return response.rows[0];
     } catch (err) {
@@ -162,7 +202,10 @@ export class UsersRepository {
   }
   async deleteMailConfirm(userId) {
     try {
-      const response = await this.pool.query(`DELETE FROM mail_confirm_tokens WHERE user_id = $1;`, [userId]);
+      const response = await this.pool.query(
+        `DELETE FROM mail_confirm_tokens WHERE user_id = $1;`,
+        [userId],
+      );
       if (response.rowCount === 0) throw new Error('Токен валидации не найден');
       return true;
     } catch (err) {

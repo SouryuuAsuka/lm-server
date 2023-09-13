@@ -1,1 +1,1 @@
-export * from './CartCookiesDto'
+export * from './CartCookiesDto';

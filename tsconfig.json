@@ -23,6 +23,7 @@
       "@domain/*": ["src/domain/*"],
       "@framework/*": ["src/framework/*"],
       "@presentation/*": ["src/presentation/*"],
+      "@tmp/*": ["tmp/*"]
     }
   }
 }
