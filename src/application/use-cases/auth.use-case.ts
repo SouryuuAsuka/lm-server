@@ -10,7 +10,7 @@ export class AuthUseCases {
     private readonly jwtService: JwtModule,
     private readonly hashService: IHashService,
     private readonly mailService: IMailService,
-  ) {}
+  ) { }
 
   async validateUser(login: string, password: string, type: string) {
     let user: any;
@@ -67,13 +67,13 @@ export class AuthUseCases {
         user.email,
       ); //Checking if user already exists
       if (Object.keys(emailSearch).length === 0) {
-        throw 'Пользователь с таким Email уже существует';
+        throw new Error('Пользователь с таким Email уже существует');
       }
       const usernameSearch = await this.authRepository.getUserPassByUsername(
         user.username,
       ); //Checking if user already exists
       if (Object.keys(usernameSearch).length === 0) {
-        throw 'Пользователь с таким Username уже существует';
+        throw new Error('Пользователь с таким Username уже существует');
       }
       const salt = await this.hashService.generateSalt(10);
       const hash = await this.hashService.getPasswordHash(user.password, salt);
@@ -100,36 +100,61 @@ export class AuthUseCases {
     }
   }
   async refreshToken(decoded: any, ip: string) {
-    const user = await this.authRepository.searchRefreshToken(
-      decoded.id,
-      decoded.date,
-      decoded.hash,
-    );
-    const nowTime = new Date();
-    const tokenCreated = new Date(decoded.date);
-    const tokenTime = tokenCreated.setMonth(nowTime.getMonth() + 1);
-    if (new Date(tokenTime).getTime() > nowTime.getTime()) {
-      const hash = await this.hashService.generateHash(8);
-      const accessToken = await this.jwtService.generateAccessToken(
-        user.id,
-        user.email,
-        user.role,
+    try {
+      const user = await this.authRepository.searchRefreshToken(
+        decoded.id,
+        decoded.date,
+        decoded.hash,
       );
-      const refreshToken = await this.jwtService.generateRefreshToken(
-        user.id,
-        hash,
-        nowTime,
-      );
-      await this.authRepository.updateRefreshTokenById(
-        ip,
-        nowTime,
-        hash,
-        user.tokenId,
-      );
-      return { accessToken: accessToken, refreshToken: refreshToken };
-    } else {
-      throw 'Ошибка сервера';
+      const nowTime = new Date();
+      const tokenCreated = new Date(decoded.date);
+      const tokenTime = tokenCreated.setMonth(nowTime.getMonth() + 1);
+      if (new Date(tokenTime).getTime() > nowTime.getTime()) {
+        const hash = await this.hashService.generateHash(8);
+        const accessToken = await this.jwtService.generateAccessToken(
+          user.id,
+          user.email,
+          user.role,
+        );
+        const refreshToken = await this.jwtService.generateRefreshToken(
+          user.id,
+          hash,
+          nowTime,
+        );
+        await this.authRepository.updateRefreshTokenById(
+          ip,
+          nowTime,
+          hash,
+          user.tokenId,
+        );
+        return { accessToken: accessToken, refreshToken: refreshToken };
+      } else {
+        throw new Error('Ошибка сервера');
+      }
+    } catch (err: any) {
+      throw err;
     }
   }
-  async signout() {}
+  async signout(userId, refreshToken) {
+    try {
+      const tokenRow = await this.authRepository.getRefreshTokenById(userId);
+      if (tokenRow.length === 0) throw new Error("Пользователь не найден");
+      const nowTime = new Date();
+      let tokenId = null;
+      tokenRow.forEach(element => {
+        if (tokenId) return;
+        const tokenCreated = new Date(element.created);
+        const tokenTime = tokenCreated.setMonth(nowTime.getMonth() + 1);
+        if (element.token == refreshToken && new Date(tokenTime).getTime() > nowTime.getTime()) {
+          tokenId = element.token;
+          return;
+        }
+      });
+      if (!tokenId) throw new Error("Ошибка при верификации токена");
+      await this.authRepository.deleteRefreshTokenById(tokenId);
+      return true;
+    } catch (err) {
+      throw err;
+    }
+  }
 }

@@ -47,7 +47,6 @@ export class JwtModule {
         publicKey: process.env.REFRESH_KEY_SECRET,
       });
     } catch (err) {
-      console.log(err);
       throw err;
     }
   }
