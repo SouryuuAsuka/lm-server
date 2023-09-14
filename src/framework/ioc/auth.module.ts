@@ -1,14 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AuthUseCases } from '@src/application/use-cases/auth/auth.use-cases';
+import { AuthUseCases } from '@src/application/use-cases/auth.use-case';
 import { AuthController } from '@src/presentation/controllers/';
 import { JwtModule } from '@nestjs/jwt';
-import { HashModule } from '@src/application/proxy/hash.module';
-import {
-  LocalStrategy,
-  AccessTokenStrategy,
-  RefreshTokenStrategy,
-  SimpleTokenStrategy,
-} from '@src/framework/strategies/';
 
 @Module({
   imports: [
@@ -22,11 +15,6 @@ import {
   controllers: [AuthController],
   providers: [
     AuthUseCases,
-    LocalStrategy,
-    AccessTokenStrategy,
-    SimpleTokenStrategy,
-    RefreshTokenStrategy,
-    HashModule,
   ],
 })
 export class AuthModule {}

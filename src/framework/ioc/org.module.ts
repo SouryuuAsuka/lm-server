@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { OrgsUseCases } from '@src/application/use-cases/org/org.use-cases';
+import { OrgsUseCases } from '@src/application/use-cases/org.use-case';
 import { OrgsController } from '@src/presentation/controllers/';
 
 @Module({

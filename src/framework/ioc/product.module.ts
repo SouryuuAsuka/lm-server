@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { ProductsUseCases } from '@src/application/use-cases/product/product.use-cases';
+import { ProductsUseCases } from '@src/application/use-cases/product.use-case';
 import { ProductsController } from '@src/presentation/controllers/';
 
 @Module({

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { UsersUseCases } from '@src/application/use-cases/user/user.use-cases';
+import { UsersUseCases } from '@src/application/use-cases/user.use-case';
 import { UsersController } from '@src/presentation/controllers/';
 
 @Module({
