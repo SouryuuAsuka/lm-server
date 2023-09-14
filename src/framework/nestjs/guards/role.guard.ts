@@ -1,6 +1,6 @@
-import Role from '@domain/enums/role.enum';
+import Role from '@src/domain/enums/role.enum';
 import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common';
-import RequestWithUser from '@domain/interfaces/requestWithUser.interface';
+import RequestWithUser from '@src/domain/interfaces/requestWithUser.interface';
 
 const RoleGuard = (role: Role): Type<CanActivate> => {
   class RoleGuardMixin implements CanActivate {

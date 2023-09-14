@@ -9,15 +9,15 @@ import {
   Patch,
   Req,
 } from '@nestjs/common';
-import { OrgsUseCases } from '@application/use-cases/org.use-case';
-import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';
+import { OrgsUseCases } from '@src/application/use-cases/org.use-case';
+import { CreateOrgDto, UpdateOrgDto } from '@src/domain/dtos/org';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import {
   JwtAuthGuard,
   SimpleUserGuard,
-} from '@framework/nestjs/guards/auth.guard';
-import RoleGuard from '@framework/nestjs/guards/role.guard';
-import Role from '@domain/enums/role.enum';
+} from '@src/framework/nestjs/guards/auth.guard';
+import RoleGuard from '@src/framework/nestjs/guards/role.guard';
+import Role from '@src/domain/enums/role.enum';
 @ApiTags('orgs')
 @Controller({
   path: 'orgs',

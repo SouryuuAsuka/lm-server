@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IException } from '@domain/interfaces/exception.interface';
+import { IException } from '@src/domain/interfaces/exception.interface';
 import { DatabaseException } from './database.exception';
 
 @Injectable()

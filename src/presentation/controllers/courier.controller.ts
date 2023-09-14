@@ -1,9 +1,9 @@
 import { Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
-import { CouriersUseCases } from '@application/use-cases/courier.use-case';
+import { CouriersUseCases } from '@src/application/use-cases/courier.use-case';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@framework/nestjs/guards/auth.guard';
-import RoleGuard from '@framework/nestjs/guards/role.guard';
-import Role from '@domain/enums/role.enum';
+import { JwtAuthGuard } from '@src/framework/nestjs/guards/auth.guard';
+import RoleGuard from '@src/framework/nestjs/guards/role.guard';
+import Role from '@src/domain/enums/role.enum';
 @ApiTags('couriers')
 @Controller({
   path: 'couriers',

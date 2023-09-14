@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { IMailService } from '@application/ports/IMailService';
+import { IMailService } from '@src/application/ports/IMailService';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { MailService } from '@framework/mail/nodemail/nodemail.service';
+import { MailService } from '@src/framework/mail/nodemail/nodemail.service';
 
 @Module({
   imports: [

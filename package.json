@@ -52,11 +52,8 @@
     "validator": "^13.11.0"
   },
   "_moduleAliases": {
-    "@application": "src/application",
-    "@domain": "src/domain",
-    "@configuration": "src/configuration",
-    "@framework": "src/framework",
-    "@presentation": "src/presentation",
+    "@src": "src",
+    "@test": "test",
     "@tmp": "tmp"
   },
   "devDependencies": {

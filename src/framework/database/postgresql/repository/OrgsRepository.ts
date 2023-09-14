@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Pool } from 'pg';
-import { ExceptionsService } from '@presentation/exceptions/exceptions.service';
+import { ExceptionsService } from '@src/presentation/exceptions/exceptions.service';
 
 @Injectable()
 export class OrgsRepository {

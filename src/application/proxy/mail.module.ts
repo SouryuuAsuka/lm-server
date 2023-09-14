@@ -1,5 +1,5 @@
 import { Module, Global } from '@nestjs/common';
-import { NodemailMailModule } from '@framework/mail/nodemail/nodemail.module';
+import { NodemailMailModule } from '@src/framework/mail/nodemail/nodemail.module';
 
 @Global()
 @Module({

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IPaymentsRepository } from '@application/ports/database/IPaymentsRepository';
-import { IOrgsRepository } from '@application/ports/database/IOrgsRepository';
+import { IPaymentsRepository } from '@src/application/ports/database/IPaymentsRepository';
+import { IOrgsRepository } from '@src/application/ports/database/IOrgsRepository';
 
 @Injectable()
 export class PaymentsUseCases {

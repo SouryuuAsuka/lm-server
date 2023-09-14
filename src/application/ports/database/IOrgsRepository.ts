@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';
+import { CreateOrgDto, UpdateOrgDto } from '@src/domain/dtos/org';
 @Injectable()
 export abstract class IOrgsRepository {
   abstract getOrgList(page: number, city: string, category: string): any;

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { IHashService } from '@application/ports/IHashService';
+import { IHashService } from '@src/application/ports/IHashService';
 import { BcryptService } from './bcrypt.service';
 
 @Module({

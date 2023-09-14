@@ -7,12 +7,12 @@ import {
   Patch,
   Req,
 } from '@nestjs/common';
-import { CreateProductDto, UpdateProductDto } from '@domain/dtos/product';
-import { ProductsUseCases } from '@application/use-cases/product.use-case';
+import { CreateProductDto, UpdateProductDto } from '@src/domain/dtos/product';
+import { ProductsUseCases } from '@src/application/use-cases/product.use-case';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@framework/nestjs/guards/auth.guard';
-import RoleGuard from '@framework/nestjs/guards/role.guard';
-import Role from '@domain/enums/role.enum';
+import { JwtAuthGuard } from '@src/framework/nestjs/guards/auth.guard';
+import RoleGuard from '@src/framework/nestjs/guards/role.guard';
+import Role from '@src/domain/enums/role.enum';
 
 @ApiTags('products')
 @Controller({

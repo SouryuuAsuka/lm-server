@@ -9,11 +9,11 @@ import {
   Delete,
   Req,
 } from '@nestjs/common';
-import { PaymentsUseCases } from '@application/use-cases/payment.use-case';
+import { PaymentsUseCases } from '@src/application/use-cases/payment.use-case';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@framework/nestjs/guards/auth.guard';
-import RoleGuard from '@framework/nestjs/guards/role.guard';
-import Role from '@domain/enums/role.enum';
+import { JwtAuthGuard } from '@src/framework/nestjs/guards/auth.guard';
+import RoleGuard from '@src/framework/nestjs/guards/role.guard';
+import Role from '@src/domain/enums/role.enum';
 
 @ApiTags('payments')
 @Controller({

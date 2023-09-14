@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { RequestsUseCases } from '@application/use-cases/request/request.use-cases';
-import { RequestsController } from '@presentation/controllers/';
+import { RequestsUseCases } from '@src/application/use-cases/request/request.use-cases';
+import { RequestsController } from '@src/presentation/controllers/';
 
 @Module({
   imports: [],

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IOrgsRepository } from '@application/ports/database/IOrgsRepository';
-import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';
+import { IOrgsRepository } from '@src/application/ports/database/IOrgsRepository';
+import { CreateOrgDto, UpdateOrgDto } from '@src/domain/dtos/org';
 
 @Injectable()
 export class OrgsUseCases {

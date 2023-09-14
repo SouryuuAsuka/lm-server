@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { IAuthRepository } from '@application/ports/database/IAuthRepository';
-import { JwtModule } from '@framework/jwt/jwt.module';
-import { IHashService } from '@application/ports/IHashService';
-import { IMailService } from '@application/ports/IMailService';
+import { IAuthRepository } from '@src/application/ports/database/IAuthRepository';
+import { JwtModule } from '@src/framework/jwt/jwt.module';
+import { IHashService } from '@src/application/ports/IHashService';
+import { IMailService } from '@src/application/ports/IMailService';
 @Injectable()
 export class AuthUseCases {
   constructor(

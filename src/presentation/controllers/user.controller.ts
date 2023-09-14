@@ -1,12 +1,12 @@
 import { Controller, Get, Param, UseGuards, Query, Req } from '@nestjs/common';
-import { UsersUseCases } from '@application/use-cases/user.use-case';
+import { UsersUseCases } from '@src/application/use-cases/user.use-case';
 import { ApiTags } from '@nestjs/swagger';
 import {
   JwtAuthGuard,
   SimpleUserGuard,
-} from '@framework/nestjs/guards/auth.guard';
-import RoleGuard from '@framework/nestjs/guards/role.guard';
-import Role from '@domain/enums/role.enum';
+} from '@src/framework/nestjs/guards/auth.guard';
+import RoleGuard from '@src/framework/nestjs/guards/role.guard';
+import Role from '@src/domain/enums/role.enum';
 
 @ApiTags('users')
 @Controller({

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { CouriersUseCases } from '@application/use-cases/courier/courier.use-cases';
-import { CouriersController } from '@presentation/controllers';
+import { CouriersUseCases } from '@src/application/use-cases/courier/courier.use-cases';
+import { CouriersController } from '@src/presentation/controllers';
 
 @Module({
   imports: [],

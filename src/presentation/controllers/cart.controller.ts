@@ -7,11 +7,11 @@ import {
   Query,
   Patch,
 } from '@nestjs/common';
-import { CartsUseCases } from '@application/use-cases/cart.use-case';
-import { CartCookiesDto } from '@domain/dtos/cart';
-import { Cookies } from '@framework/nestjs/decorators';
+import { CartsUseCases } from '@src/application/use-cases/cart.use-case';
+import { CartCookiesDto } from '@src/domain/dtos/cart';
+import { Cookies } from '@src/framework/nestjs/decorators';
 import { ApiTags } from '@nestjs/swagger';
-import { SimpleUserGuard } from '@framework/nestjs/guards/auth.guard';
+import { SimpleUserGuard } from '@src/framework/nestjs/guards/auth.guard';
 @ApiTags('carts')
 @Controller({
   path: 'carts',

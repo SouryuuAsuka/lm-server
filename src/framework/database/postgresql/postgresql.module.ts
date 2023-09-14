@@ -8,16 +8,16 @@ import {
   RequestsRepository,
   UsersRepository,
   ProductsRepository,
-} from '@framework/database/postgresql/repository';
+} from '@src/framework/database/postgresql/repository';
 import { Pool } from 'pg';
-import { IAuthRepository } from '@application/ports/database/IAuthRepository';
-import { ICartsRepository } from '@application/ports/database/ICartsRepository';
-import { ICouriersRepository } from '@application/ports/database/ICouriersRepository';
-import { IOrgsRepository } from '@application/ports/database/IOrgsRepository';
-import { IPaymentsRepository } from '@application/ports/database/IPaymentsRepository';
-import { IRequestsRepository } from '@application/ports/database/IRequestsRepository';
-import { IUsersRepository } from '@application/ports/database/IUsersRepository';
-import { IProductsRepository } from '@application/ports/database/IProductsRepository';
+import { IAuthRepository } from '@src/application/ports/database/IAuthRepository';
+import { ICartsRepository } from '@src/application/ports/database/ICartsRepository';
+import { ICouriersRepository } from '@src/application/ports/database/ICouriersRepository';
+import { IOrgsRepository } from '@src/application/ports/database/IOrgsRepository';
+import { IPaymentsRepository } from '@src/application/ports/database/IPaymentsRepository';
+import { IRequestsRepository } from '@src/application/ports/database/IRequestsRepository';
+import { IUsersRepository } from '@src/application/ports/database/IUsersRepository';
+import { IProductsRepository } from '@src/application/ports/database/IProductsRepository';
 
 const databasePoolFactory = async () => {
   return new Pool({

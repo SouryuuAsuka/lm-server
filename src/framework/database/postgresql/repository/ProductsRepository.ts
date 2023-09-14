@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Pool } from 'pg';
-import { ExceptionsService } from '@presentation/exceptions/exceptions.service';
-import { CreateProductDto, UpdateProductDto } from '@domain/dtos/product';
+import { ExceptionsService } from '@src/presentation/exceptions/exceptions.service';
+import { CreateProductDto, UpdateProductDto } from '@src/domain/dtos/product';
 
 @Injectable()
 export class ProductsRepository {

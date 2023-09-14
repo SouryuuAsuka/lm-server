@@ -9,8 +9,8 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { SignupDto } from '@domain/dtos/user';
-import { AuthUseCases } from '@application/use-cases/auth.use-case';
+import { SignupDto } from '@src/domain/dtos/user';
+import { AuthUseCases } from '@src/application/use-cases/auth.use-case';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
@@ -18,7 +18,7 @@ import {
   JwtAuthGuard,
   SimpleUserGuard,
   RefreshTokenGuard,
-} from '@framework/nestjs/guards/auth.guard';
+} from '@src/framework/nestjs/guards/auth.guard';
 
 @ApiTags('auth')
 @Controller({
