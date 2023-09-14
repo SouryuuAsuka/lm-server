@@ -48,7 +48,7 @@ export class OrgsRepository {
       } else {
         throw 'Ошибка запроса';
       }
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -115,7 +115,7 @@ export class OrgsRepository {
       } else {
         throw new Error('Ошибка запроса');
       }
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -126,7 +126,7 @@ export class OrgsRepository {
         [orgId],
       );
       return selOrgRow.rows[0].owner;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -186,7 +186,7 @@ export class OrgsRepository {
       } else {
         return { orgs: [], count: 0 };
       }
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -216,7 +216,7 @@ export class OrgsRepository {
         20,
       ]);
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -234,7 +234,7 @@ export class OrgsRepository {
         org.orgId,
       ]);
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -250,7 +250,7 @@ export class OrgsRepository {
         await this.pool.query(orgInsertString, [publicType, owner, orgId]);
       }
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -261,7 +261,7 @@ export class OrgsRepository {
         [orgId],
       );
       return orgRow.rows[0].owner;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -306,7 +306,7 @@ export class OrgsRepository {
         [orgId, sqlVar.status, sqlVar.page, sqlVar.paid],
       );
       return { quests: quRow.rows, count: count.rows[0].count };
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

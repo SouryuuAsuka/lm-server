@@ -42,7 +42,7 @@ export class UsersRepository {
       }
       delete user.passSalt;
       return user;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -93,7 +93,7 @@ export class UsersRepository {
       } else {
         return { orgs: orgRow.rows, count: orgCount.rows[0].count };
       }
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -105,7 +105,7 @@ export class UsersRepository {
       );
       if (response.rowCount === 0) throw new Error('Пользователь не найден');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -149,7 +149,7 @@ export class UsersRepository {
       } else {
         throw 'Unauthorized access.';
       }
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -165,7 +165,7 @@ export class UsersRepository {
       );
       if (response.rowCount === 0) throw new Error('Токен валидации не найден');
       return response.rows[0];
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -177,7 +177,7 @@ export class UsersRepository {
       );
       if (response.rowCount === 0) throw new Error('Токен валидации не найден');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

@@ -21,7 +21,7 @@ export class CartsRepository {
       } else {
         return { cart: cartRow.rows[0]?.order_array };
       }
-    } catch (err) {
+    } catch (err:any) {
       console.log(err);
       this.exceptionService.DatabaseException(err.message);
     }
@@ -129,7 +129,7 @@ export class CartsRepository {
           return { cart: cartArray, prTime: prTime };
         });
       }
-    } catch (err) {
+    } catch (err:any) {
       console.log(err);
       this.exceptionService.DatabaseException(err.message);
     }
@@ -146,7 +146,7 @@ export class CartsRepository {
       ]);
       if (response.rowCount === 0) throw new Error('Корзина не найден');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       console.log(err);
       this.exceptionService.DatabaseException(err.message);
     }
@@ -164,7 +164,7 @@ export class CartsRepository {
       ]);
       if (cartRow.rowCount === 0) throw new Error('Корзина не найден');
       return { cartId: cartRow.rows[0].cart_id, token: token };
-    } catch (err) {
+    } catch (err:any) {
       console.log(err);
       this.exceptionService.DatabaseException(err.message);
     }

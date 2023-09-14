@@ -21,7 +21,7 @@ export class PaymentsRepository {
       if (response.rowCount === 0)
         throw new Error('Ошибка при изменении выплат');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -46,7 +46,7 @@ export class PaymentsRepository {
         [orgId, sqlVar.offset],
       );
       return orgRow.rows;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -68,7 +68,7 @@ export class PaymentsRepository {
         [orgId, sqlVar.offset],
       );
       return orgRow.rows;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -85,7 +85,7 @@ export class PaymentsRepository {
       if (quRow.rowCount === 0)
         throw new Error('Ошибка при регистрации выплат');
       return quRow.rows;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -100,7 +100,7 @@ export class PaymentsRepository {
       );
       if (response.rowCount === 0) throw new Error('Ошибка при поиске выплаты');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

@@ -35,7 +35,7 @@ export class RequestsRepository {
       );
       if (requestRow.rowCount === 0) throw new Error('Организация не найдена');
       return requestRow.rows[0];
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -57,7 +57,7 @@ export class RequestsRepository {
       if (response.rowCount === 0)
         throw new Error('Ошибка при переносе организации');
       return newOrgRow.rows[0];
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -79,7 +79,7 @@ export class RequestsRepository {
         [sqlVar.page],
       );
       return requestRow.rows;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -92,7 +92,7 @@ export class RequestsRepository {
       if (requestRow.rowCount === 0)
         throw new Error('Ошибка при переносе организации');
       return requestRow.rows[0];
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

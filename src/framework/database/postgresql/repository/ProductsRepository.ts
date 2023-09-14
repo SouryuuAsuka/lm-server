@@ -22,7 +22,7 @@ export class ProductsRepository {
       ]);
       if (response.rowCount === 0) throw new Error('Товар не найден');
       return response.rows[0].productId;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -37,7 +37,7 @@ export class ProductsRepository {
       );
       if (user.rowCount === 0) throw new Error('Организация не найдена');
       return user.rows[0].owner;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -54,7 +54,7 @@ export class ProductsRepository {
       ]);
       if (response.rowCount === 0) throw new Error('Товар не найден');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -68,7 +68,7 @@ export class ProductsRepository {
       ]);
       if (response.rowCount === 0) throw new Error('Товар не найден');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

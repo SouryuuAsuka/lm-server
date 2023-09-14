@@ -44,7 +44,7 @@ export class CouriersRepository {
           return { couriers: couriersList, count: count };
         }
       }
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -60,7 +60,7 @@ export class CouriersRepository {
       );
       if (tgRow.rowCount === 0) throw new Error('Курьер не найден');
       return tgRow.rows[0].app_id;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

@@ -23,7 +23,7 @@ export class AuthRepository {
         [email],
       );
       return userRow.rows[0];
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -42,7 +42,7 @@ export class AuthRepository {
         [username],
       );
       return userRow.rows[0];
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -56,7 +56,7 @@ export class AuthRepository {
       );
       if (response.rowCount === 0) throw new Error('Токен не создан');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -68,7 +68,7 @@ export class AuthRepository {
       );
       if (response.rowCount === 0) throw new Error('Токен не создан');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -80,7 +80,7 @@ export class AuthRepository {
         [userId],
       );
       return response.rows[0];
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -100,7 +100,7 @@ export class AuthRepository {
         [userId, date, hash],
       );
       return response.rows[0];
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -112,7 +112,7 @@ export class AuthRepository {
       );
       if (response.rowCount === 0) throw new Error('Токен не найден');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -128,7 +128,7 @@ export class AuthRepository {
       ]);
       if (response.rowCount === 0) throw new Error('Юзер не создан');
       return response.rows[0];
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -143,7 +143,7 @@ export class AuthRepository {
       ]);
       if (response.rowCount === 0) throw new Error('Почтовый токен не создан');
       return true;
-    } catch (err) {
+    } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
