@@ -1,21 +1,7 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Body,
-  Put,
-  UseGuards,
-  Query,
-  Patch,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { CouriersUseCases } from '@application/use-cases/courier/courier.use-cases';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  JwtAuthGuard,
-  SimpleUserGuard,
-} from '@framework/nestjs/guards/auth.guard';
+import { JwtAuthGuard } from '@framework/nestjs/guards/auth.guard';
 import RoleGuard from '@framework/nestjs/guards/role.guard';
 import Role from '@domain/enums/role.enum';
 @ApiTags('couriers')

@@ -3,20 +3,14 @@ import {
   Get,
   Param,
   UseGuards,
-  Post,
   Body,
-  Put,
-  Query,
   Patch,
   Req,
 } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from '@domain/dtos/product';
 import { ProductsUseCases } from '@application/use-cases/product/product.use-cases';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  JwtAuthGuard,
-  SimpleUserGuard,
-} from '@framework/nestjs/guards/auth.guard';
+import { JwtAuthGuard } from '@framework/nestjs/guards/auth.guard';
 import RoleGuard from '@framework/nestjs/guards/role.guard';
 import Role from '@domain/enums/role.enum';
 

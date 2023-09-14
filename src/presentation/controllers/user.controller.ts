@@ -1,18 +1,6 @@
-import {
-  Controller,
-  Get,
-  Param,
-  UseGuards,
-  Post,
-  Body,
-  Put,
-  Query,
-  Delete,
-  Req,
-} from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, Query, Req } from '@nestjs/common';
 import { UsersUseCases } from '@application/use-cases/user/user.use-cases';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 import {
   JwtAuthGuard,
   SimpleUserGuard,

@@ -3,19 +3,13 @@ import {
   Get,
   Param,
   UseGuards,
-  Post,
   Body,
-  Put,
   Query,
   Patch,
-  Delete,
 } from '@nestjs/common';
 import { RequestsUseCases } from '@application/use-cases/request/request.use-cases';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  JwtAuthGuard,
-  SimpleUserGuard,
-} from '@framework/nestjs/guards/auth.guard';
+import { JwtAuthGuard } from '@framework/nestjs/guards/auth.guard';
 import RoleGuard from '@framework/nestjs/guards/role.guard';
 import Role from '@domain/enums/role.enum';
 @ApiTags('requests')

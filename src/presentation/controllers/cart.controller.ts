@@ -4,20 +4,14 @@ import {
   UseGuards,
   Post,
   Body,
-  Put,
   Query,
   Patch,
-  Delete,
 } from '@nestjs/common';
 import { CartsUseCases } from '@application/use-cases/cart/cart.use-cases';
 import { CartCookiesDto } from '@domain/dtos/cart';
 import { Cookies } from '@framework/nestjs/decorators';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  JwtAuthGuard,
-  SimpleUserGuard,
-} from '@framework/nestjs/guards/auth.guard';
-
+import { SimpleUserGuard } from '@framework/nestjs/guards/auth.guard';
 @ApiTags('carts')
 @Controller({
   path: 'carts',

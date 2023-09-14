@@ -5,11 +5,9 @@ import {
   Param,
   Post,
   Body,
-  Put,
   Query,
   Patch,
   Req,
-  Res,
 } from '@nestjs/common';
 import { OrgsUseCases } from '@application/use-cases/org/org.use-cases';
 import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';

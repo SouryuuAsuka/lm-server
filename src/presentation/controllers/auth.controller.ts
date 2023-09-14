@@ -13,7 +13,7 @@ import { SignupDto } from '@domain/dtos/user';
 import { AuthUseCases } from '@application/use-cases/auth/auth.use-cases';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
-import { FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyReply } from 'fastify';
 import {
   JwtAuthGuard,
   SimpleUserGuard,
