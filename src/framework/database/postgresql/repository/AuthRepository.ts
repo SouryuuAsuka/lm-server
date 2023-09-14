@@ -116,4 +116,35 @@ export class AuthRepository {
       this.exceptionService.DatabaseException(err.message);
     }
   }
+  async createUser(username, email, hash, salt) {
+    try {
+      const userInsertString = `INSERT INTO users (username, email, password, pass_salt, regtime) VALUES ($1, $2, $3, $4, $5) RETURNING user_id AS "userId";`;
+      const response = await this.pool.query(userInsertString, [
+        username,
+        email,
+        hash,
+        salt,
+        'NOW()',
+      ]);
+      if (response.rowCount === 0) throw new Error('Юзер не создан');
+      return response.rows[0];
+    } catch (err) {
+      this.exceptionService.DatabaseException(err.message);
+    }
+  }
+  async createMailToken(userId, mailToken, mailKeyHash) {
+    try {
+      const mailInsertString = `INSERT INTO mail_confirm_tokens (user_id, mail_token, mail_key, created) VALUES ($1, $2, $3, $4);`;
+      const response = await this.pool.query(mailInsertString, [
+        userId,
+        mailToken,
+        mailKeyHash,
+        'NOW()',
+      ]);
+      if (response.rowCount === 0) throw new Error('Почтовый токен не создан');
+      return true;
+    } catch (err) {
+      this.exceptionService.DatabaseException(err.message);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IProductsRepository } from '@application/ports/IProductsRepository';
-import { IOrgsRepository } from '@application/ports/IOrgsRepository';
+import { IProductsRepository } from '@application/ports/database/IProductsRepository';
+import { IOrgsRepository } from '@application/ports/database/IOrgsRepository';
 import { IAwsService } from '@application/ports/IAwsService';
 import { CreateProductDto, UpdateProductDto } from '@domain/dtos/product';
 

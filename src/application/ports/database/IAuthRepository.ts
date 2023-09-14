@@ -9,4 +9,6 @@ export abstract class IAuthRepository {
   abstract getRefreshTokenById(userId: number);
   abstract searchRefreshToken(userId: number, date, hash);
   abstract updateRefreshTokenById(ip, tokenDate, tokenHash, tokenId);
+  abstract createUser(username, email, hash, salt);
+  abstract createMailToken(userId, mailToken, mailKeyHash);
 }

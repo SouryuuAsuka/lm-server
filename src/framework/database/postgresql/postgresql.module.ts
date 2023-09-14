@@ -10,14 +10,14 @@ import {
   ProductsRepository,
 } from '@framework/database/postgresql/repository';
 import { Pool } from 'pg';
-import { IAuthRepository } from '@application/ports/IAuthRepository';
-import { ICartsRepository } from '@application/ports/ICartsRepository';
-import { ICouriersRepository } from '@application/ports/ICouriersRepository';
-import { IOrgsRepository } from '@application/ports/IOrgsRepository';
-import { IPaymentsRepository } from '@application/ports/IPaymentsRepository';
-import { IRequestsRepository } from '@application/ports/IRequestsRepository';
-import { IUsersRepository } from '@application/ports/IUsersRepository';
-import { IProductsRepository } from '@application/ports/IProductsRepository';
+import { IAuthRepository } from '@application/ports/database/IAuthRepository';
+import { ICartsRepository } from '@application/ports/database/ICartsRepository';
+import { ICouriersRepository } from '@application/ports/database/ICouriersRepository';
+import { IOrgsRepository } from '@application/ports/database/IOrgsRepository';
+import { IPaymentsRepository } from '@application/ports/database/IPaymentsRepository';
+import { IRequestsRepository } from '@application/ports/database/IRequestsRepository';
+import { IUsersRepository } from '@application/ports/database/IUsersRepository';
+import { IProductsRepository } from '@application/ports/database/IProductsRepository';
 
 const databasePoolFactory = async () => {
   return new Pool({

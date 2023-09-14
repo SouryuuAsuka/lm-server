@@ -3,7 +3,7 @@ import { BcryptModule } from '@framework/hash/bcrypt/bcrypt.module';
 
 @Global()
 @Module({
-  providers: [BcryptModule],
+  imports: [BcryptModule],
   exports: [BcryptModule],
 })
 export class HashModule {}

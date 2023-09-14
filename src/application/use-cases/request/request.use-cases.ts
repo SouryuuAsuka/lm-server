@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IRequestsRepository } from '@application/ports/IRequestsRepository';
-import { IUsersRepository } from '@application/ports/IUsersRepository';
+import { IRequestsRepository } from '@application/ports/database/IRequestsRepository';
+import { IUsersRepository } from '@application/ports/database/IUsersRepository';
 
 @Injectable()
 export class RequestsUseCases {

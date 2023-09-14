@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IOrgsRepository } from '@application/ports/IOrgsRepository';
+import { IOrgsRepository } from '@application/ports/database/IOrgsRepository';
 import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';
 
 @Injectable()

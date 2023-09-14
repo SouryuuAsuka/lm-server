@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ICouriersRepository } from '@application/ports/ICouriersRepository';
+import { ICouriersRepository } from '@application/ports/database/ICouriersRepository';
 
 @Injectable()
 export class CouriersUseCases {
