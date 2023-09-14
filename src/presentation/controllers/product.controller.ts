@@ -8,7 +8,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from '@domain/dtos/product';
-import { ProductsUseCases } from '@application/use-cases/product/product.use-cases';
+import { ProductsUseCases } from '@application/use-cases/product.use-case';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@framework/nestjs/guards/auth.guard';
 import RoleGuard from '@framework/nestjs/guards/role.guard';

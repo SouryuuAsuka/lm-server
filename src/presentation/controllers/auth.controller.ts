@@ -10,7 +10,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { SignupDto } from '@domain/dtos/user';
-import { AuthUseCases } from '@application/use-cases/auth/auth.use-cases';
+import { AuthUseCases } from '@application/use-cases/auth.use-case';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
@@ -25,7 +25,7 @@ import {
   version: '1',
 })
 export class AuthController {
-  constructor(private authUseCases: AuthUseCases) {}
+  constructor(private authUseCases: AuthUseCases) { }
   @UseGuards(AuthGuard('local'))
   @Post('signin')
   async signin(

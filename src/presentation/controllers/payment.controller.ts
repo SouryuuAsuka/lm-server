@@ -9,7 +9,7 @@ import {
   Delete,
   Req,
 } from '@nestjs/common';
-import { PaymentsUseCases } from '@application/use-cases/payment/payment.use-cases';
+import { PaymentsUseCases } from '@application/use-cases/payment.use-case';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@framework/nestjs/guards/auth.guard';
 import RoleGuard from '@framework/nestjs/guards/role.guard';

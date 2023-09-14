@@ -7,7 +7,7 @@ import {
   Query,
   Patch,
 } from '@nestjs/common';
-import { CartsUseCases } from '@application/use-cases/cart/cart.use-cases';
+import { CartsUseCases } from '@application/use-cases/cart.use-case';
 import { CartCookiesDto } from '@domain/dtos/cart';
 import { Cookies } from '@framework/nestjs/decorators';
 import { ApiTags } from '@nestjs/swagger';
@@ -18,7 +18,7 @@ import { SimpleUserGuard } from '@framework/nestjs/guards/auth.guard';
   version: '1',
 })
 export class CartsController {
-  constructor(private cartsUseCases: CartsUseCases) {}
+  constructor(private cartsUseCases: CartsUseCases) { }
 
   @UseGuards(SimpleUserGuard)
   @Get()

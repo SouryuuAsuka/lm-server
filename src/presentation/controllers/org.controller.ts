@@ -9,7 +9,7 @@ import {
   Patch,
   Req,
 } from '@nestjs/common';
-import { OrgsUseCases } from '@application/use-cases/org/org.use-cases';
+import { OrgsUseCases } from '@application/use-cases/org.use-case';
 import { CreateOrgDto, UpdateOrgDto } from '@domain/dtos/org';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import {
@@ -24,7 +24,7 @@ import Role from '@domain/enums/role.enum';
   version: '1',
 })
 export class OrgsController {
-  constructor(private orgsUseCases: OrgsUseCases) {}
+  constructor(private orgsUseCases: OrgsUseCases) { }
 
   @ApiQuery({ name: 'p', required: false, type: Number })
   @ApiQuery({ name: 'c', required: false, type: String })

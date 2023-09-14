@@ -1,5 +1,5 @@
 import { Controller, Get, Param, UseGuards, Query, Req } from '@nestjs/common';
-import { UsersUseCases } from '@application/use-cases/user/user.use-cases';
+import { UsersUseCases } from '@application/use-cases/user.use-case';
 import { ApiTags } from '@nestjs/swagger';
 import {
   JwtAuthGuard,
