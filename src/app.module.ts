@@ -15,6 +15,8 @@ import {
   DatabaseModule,
   JwtServicesModule,
   AwsModule,
+  MailModule,
+  BotModule
 } from '@src/application/proxy';
 import { ExceptionsModule } from '@src/presentation/exceptions/exceptions.module';
 
@@ -25,6 +27,8 @@ import { ExceptionsModule } from '@src/presentation/exceptions/exceptions.module
     JwtServicesModule,
     HashModule,
     DatabaseModule,
+    MailModule,
+    BotModule,
     UsersModule,
     RequestsModule,
     PaymentsModule,

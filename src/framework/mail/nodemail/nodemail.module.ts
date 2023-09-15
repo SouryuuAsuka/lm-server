@@ -23,4 +23,4 @@ import { MailService } from '@src/framework/mail/nodemail/nodemail.service';
   providers: [{ provide: IMailService, useClass: MailService }],
   exports: [IMailService],
 })
-export class NodemailMailModule {}
+export class NodemailMailModule { }
