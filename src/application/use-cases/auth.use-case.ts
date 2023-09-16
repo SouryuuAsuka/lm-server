@@ -135,13 +135,13 @@ export class AuthUseCases {
       throw err;
     }
   }
-  async signout(userId, refreshToken) {
+  async signout(userId: number, refreshToken: string) {
     try {
       const tokenRow = await this.authRepository.getRefreshTokenById(userId);
       if (tokenRow.length === 0) throw new Error("Пользователь не найден");
       const nowTime = new Date();
       let tokenId = null;
-      tokenRow.forEach(element => {
+      tokenRow.forEach((element: any) => {
         if (tokenId) return;
         const tokenCreated = new Date(element.created);
         const tokenTime = tokenCreated.setMonth(nowTime.getMonth() + 1);

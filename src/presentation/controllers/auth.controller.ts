@@ -80,9 +80,10 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @UseGuards(AuthGuard('jwt'))
   @Delete('token')
-  async signout() {
-    return this.authUseCases.signout();
+  async signout(
+    @Req() req: any,
+  ) {
+    return this.authUseCases.signout(req.user.id, req.cookie.refreshToken);
   }
 }
