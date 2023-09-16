@@ -10,7 +10,7 @@ import { IDeliveryBotTransporter } from '@src/application/ports/IDeliveryBotTran
         name: 'DELIVERY_BOT',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: ['amqp://lm-rabbitmq:5672'],
           queue: 'server_to_delivery_bot',
           queueOptions: {
             durable: false

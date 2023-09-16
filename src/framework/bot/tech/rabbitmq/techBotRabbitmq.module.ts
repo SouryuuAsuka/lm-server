@@ -10,7 +10,7 @@ import { ITechBotTransporter } from '@src/application/ports/ITechBotTransporter'
         name: 'TECH_BOT',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: ['amqp://lm-rabbitmq:5672'],
           queue: 'server_to_tech_bot',
           queueOptions: {
             durable: false
