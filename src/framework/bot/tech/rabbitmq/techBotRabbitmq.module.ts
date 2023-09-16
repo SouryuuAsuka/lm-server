@@ -7,7 +7,7 @@ import { ITechBotTransporter } from '@src/application/ports/ITechBotTransporter'
   imports: [
     ClientsModule.register([
       {
-        name: 'DELIVERY_BOT',
+        name: 'TECH_BOT',
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://localhost:5672'],
