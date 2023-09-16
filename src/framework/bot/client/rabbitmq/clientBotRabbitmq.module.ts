@@ -19,6 +19,7 @@ import { IClientBotTransporter } from '@src/application/ports/IClientBotTranspor
       },
     ]),
   ],
-  providers: [{ provide: IClientBotTransporter, useClass: ClientBotRabbitmqService }]
+  providers: [{ provide: IClientBotTransporter, useClass: ClientBotRabbitmqService }],
+  exports: [IClientBotTransporter],
 })
 export class ClientBotRabbitmq { }

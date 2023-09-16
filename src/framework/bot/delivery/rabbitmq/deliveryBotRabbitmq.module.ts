@@ -19,6 +19,7 @@ import { IDeliveryBotTransporter } from '@src/application/ports/IDeliveryBotTran
       },
     ]),
   ],
-  providers: [{ provide: IDeliveryBotTransporter, useClass: DeliveryBotRabbitmqService }]
+  providers: [{ provide: IDeliveryBotTransporter, useClass: DeliveryBotRabbitmqService }],
+  exports: [IDeliveryBotTransporter],
 })
 export class DeliveryBotRabbitmq { }

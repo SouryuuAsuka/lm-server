@@ -19,6 +19,7 @@ import { ITechBotTransporter } from '@src/application/ports/ITechBotTransporter'
       },
     ]),
   ],
-  providers: [{ provide: ITechBotTransporter, useClass: TechBotRabbitmqService }]
+  providers: [{ provide: ITechBotTransporter, useClass: TechBotRabbitmqService }],
+  exports: [ITechBotTransporter],
 })
 export class TechBotRabbitmq { }
