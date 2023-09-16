@@ -67,13 +67,13 @@ export class RequestsRepository {
       const requestRow = await this.pool.query(
         `
         SELECT 
-        o.org_id AS id,
-        o.name AS name,
-        o.about AS about,
-        o.category AS category,
-        o.created AS created,
-        o.city AS city,
-        o.avatar AS avatar
+        o.org_id AS id
+        , o.name AS name
+        , o.about AS about
+        , o.category AS category
+        , o.created AS created
+        , o.city AS city
+        , o.avatar AS avatar
         FROM organizations_request AS o
         OFFSET $1 LIMIT 10`,
         [sqlVar.page],
@@ -85,8 +85,11 @@ export class RequestsRepository {
   }
   async setRequestComment(requestId: number, comment: string) {
     try {
-      const requestRow = await this.pool.query(
-        `UPDATE organizations_request SET moderator_comment = $1 WHERE org_id = $2 RETURNING app_id AS "appId";`,
+      const requestRow = await this.pool.query(`
+        UPDATE organizations_request 
+        SET moderator_comment = $1 
+        WHERE org_id = $2 
+        RETURNING app_id AS "appId";`,
         [comment, requestId],
       );
       if (requestRow.rowCount === 0)

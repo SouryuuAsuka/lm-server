@@ -57,20 +57,21 @@ export class OrgsRepository {
       const orgRow = await this.pool.query(
         `
         SELECT 
-        org.org_id AS "orgId", 
-        org.name AS name, 
-        org.about AS about, 
-        org.category AS category, 
-        org.avatar AS avatar, 
-        org.city AS city, 
-        org.public AS public, 
-        org.owner AS owner, 
+        org.org_id AS "orgId"
+        , org.name AS name
+        , org.about AS about
+        , org.category AS category
+        , org.avatar AS avatar
+        , org.city AS city
+        , org.public AS public
+        , org.owner AS owner
+        , 
         (SELECT 
           json_agg( 
             json_build_object(
-            'quId', qu.qu_id,
-            'statusCode', qu.status_code,
-            'products', qu.products_array
+            'quId', qu.qu_id
+            , 'statusCode', qu.status_code
+            , 'products', qu.products_array
             )
           )  
           FROM org_quests AS qu 
@@ -89,17 +90,17 @@ export class OrgsRepository {
         ) AS payments, 
         json_agg( 
           json_build_object(
-            'id', g.product_id, 
-            'name', g.name, 
-            'about',  g.about, 
-            'price',  g.price, 
-            'active', g.active, 
-            'picture', g.picture, 
-            'sold', g.sold, 
-            'created', g.created, 
-            'orders', g.orders, 
-            'catId', g.cat_id, 
-            'preparationTime', g.preparation_time
+            'id', g.product_id
+            , 'name', g.name
+            , 'about',  g.about
+            , 'price',  g.price
+            , 'active', g.active
+            , 'picture', g.picture
+            , 'sold', g.sold
+            , 'created', g.created
+            , 'orders', g.orders
+            , 'catId', g.cat_id
+            , 'preparationTime', g.preparation_time
           )
         ) AS products
         FROM organizations AS org 
@@ -140,27 +141,27 @@ export class OrgsRepository {
       const orgRow = await this.pool.query(
         `
         SELECT 
-        org.org_id AS id, 
-        org.name AS name, 
-        org.about AS about, 
-        org.category AS category, 
-        org.avatar AS avatar, 
-        org.city AS city, 
-        org.public AS public, 
-        (SELECT 
+        org.org_id AS id
+        , org.name AS name
+        , org.about AS about
+        , org.category AS category
+        , org.avatar AS avatar
+        , org.city AS city
+        , org.public AS public
+        , (SELECT 
           json_agg( 
             json_build_object(
-              'id', p.product_id, 
-              'name', p.name, 
-              'about',  p.about, 
-              'price',  p.price, 
-              'active', p.active, 
-              'picture', p.picture, 
-              'sold', p.sold, 
-              'created', p.created, 
-              'orders', p.orders, 
-              'catId', p.cat_id, 
-              'preparationTime', p.preparation_time
+              'id', p.product_id
+              , 'name', p.name
+              , 'about',  p.about
+              , 'price',  p.price
+              , 'active', p.active
+              , 'picture', p.picture
+              , 'sold', p.sold
+              , 'created', p.created
+              , 'orders', p.orders
+              , 'catId', p.cat_id
+              , 'preparationTime', p.preparation_time
             )
           )  
           FROM products AS p
