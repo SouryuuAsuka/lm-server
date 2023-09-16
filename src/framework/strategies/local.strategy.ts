@@ -1,4 +1,4 @@
-import { AuthUseCases } from '@src/application/use-cases/auth/auth.use-cases';
+import { AuthUseCases } from '@src/application/use-cases/auth.use-case';
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
