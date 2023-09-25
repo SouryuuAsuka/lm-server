@@ -11,7 +11,7 @@ import { ITechBotTransporter } from '@src/application/ports/ITechBotTransporter'
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://lm-rabbitmq:5672'],
-          queue: 'tbot.sendMessage',
+          queue: 'tbot',
           queueOptions: {
             durable: false
           },

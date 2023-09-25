@@ -11,7 +11,7 @@ import { IDeliveryBotTransporter } from '@src/application/ports/IDeliveryBotTran
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://lm-rabbitmq:5672'],
-          queue: 'dbot.sendMessage',
+          queue: 'dbot',
           queueOptions: {
             durable: false
           },
