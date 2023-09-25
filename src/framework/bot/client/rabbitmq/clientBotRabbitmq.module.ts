@@ -11,7 +11,7 @@ import { IClientBotTransporter } from '@src/application/ports/IClientBotTranspor
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://lm-rabbitmq:5672'],
-          queue: 'server_to_client_bot',
+          queue: 'cbot.sendMessage',
           queueOptions: {
             durable: false
           },
