@@ -20,4 +20,4 @@ import {
     PassportModule,
   ]
 })
-export class AuthenticationModule {}
+export class StrategyModule {}
