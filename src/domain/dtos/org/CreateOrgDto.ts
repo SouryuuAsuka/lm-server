@@ -19,6 +19,10 @@ export class CreateOrgDto {
 
   @IsString()
   @IsNotEmpty()
+  country: number;
+
+  @IsString()
+  @IsNotEmpty()
   city: string;
 
   @IsString()

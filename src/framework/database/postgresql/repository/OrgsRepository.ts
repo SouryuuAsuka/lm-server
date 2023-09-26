@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Pool } from 'pg';
 import { ExceptionsService } from '@src/presentation/exceptions/exceptions.service';
+import { CreateOrgDto } from '@src/domain/dtos/org';
 
 @Injectable()
 export class OrgsRepository {
@@ -10,7 +11,7 @@ export class OrgsRepository {
   ) { }
   async getById(orgId: number) {
     try {
-      const orgRow = await this.pool.query(`
+      const {rows} = await this.pool.query(`
       SELECT 
       org.org_id AS "orgId", 
       org.name AS name, 
@@ -42,7 +43,7 @@ export class OrgsRepository {
       GROUP BY org.org_id`,
         [orgId],
       );
-      return orgRow.rows;
+      return rows;
     } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
@@ -187,7 +188,7 @@ export class OrgsRepository {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async create(org, ownerId: number) {
+  async create(org: CreateOrgDto, ownerId: number) {
     try {
       const orgInsertString =
         'INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, country, street, house, flat, comission) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING org_id';
