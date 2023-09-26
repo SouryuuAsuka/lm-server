@@ -261,6 +261,7 @@ export class OrgsRepository {
         `SELECT owner FROM organizations WHERE org_id = $1`,
         [orgId],
       );
+      console.log("owner array - "+JSON.stringify(orgRow.rows))
       return orgRow.rows[0].owner;
     } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
