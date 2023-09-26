@@ -48,7 +48,7 @@ export class CouriersRepository {
   }
   async confirm(tgId: number) {
     try {
-      const tgRow = await this.pool.query(
+      const {rowCount, rows} = await this.pool.query(
         `
         UPDATE tg_couriers
         SET confirm = true
@@ -56,8 +56,8 @@ export class CouriersRepository {
         RETURNING app_id AS "appId"`,
         [tgId],
       );
-      if (tgRow.rowCount === 0) throw new Error('Курьер не найден');
-      return tgRow.rows;
+      if (rowCount === 0) throw new Error('Курьер не найден');
+      return rows;
     } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }

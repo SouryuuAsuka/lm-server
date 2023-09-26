@@ -7,7 +7,7 @@ export class OrgsRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
-  ) {}
+  ) { }
   async getById(orgId: number) {
     try {
       const orgRow = await this.pool.query(`
@@ -43,7 +43,7 @@ export class OrgsRepository {
         [orgId],
       );
       return orgRow.rows;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -111,7 +111,7 @@ export class OrgsRepository {
       } else {
         throw new Error('Ошибка запроса');
       }
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -183,22 +183,15 @@ export class OrgsRepository {
       } else {
         return { orgs: [], count: 0 };
       }
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
   async create(org, ownerId: number) {
     try {
-      const user = await this.pool.query(
-        `SELECT * FROM users WHERE user_id = $1`,
-        [ownerId],
-      );
-      if (user.rows[0].user_role === 0 || user.rows[0].telegram === false) {
-        throw 'Недостаточно прав для создания организации';
-      }
       const orgInsertString =
         'INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, country, street, house, flat, comission) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING org_id';
-      await this.pool.query(orgInsertString, [
+      const { rowCount } = await this.pool.query(orgInsertString, [
         [{ lang: org.lang, text: org.name }],
         [{ lang: org.lang, text: org.about }],
         ownerId,
@@ -212,8 +205,9 @@ export class OrgsRepository {
         org.flat,
         20,
       ]);
+      if (rowCount === 0) throw new Error('Организация не создана');
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -221,7 +215,7 @@ export class OrgsRepository {
     try {
       const orgInsertString =
         'UPDATE organizations SET name = $1, about = $2, category = $3, avatar = avatar + $4, city = $5 WHERE owner = $6 AND org_id = $7 RETURNING org_id';
-      await this.pool.query(orgInsertString, [
+      const { rowCount } = await this.pool.query(orgInsertString, [
         org.name,
         org.about,
         org.category,
@@ -230,8 +224,9 @@ export class OrgsRepository {
         ownerId,
         org.orgId,
       ]);
+      if (rowCount === 0) throw new Error('Организация не найдена');
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -247,7 +242,7 @@ export class OrgsRepository {
         await this.pool.query(orgInsertString, [publicType, owner, orgId]);
       }
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -258,7 +253,7 @@ export class OrgsRepository {
         [orgId],
       );
       return orgRow.rows[0].owner;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -303,7 +298,7 @@ export class OrgsRepository {
         [orgId, sqlVar.status, sqlVar.page, sqlVar.paid],
       );
       return { quests: quRow.rows, count: count.rows[0].count };
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
