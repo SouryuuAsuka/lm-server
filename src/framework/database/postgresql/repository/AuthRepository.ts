@@ -10,7 +10,7 @@ export class AuthRepository {
   ) { }
   async getUserPassByEmail(email: string) {
     try {
-      const userRow = await this.pool.query(
+      const {rows} = await this.pool.query(
         `
         SELECT 
         u.user_id AS id
@@ -22,14 +22,14 @@ export class AuthRepository {
         FROM users AS u WHERE email = $1`,
         [email],
       );
-      return userRow.rows[0];
+      return rows;
     } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
   async getUserPassByUsername(username: string) {
     try {
-      const userRow = await this.pool.query(
+      const {rows} = await this.pool.query(
         `
         SELECT 
         u.user_id AS id
@@ -41,7 +41,7 @@ export class AuthRepository {
         FROM users AS u WHERE username = $1`,
         [username],
       );
-      return userRow.rows;
+      return rows;
     } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }

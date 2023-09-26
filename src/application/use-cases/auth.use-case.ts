@@ -23,12 +23,12 @@ export class AuthUseCases {
     }
     const hash = await this.hashService.getPasswordHash(
       password,
-      user.passSalt,
+      user[0].passSalt,
     );
-    if (hash !== user.password) {
+    if (hash !== user[0].password) {
       throw new Error('Login error');
     }
-    return user;
+    return user[0];
   }
   async signin(user: any, ip: string) {
     const tokenHash = await this.hashService.generateHash(8);
@@ -66,13 +66,13 @@ export class AuthUseCases {
       const emailSearch = await this.authRepository.getUserPassByEmail(
         user.email,
       ); //Checking if user already exists
-      if (Object.keys(emailSearch).length === 0) {
+      if (Object.keys(emailSearch[0]).length === 0) {
         throw new Error('Пользователь с таким Email уже существует');
       }
       const usernameSearch = await this.authRepository.getUserPassByUsername(
         user.username,
       ); //Checking if user already exists
-      if (Object.keys(usernameSearch).length === 0) {
+      if (Object.keys(usernameSearch[0]).length === 0) {
         throw new Error('Пользователь с таким Username уже существует');
       }
       const salt = await this.hashService.generateSalt(10);
