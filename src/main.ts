@@ -9,14 +9,19 @@ import { HttpExceptionFilter } from '@src/framework/nestjs/filters/http-exeption
 import { VersioningType } from '@nestjs/common';
 
 import { AppModule } from './app.module';
+import { MyLogger } from './framework/nestjs/logger/logger.service';
+
+const DEBUG = false;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new FastifyAdapter()
   );
   await app.register(fastifyCookie);
-  app.useGlobalFilters(new HttpExceptionFilter());
+  const logger = app.get<MyLogger>(MyLogger);
+  app.useLogger(logger);
+  app.useGlobalFilters(new HttpExceptionFilter(logger));
   app.enableVersioning({
     type: VersioningType.URI,
   });
