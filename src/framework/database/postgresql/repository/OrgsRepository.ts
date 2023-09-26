@@ -8,7 +8,7 @@ export class OrgsRepository {
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
   ) {}
-  async getOrgById(orgId: number) {
+  async getById(orgId: number) {
     try {
       const orgRow = await this.pool.query(`
       SELECT 
@@ -42,16 +42,12 @@ export class OrgsRepository {
       GROUP BY org.org_id`,
         [orgId],
       );
-      if (orgRow.rows.length != 0) {
-        return orgRow.rows[0];
-      } else {
-        throw 'Ошибка запроса';
-      }
+      return orgRow.rows;
     } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getFullOrgById(orgId: number) {
+  async getFullById(orgId: number) {
     try {
       const orgRow = await this.pool.query(
         `
@@ -119,7 +115,7 @@ export class OrgsRepository {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getOwnerId(orgId: number) {
+  /*async getOwnerId(orgId: number) {
     try {
       const selOrgRow = await this.pool.query(
         `SELECT owner FROM organizations WHERE org_id = $1`,
@@ -130,8 +126,8 @@ export class OrgsRepository {
     } catch (err:any) {
       this.exceptionService.DatabaseException(err.message);
     }
-  }
-  async getOrgList(page: number, city: string, category: string) {
+  }*/
+  async getList(page: number, city: string, category: string) {
     try {
       const sqlVar = {
         page: (page - 1) * 10,
@@ -191,7 +187,7 @@ export class OrgsRepository {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async newOrg(org, ownerId: number) {
+  async create(org, ownerId: number) {
     try {
       const user = await this.pool.query(
         `SELECT * FROM users WHERE user_id = $1`,
@@ -221,7 +217,7 @@ export class OrgsRepository {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async editOrg(org, ownerId: number, avatar) {
+  async edit(org, ownerId: number, avatar) {
     try {
       const orgInsertString =
         'UPDATE organizations SET name = $1, about = $2, category = $3, avatar = avatar + $4, city = $5 WHERE owner = $6 AND org_id = $7 RETURNING org_id';
@@ -266,7 +262,7 @@ export class OrgsRepository {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getOrgQuestList(
+  async getQuestList(
     orgId: number,
     page = 1,
     status = '0, 1, 2, 3, 4, 5',

@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export abstract class IRequestsRepository {
-  abstract getRequestList(page: number): any;
-  abstract getRequestById(requestId: number): any;
-  abstract confirmRequest(requestId: number): any;
-  abstract setRequestComment(requestId: number, comment: string): any;
+  abstract getRequestList(page: number): Promise<any[]>;
+  abstract getRequestById(requestId: number): Promise<any[]>;
+  abstract confirmRequest(requestId: number): Promise<any[]>;
+  abstract setRequestComment(requestId: number, comment: string): Promise<any[]>;
 }

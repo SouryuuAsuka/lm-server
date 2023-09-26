@@ -16,8 +16,8 @@ export class RequestsUseCases {
     return await this.requestsRepository.getRequestById(requestId);
   }
   async confirmRequest(requestId: number) {
-    const org = await this.requestsRepository.confirmRequest(requestId);
-    return this.usersRepository.updateUserRole(org.owner, 3);
+    const orgs = await this.requestsRepository.confirmRequest(requestId);
+    return this.usersRepository.updateUserRole(orgs[0].owner, 3);
   }
   async setRequestComment(requestId: number, comment: string) {
     const request = await this.requestsRepository.setRequestComment(requestId, comment);

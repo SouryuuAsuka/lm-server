@@ -8,11 +8,11 @@ export class ProductsRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
-  ) {}
+  ) { }
   async create(product: CreateProductDto) {
     try {
       const orgInsertString = `INSERT INTO products (name, about, org_id, price, preparation_time, created) VALUES ($1, $2, $3, $4, $5, $6) RETURNING product_id AS "productId"`;
-      const response = await this.pool.query(orgInsertString, [
+      const { rowCount, rows } = await this.pool.query(orgInsertString, [
         [{ lang: product.lang, text: product.name }],
         [{ lang: product.lang, text: product.about }],
         product.orgId,
@@ -20,24 +20,24 @@ export class ProductsRepository {
         product.preparationTime * 24,
         'NOW()',
       ]);
-      if (response.rowCount === 0) throw new Error('Товар не найден');
-      return response.rows[0].productId;
-    } catch (err:any) {
+      if (rowCount === 0) throw new Error('Товар не найден');
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
   async getOwner(productId: number) {
     try {
-      const user = await this.pool.query(
+      const { rows, rowCount } = await this.pool.query(
         `
         SELECT org.owner as owner FROM organizations AS org
         JOIN products AS g ON org.org_id = g.org_id
         WHERE g.product_id = $1`,
         [productId],
       );
-      if (user.rowCount === 0) throw new Error('Организация не найдена');
-      return user.rows[0].owner;
-    } catch (err:any) {
+      if (rowCount === 0) throw new Error('Организация не найдена');
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -45,16 +45,16 @@ export class ProductsRepository {
     try {
       const orgInsertString =
         'UPDATE products SET name = $1, about = $2, price = $3, preparation_time = $4 WHERE product_id = $5';
-      const response = await this.pool.query(orgInsertString, [
+      const { rowCount } = await this.pool.query(orgInsertString, [
         product.name,
         product.about,
         Number(product.price).toFixed(2),
         24 * product.preparationTime,
         product.productId,
       ]);
-      if (response.rowCount === 0) throw new Error('Товар не найден');
+      if (rowCount === 0) throw new Error('Товар не найден');
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -62,13 +62,13 @@ export class ProductsRepository {
     try {
       const purUpdateString =
         'UPDATE products SET active = $1 WHERE product_id = $2';
-      const response = await this.pool.query(purUpdateString, [
+      const { rowCount } = await this.pool.query(purUpdateString, [
         active,
         productId,
       ]);
-      if (response.rowCount === 0) throw new Error('Товар не найден');
+      if (rowCount === 0) throw new Error('Товар не найден');
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

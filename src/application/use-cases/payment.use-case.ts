@@ -10,7 +10,7 @@ export class PaymentsUseCases {
   ) {}
   async getPaymentList(orgId: number, page: number, user: any) {
     if (user.isAdmin) {
-      const quests = await this.paymentsRepository.getFullPaymentList(
+      const quests = await this.paymentsRepository.getFullList(
         orgId,
         page,
       );
@@ -18,7 +18,7 @@ export class PaymentsUseCases {
     } else {
       const owner = await this.orgsRepository.getOwner(orgId);
       if (owner == user.userId) {
-        const quests = await this.paymentsRepository.getPaymentList(
+        const quests = await this.paymentsRepository.getList(
           orgId,
           page,
         );

@@ -7,9 +7,9 @@ export class CartsUseCases {
   constructor(private readonly cartRepository: ICartsRepository) {}
   async getCart(type: string, cart: CartCookiesDto) {
     if (type === 'full') {
-      return await this.cartRepository.getFullCart(cart);
+      return await this.cartRepository.getFull(cart.cart_token, cart.cart_id);
     } else {
-      return await this.cartRepository.getCart(cart);
+      return await this.cartRepository.get(cart.cart_token, cart.cart_id);
     }
   }
   async createCart(productId: number) {
@@ -26,9 +26,9 @@ export class CartsUseCases {
     }
     const token = generateRandomString(6);
 
-    return await this.cartRepository.createCart(productId, token);
+    return await this.cartRepository.create(productId, token);
   }
   async addProductToCart(cart: any, cartToken: string, cartId: number) {
-    return await this.cartRepository.addProductToCart(cart, cartToken, cartId);
+    return await this.cartRepository.addProduct(cart, cartToken, cartId);
   }
 }

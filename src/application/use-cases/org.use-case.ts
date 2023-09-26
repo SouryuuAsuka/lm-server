@@ -11,10 +11,10 @@ export class OrgsUseCases {
     city: string = '%',
     category: string = '0, 1, 2',
   ) {
-    return await this.orgsRepository.getOrgList(page, city, category);
+    return await this.orgsRepository.getList(page, city, category);
   }
   async createOrg(createOrg: CreateOrgDto, ownerId: number) {
-    return await this.orgsRepository.createOrg(createOrg, ownerId);
+    return await this.orgsRepository.create(createOrg, ownerId);
   }
   async getOrgById(orgId: number, user: any) {
     let fullAccess = false;
@@ -26,13 +26,13 @@ export class OrgsUseCases {
       }
     }
     if (fullAccess) {
-      return await this.orgsRepository.getFullOrgById(orgId);
+      return await this.orgsRepository.getFullById(orgId);
     } else {
-      return await this.orgsRepository.getOrgById(orgId);
+      return await this.orgsRepository.getById(orgId);
     }
   }
   async editOrg(orgId: number, updateOrg: UpdateOrgDto) {
-    return await this.orgsRepository.editOrg(updateOrg, orgId);
+    return await this.orgsRepository.edit(updateOrg, orgId);
   }
   async setPublic(orgId: number, status: boolean) {
     return await this.orgsRepository.setPublic(orgId, status);
@@ -53,7 +53,7 @@ export class OrgsUseCases {
       if (owner == userId) fullAccess = true;
     }
     if (fullAccess) {
-      const quests = await this.orgsRepository.getOrgQuestList(
+      const quests = await this.orgsRepository.getQuestList(
         orgId,
         page,
         status,

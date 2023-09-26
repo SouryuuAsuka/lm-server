@@ -6,8 +6,8 @@ export class CouriersRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
-  ) {}
-  async getCourierList() {
+  ) { }
+  async getList() {
     try {
       const count = await this.pool.query(
         'SELECT COUNT(*) FROM tg_couriers WHERE confirm = false',
@@ -44,23 +44,23 @@ export class CouriersRepository {
           return { couriers: couriersList, count: count };
         }
       }
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async confirmCourier(tgId) {
+  async confirm(tgId: number) {
     try {
       const tgRow = await this.pool.query(
         `
         UPDATE tg_couriers
         SET confirm = true
         WHERE tg_id = $1
-        RETURNING app_id`,
+        RETURNING app_id AS "appId"`,
         [tgId],
       );
       if (tgRow.rowCount === 0) throw new Error('Курьер не найден');
-      return tgRow.rows[0].app_id;
-    } catch (err:any) {
+      return tgRow.rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

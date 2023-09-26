@@ -7,8 +7,8 @@ export class UsersRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
-  ) {}
-  async getUserByUsername(username: string) {
+  ) { }
+  async getByUsername(username: string) {
     try {
       const userRow = await this.pool.query(
         `
@@ -42,7 +42,7 @@ export class UsersRepository {
       }
       delete user.passSalt;
       return user;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -93,23 +93,23 @@ export class UsersRepository {
       } else {
         return { orgs: orgRow.rows, count: orgCount.rows[0].count };
       }
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
   async updateUserRole(userId: number, userRole) {
     try {
-      const response = await this.pool.query(
+      const { rowCount } = await this.pool.query(
         `UPDATE users SET user_role = $1 WHERE user_id = $2;`,
         [userRole, userId],
       );
-      if (response.rowCount === 0) throw new Error('Пользователь не найден');
+      if (rowCount === 0) throw new Error('Пользователь не найден');
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getUserById(userId: number) {
+  async getById(userId: number) {
     try {
       const userRow = await this.pool.query(
         `SELECT * FROM users WHERE user_id = $1`,
@@ -149,13 +149,13 @@ export class UsersRepository {
       } else {
         throw 'Unauthorized access.';
       }
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
   async getMailConfirm(mailToken, mailKey) {
     try {
-      const response = await this.pool.query(
+      const { rowCount, rows } = await this.pool.query(
         `
       SELECT 
       user_id AS "userId"
@@ -163,21 +163,21 @@ export class UsersRepository {
       FROM mail_confirm_tokens WHERE mail_token = $1;`,
         [mailToken, mailKey],
       );
-      if (response.rowCount === 0) throw new Error('Токен валидации не найден');
-      return response.rows[0];
-    } catch (err:any) {
+      if (rowCount === 0) throw new Error('Токен валидации не найден');
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async deleteMailConfirm(userId) {
+  async deleteMailConfirm(userId: number) {
     try {
-      const response = await this.pool.query(
+      const { rowCount } = await this.pool.query(
         `DELETE FROM mail_confirm_tokens WHERE user_id = $1;`,
         [userId],
       );
-      if (response.rowCount === 0) throw new Error('Токен валидации не найден');
+      if (rowCount === 0) throw new Error('Токен валидации не найден');
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

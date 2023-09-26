@@ -7,26 +7,21 @@ export class CartsRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
-  ) {}
-  async getCart(cartToken, cartId) {
+  ) { }
+  async get(cartToken: string, cartId: number) {
     try {
       const cartInsertString =
         'SELECT order_array FROM carts WHERE token = $1 AND cart_id = $2';
-      const cartRow = await this.pool.query(cartInsertString, [
+      const { rows } = await this.pool.query(cartInsertString, [
         cartToken,
         cartId,
       ]);
-      if (cartRow.rows.length == 0) {
-        return { cart: [] };
-      } else {
-        return { cart: cartRow.rows[0]?.order_array };
-      }
-    } catch (err:any) {
-      console.log(err);
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getFullCart(cartToken, cartId) {
+  async getFull(cartToken: string, cartId: number) {
     try {
       function sortCart(cart, callback) {
         const cartArray = [];
@@ -129,29 +124,29 @@ export class CartsRepository {
           return { cart: cartArray, prTime: prTime };
         });
       }
-    } catch (err:any) {
+    } catch (err: any) {
       console.log(err);
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async addProductToCart(cart, cartToken, cartId) {
+  async addProduct(cart, cartToken, cartId) {
     try {
       const orgInsertString =
         'UPDATE carts SET order_array = $1, last_update = $2 WHERE token = $3 AND cart_id = $4';
-      const response = await this.pool.query(orgInsertString, [
+      const { rowCount } = await this.pool.query(orgInsertString, [
         cart,
         'NOW()',
         cartToken,
         cartId,
       ]);
-      if (response.rowCount === 0) throw new Error('Корзина не найден');
+      if (rowCount === 0) throw new Error('Корзина не найден');
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       console.log(err);
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async createCart(productId, token) {
+  async create(productId, token) {
     try {
       const producSelectString = `SELECT price FROM products WHERE product_id = $1`;
       const productRow = await this.pool.query(producSelectString, [productId]);
@@ -164,7 +159,7 @@ export class CartsRepository {
       ]);
       if (cartRow.rowCount === 0) throw new Error('Корзина не найден');
       return { cartId: cartRow.rows[0].cart_id, token: token };
-    } catch (err:any) {
+    } catch (err: any) {
       console.log(err);
       this.exceptionService.DatabaseException(err.message);
     }

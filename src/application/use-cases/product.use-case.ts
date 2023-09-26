@@ -27,8 +27,8 @@ export class ProductsUseCases {
       }
     }
     if (fullAccess) {
-      const productId = await this.productsRepository.create(product);
-      await this.awsRepository.savePicture(file, productId, 'products');
+      const products = await this.productsRepository.create(product);
+      await this.awsRepository.savePicture(file, products[0].productId, 'products');
       return true;
     } else {
       throw 'Ошибка доступа';
@@ -45,9 +45,9 @@ export class ProductsUseCases {
     if (isAdmin) {
       fullAccess = true;
     } else {
-      const ownerId =
+      const prodicts =
         await this.productsRepository.getOwner(productId);
-      if (userId == ownerId) {
+      if (userId == prodicts[0].owner) {
         fullAccess = true;
       }
     }
@@ -69,9 +69,9 @@ export class ProductsUseCases {
     if (isAdmin) {
       fullAccess = true;
     } else {
-      const ownerId =
+      const prodicts =
         await this.productsRepository.getOwner(productId);
-      if (userId == ownerId) {
+      if (userId == prodicts[0].owner) {
         fullAccess = true;
       }
     }

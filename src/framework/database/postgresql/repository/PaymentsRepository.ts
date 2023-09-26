@@ -6,8 +6,8 @@ export class PaymentsRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
-  ) {}
-  async cancelPayment(orgId: number, paymentId: number) {
+  ) { }
+  async cancel(orgId: number, paymentId: number) {
     try {
       const payRow = await this.pool.query(
         `UPDATE org_payments SET canceled = true WHERE pay_id = $1 AND org_id = $2 RETURNING ord_array`,
@@ -21,14 +21,14 @@ export class PaymentsRepository {
       if (response.rowCount === 0)
         throw new Error('Ошибка при изменении выплат');
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getFullPaymentList(orgId: number, page: number = 1) {
+  async getFullList(orgId: number, page: number = 1) {
     try {
       const sqlVar = { offset: (page - 1) * 10 };
-      const orgRow = await this.pool.query(
+      const { rows } = await this.pool.query(
         `
           SELECT 
             COUNT(*) AS count
@@ -45,15 +45,15 @@ export class PaymentsRepository {
           OFFSET $2 LIMIT 10`,
         [orgId, sqlVar.offset],
       );
-      return orgRow.rows;
-    } catch (err:any) {
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async getPaymentList(orgId: number, page: number = 1) {
+  async getList(orgId: number, page: number = 1) {
     try {
       const sqlVar = { offset: (page - 1) * 10 };
-      const orgRow = await this.pool.query(
+      const { rows } = await this.pool.query(
         `
         SELECT 
           COUNT(*) AS count
@@ -67,14 +67,14 @@ export class PaymentsRepository {
         OFFSET $2 LIMIT 10`,
         [orgId, sqlVar.offset],
       );
-      return orgRow.rows;
-    } catch (err:any) {
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
   async setPaidQuests(quests) {
     try {
-      const quRow = await this.pool.query(
+      const {rowCount, rows} = await this.pool.query(
         `
         UPDATE org_quests
         SET paid=true
@@ -82,25 +82,25 @@ export class PaymentsRepository {
         RETURNING products_array, commission`,
         [quests],
       );
-      if (quRow.rowCount === 0)
+      if (rowCount === 0)
         throw new Error('Ошибка при регистрации выплат');
-      return quRow.rows;
-    } catch (err:any) {
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
-  async updatePaymentsById(orgId: number, userId: number, quests, sum) {
+  async create(orgId: number, userId: number, quests, sum) {
     try {
-      const response = await this.pool.query(
+      const {rowCount} = await this.pool.query(
         `
         INSERT INTO org_payments
         (org_id, created, payer_id, ord_array, usd_sum)
         VALUES ($1, $2, $3, $4, $5)`,
         [orgId, 'NOW()', userId, quests, sum.toFixed(1)],
       );
-      if (response.rowCount === 0) throw new Error('Ошибка при поиске выплаты');
+      if (rowCount === 0) throw new Error('Ошибка при поиске выплаты');
       return true;
-    } catch (err:any) {
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }

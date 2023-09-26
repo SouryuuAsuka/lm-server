@@ -5,10 +5,10 @@ import { IUsersRepository } from '@src/application/ports/database/IUsersReposito
 export class UsersUseCases {
   constructor(private readonly usersRepository: IUsersRepository) {}
   async getUser(userId: number) {
-    return this.usersRepository.getUserById(userId);
+    return this.usersRepository.getById(userId);
   }
   async getUserByUsername(username: string) {
-    return this.usersRepository.getUserByUsername(username);
+    return this.usersRepository.getByUsername(username);
   }
   async getOrgListByUsername(
     username: string,

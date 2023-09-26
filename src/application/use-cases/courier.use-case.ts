@@ -5,9 +5,9 @@ import { ICouriersRepository } from '@src/application/ports/database/ICouriersRe
 export class CouriersUseCases {
   constructor(private readonly couriersRepository: ICouriersRepository) {}
   async getCourierList() {
-    return await this.couriersRepository.getCourierList();
+    return await this.couriersRepository.getList();
   }
   async confirmCourier(tgId: number) {
-    return await this.couriersRepository.confirmCourier(tgId);
+    return await this.couriersRepository.confirm(tgId);
   }
 }

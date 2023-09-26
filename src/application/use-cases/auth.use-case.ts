@@ -87,7 +87,7 @@ export class AuthUseCases {
       const mailToken = await this.hashService.generateHash(16);
       const mailKeyHash = this.hashService.getMailHash(mailKey);
       await this.authRepository.createMailToken(
-        createdUser.userId,
+        createdUser[0].userId,
         mailToken,
         mailKeyHash,
       );
@@ -101,7 +101,7 @@ export class AuthUseCases {
   }
   async refreshToken(decoded: any, ip: string) {
     try {
-      const user = await this.authRepository.searchRefreshToken(
+      const users = await this.authRepository.searchRefreshToken(
         decoded.id,
         decoded.date,
         decoded.hash,
@@ -112,12 +112,12 @@ export class AuthUseCases {
       if (new Date(tokenTime).getTime() > nowTime.getTime()) {
         const hash = await this.hashService.generateHash(8);
         const accessToken = await this.jwtService.generateAccessToken(
-          user.id,
-          user.email,
-          user.role,
+          users[0].id,
+          users[0].email,
+          users[0].role,
         );
         const refreshToken = await this.jwtService.generateRefreshToken(
-          user.id,
+          users[0].id,
           hash,
           nowTime,
         );
@@ -125,7 +125,7 @@ export class AuthUseCases {
           ip,
           nowTime,
           hash,
-          user.tokenId,
+          users[0].tokenId,
         );
         return { accessToken: accessToken, refreshToken: refreshToken };
       } else {

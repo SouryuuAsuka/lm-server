@@ -3,8 +3,8 @@ import { CartCookiesDto } from '@src/domain/dtos/cart';
 
 @Injectable()
 export abstract class ICartsRepository {
-  abstract getCart(cart: CartCookiesDto): any;
-  abstract getFullCart(cart: CartCookiesDto): any;
-  abstract createCart(productId: number, token: string): any;
-  abstract addProductToCart(cart: any, cartToken: string, cartId: number): any;
+  abstract get(cartToken:string, cartId:number): Promise<any[]>;
+  abstract getFull(cartToken:string, cartId:number): Promise<any>;
+  abstract create(productId: number, token: string): Promise<boolean>;
+  abstract addProduct(cart: any, cartToken: string, cartId: number): Promise<any>;
 }

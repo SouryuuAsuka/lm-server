@@ -7,10 +7,10 @@ export class RequestsRepository {
   constructor(
     @Inject('DATABASE_POOL') private pool: Pool,
     private readonly exceptionService: ExceptionsService,
-  ) {}
+  ) { }
   async getRequestById(requestId: number) {
     try {
-      const requestRow = await this.pool.query(
+      const { rows, rowCount } = await this.pool.query(
         `
         SELECT 
         o.org_id AS "orgId"
@@ -33,9 +33,9 @@ export class RequestsRepository {
         WHERE o.org_id = $1`,
         [requestId],
       );
-      if (requestRow.rowCount === 0) throw new Error('Организация не найдена');
-      return requestRow.rows[0];
-    } catch (err:any) {
+      if (rowCount === 0) throw new Error('Организация не найдена');
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
@@ -56,15 +56,15 @@ export class RequestsRepository {
       );
       if (response.rowCount === 0)
         throw new Error('Ошибка при переносе организации');
-      return newOrgRow.rows[0];
-    } catch (err:any) {
+      return newOrgRow.rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
   async getRequestList(page: number) {
     try {
       const sqlVar = { page: (page - 1) * 10 };
-      const requestRow = await this.pool.query(
+      const { rows } = await this.pool.query(
         `
         SELECT 
         o.org_id AS id
@@ -78,24 +78,24 @@ export class RequestsRepository {
         OFFSET $1 LIMIT 10`,
         [sqlVar.page],
       );
-      return requestRow.rows;
-    } catch (err:any) {
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
   async setRequestComment(requestId: number, comment: string) {
     try {
-      const requestRow = await this.pool.query(`
+      const { rows, rowCount } = await this.pool.query(`
         UPDATE organizations_request 
         SET moderator_comment = $1 
         WHERE org_id = $2 
         RETURNING app_id AS "appId";`,
         [comment, requestId],
       );
-      if (requestRow.rowCount === 0)
+      if (rowCount === 0)
         throw new Error('Ошибка при переносе организации');
-      return requestRow.rows[0];
-    } catch (err:any) {
+      return rows;
+    } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
   }
