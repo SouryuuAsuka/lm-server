@@ -20,6 +20,7 @@ import {
 } from '@src/application/proxy';
 import { ExceptionsModule } from '@src/presentation/exceptions/exceptions.module';
 import { StrategyModule } from '@src/framework/strategies/strategy.module';
+import { LoggerModule } from './framework/nestjs/logger/logger.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { StrategyModule } from '@src/framework/strategies/strategy.module';
     CartsModule,
     AuthModule,
     StrategyModule,
+    LoggerModule
   ],
   controllers: [],
   providers: [],
