@@ -10,8 +10,7 @@ import { VersioningType } from '@nestjs/common';
 
 import { AppModule } from './app.module';
 import { MyLogger } from './framework/nestjs/logger/logger.service';
-
-const DEBUG = false;
+import * as fmp from '@fastify/multipart';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -20,6 +19,7 @@ async function bootstrap() {
   );
   await app.register(fastifyCookie);
   const logger = app.get<MyLogger>(MyLogger);
+  app.register(fmp);
   app.useLogger(logger);
   app.useGlobalFilters(new HttpExceptionFilter(logger));
   app.enableVersioning({
