@@ -16,9 +16,12 @@ export class CouriersController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getCourierList() {
+    const couriers = await this.couriersUseCases.getCourierList()
     return {
       status: 'success',
-      data: await this.couriersUseCases.getCourierList(),
+      data:{
+        couriers: couriers
+      }
     };
   }
 
@@ -26,9 +29,12 @@ export class CouriersController {
   @UseGuards(JwtAuthGuard)
   @Put(':tgId/confirm')
   async confirmCourier(@Param('tgId') tgId: number) {
+    const couriers = await this.couriersUseCases.confirmCourier(tgId);
     return {
       status: 'success',
-      data: await this.couriersUseCases.confirmCourier(tgId),
+      data:{
+        couriers: couriers
+      }
     };
     //TODO: add dbot
   }
