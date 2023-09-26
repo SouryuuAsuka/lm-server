@@ -55,10 +55,11 @@ export class OrgsController {
   @UseGuards(SimpleUserGuard)
   @Get(':orgId')
   async getOrgById(@Param('orgId') orgId: number, @Req() req: any) {
+    const org = await this.orgsUseCases.getOrgById(orgId, req.user)
     return {
       status: 'success',
       data: {
-        org: await this.orgsUseCases.getOrgById(orgId, req.user),
+        org
       },
     };
   }
