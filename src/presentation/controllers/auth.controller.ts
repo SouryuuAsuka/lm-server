@@ -18,7 +18,6 @@ import {
   JwtAuthGuard,
   SimpleUserGuard,
   RefreshTokenGuard,
-  LocalGuard
 } from '@src/framework/nestjs/guards/auth.guard';
 
 @ApiTags('auth')
@@ -27,7 +26,7 @@ import {
 })
 export class AuthController {
   constructor(private authUseCases: AuthUseCases) { }
-  @UseGuards(LocalGuard)
+  @UseGuards(AuthGuard('local'))
   @Post('signin')
   async signin(
     @Ip() ip: string,
