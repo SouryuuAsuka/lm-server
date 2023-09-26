@@ -20,7 +20,7 @@ export class CouriersController {
     return {
       status: 'success',
       data:{
-        couriers: couriers
+        couriers
       }
     };
   }
@@ -33,7 +33,7 @@ export class CouriersController {
     return {
       status: 'success',
       data:{
-        couriers: couriers
+        couriers
       }
     };
     //TODO: add dbot
