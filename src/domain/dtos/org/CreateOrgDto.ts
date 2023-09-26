@@ -15,7 +15,7 @@ export class CreateOrgDto {
 
   @IsString()
   @IsNotEmpty()
-  category: string;
+  category: number;
 
   @IsString()
   @IsNotEmpty()
