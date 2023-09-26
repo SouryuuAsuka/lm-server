@@ -18,16 +18,17 @@ import Role from '@src/domain/enums/role.enum';
   version: '1',
 })
 export class RequestsController {
-  constructor(private requestsUseCases: RequestsUseCases) {}
+  constructor(private requestsUseCases: RequestsUseCases) { }
 
   @UseGuards(RoleGuard(Role.Moderator))
   @UseGuards(JwtAuthGuard)
   @Get()
   async getRequestList(@Query('p') page: number) {
+    const requests = await this.requestsUseCases.getRequestList(page);
     return {
       status: 'success',
       data: {
-        requests: this.requestsUseCases.getRequestList(page),
+        requests: requests,
       },
     };
   }
@@ -37,10 +38,11 @@ export class RequestsController {
   @UseGuards(JwtAuthGuard)
   @Get(':requestId')
   async getRequest(@Param('requestId') requestId: number) {
+    const request = await this.requestsUseCases.getRequest(requestId)
     return {
       status: 'success',
       data: {
-        request: await this.requestsUseCases.getRequest(requestId),
+        request: request,
       },
     };
   }
@@ -49,10 +51,11 @@ export class RequestsController {
   @UseGuards(JwtAuthGuard)
   @Patch(':requestId/confirm')
   async confirmRequest(@Param('requestId') requestId: number) {
+    const org = await this.requestsUseCases.confirmRequest(requestId);
     return {
       status: 'success',
       data: {
-        org: await this.requestsUseCases.confirmRequest(requestId),
+        org: org
       },
     };
   }
@@ -64,13 +67,11 @@ export class RequestsController {
     @Param('requestId') requestId: number,
     @Body() comment: string,
   ) {
+    const requests = await this.requestsUseCases.setRequestComment(requestId, comment)
     return {
       status: 'success',
       data: {
-        request: await this.requestsUseCases.setRequestComment(
-          requestId,
-          comment,
-        ),
+        requests: requests
       },
     };
   }

@@ -13,7 +13,8 @@ export class RequestsUseCases {
     return await this.requestsRepository.getRequestList(page);
   }
   async getRequest(requestId: number) {
-    return await this.requestsRepository.getRequestById(requestId);
+    const requests = await this.requestsRepository.getRequestById(requestId);
+    return requests[0];
   }
   async confirmRequest(requestId: number) {
     const orgs = await this.requestsRepository.confirmRequest(requestId);
