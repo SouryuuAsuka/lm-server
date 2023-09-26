@@ -10,7 +10,7 @@ export class CouriersRepository {
   async getList() {
     try {
       const count = await this.pool.query(
-        'SELECT COUNT(*) FROM tg_couriers WHERE confirm = false',
+        'SELECT COUNT(*)::INT FROM tg_couriers WHERE confirm = false',
         [],
       );
       if (count.rows[0].count === 0) return { couriers: [], count: 0 };
@@ -41,7 +41,7 @@ export class CouriersRepository {
           city: city,
         });
       }
-      return { couriers: couriersList, count: count };
+      return { couriers: couriersList, count: count.rows[0].count };
     } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }

@@ -17,7 +17,6 @@ export class CouriersController {
   @Get()
   async getCourierList() {
     const couriers = await this.couriersUseCases.getCourierList();
-    console.log("couriers = "+JSON.stringify(couriers))
     return {
       status: 'success',
       data: couriers
