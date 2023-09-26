@@ -16,12 +16,11 @@ export class CouriersController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getCourierList() {
-    const couriers = await this.couriersUseCases.getCourierList()
+    const couriers = await this.couriersUseCases.getCourierList();
+    console.log("couriers = "+JSON.stringify(couriers))
     return {
       status: 'success',
-      data:{
-        couriers: couriers
-      }
+      data: couriers
     };
   }
 
@@ -32,7 +31,7 @@ export class CouriersController {
     const couriers = await this.couriersUseCases.confirmCourier(tgId);
     return {
       status: 'success',
-      data:{
+      data: {
         couriers: couriers
       }
     };

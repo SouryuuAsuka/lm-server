@@ -40,10 +40,8 @@ export class CouriersRepository {
           country: country,
           city: city,
         });
-        if (i + 1 == couriersRow.rows.length) {
-          return { couriers: couriersList, count: count };
-        }
       }
+      return { couriers: couriersList, count: count };
     } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
