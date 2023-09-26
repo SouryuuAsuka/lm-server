@@ -31,13 +31,13 @@ export class MyLogger implements LoggerService {
     });
   }
 
-  error(error: Error): void {
-    this.logger.error(error.message);
+  error(error: any): void {
+    this.logger.error(error);
   }
-  log(error: Error): void {
-    this.logger.log(error.message);
+  log(error: any): void {
+    this.logger.log(error);
   }
-  warn(error: Error): void {
-    this.logger.warn(error.message);
+  warn(error: any): void {
+    this.logger.warn(error);
   }
 }
