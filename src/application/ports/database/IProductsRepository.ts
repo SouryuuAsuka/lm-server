@@ -3,8 +3,8 @@ import { CreateProductDto, UpdateProductDto } from '@src/domain/dtos/product';
 
 @Injectable()
 export abstract class IProductsRepository {
-  abstract createProduct(product: CreateProductDto);
-  abstract getOwnerOfProduct(productId: number);
-  abstract editProduct(product: UpdateProductDto);
-  abstract setActiveProduct(status: string, productId: number);
+  abstract create(product: CreateProductDto);
+  abstract getOwner(productId: number);
+  abstract edit(product: UpdateProductDto);
+  abstract setActive(active: boolean, productId: number);
 }

@@ -11,7 +11,7 @@ export class ProductsUseCases {
     private readonly orgsRepository: IOrgsRepository,
     private readonly awsRepository: IAwsService,
   ) {}
-  async createProduct(
+  async create(
     isAdmin: boolean,
     userId: number,
     product: CreateProductDto,
@@ -27,14 +27,14 @@ export class ProductsUseCases {
       }
     }
     if (fullAccess) {
-      const productId = await this.productsRepository.createProduct(product);
+      const productId = await this.productsRepository.create(product);
       await this.awsRepository.savePicture(file, productId, 'products');
       return true;
     } else {
       throw 'Ошибка доступа';
     }
   }
-  async editProduct(
+  async edit(
     isAdmin: boolean,
     userId: number,
     productId: number,
@@ -46,37 +46,37 @@ export class ProductsUseCases {
       fullAccess = true;
     } else {
       const ownerId =
-        await this.productsRepository.getOwnerOfProduct(productId);
+        await this.productsRepository.getOwner(productId);
       if (userId == ownerId) {
         fullAccess = true;
       }
     }
     if (fullAccess) {
-      await this.productsRepository.editProduct(product);
+      await this.productsRepository.edit(product);
       await this.awsRepository.savePicture(file, product.productId, 'products');
       return true;
     } else {
       throw 'Ошибка доступа';
     }
   }
-  async setActiveProduct(
+  async setActive(
     isAdmin: boolean,
     userId: number,
     productId: number,
-    status: string,
+    active: boolean,
   ) {
     let fullAccess = false;
     if (isAdmin) {
       fullAccess = true;
     } else {
       const ownerId =
-        await this.productsRepository.getOwnerOfProduct(productId);
+        await this.productsRepository.getOwner(productId);
       if (userId == ownerId) {
         fullAccess = true;
       }
     }
     if (fullAccess) {
-      await this.productsRepository.setActiveProduct(status, productId);
+      await this.productsRepository.setActive(active, productId);
       return true;
     } else {
       throw 'Ошибка доступа';

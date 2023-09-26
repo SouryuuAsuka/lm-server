@@ -30,7 +30,7 @@ export class ProductsController {
     @Req() req: any,
   ) {
     const file = null;
-    await this.productsUseCases.createProduct(
+    await this.productsUseCases.create(
       req.user.isAdmin,
       req.user.id,
       createProductDto,
@@ -51,7 +51,7 @@ export class ProductsController {
     @Req() req: any,
   ) {
     const file = null;
-    await this.productsUseCases.editProduct(
+    await this.productsUseCases.edit(
       req.user.isAdmin,
       req.user.id,
       productId,
@@ -69,14 +69,14 @@ export class ProductsController {
   @Patch(':productId/active')
   async setActiveProduct(
     @Param('productId') productId: number,
-    @Body('status') status: string,
+    @Body('active') active: boolean,
     @Req() req: any,
   ) {
-    await this.productsUseCases.setActiveProduct(
+    await this.productsUseCases.setActive(
       req.user.isAdmin,
       req.user.id,
       productId,
-      status,
+      active,
     );
     return {
       status: 'success',

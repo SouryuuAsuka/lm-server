@@ -18,10 +18,8 @@ export class OrgsUseCases {
   }
   async getOrgById(orgId: number, user: any) {
     let fullAccess = false;
-    console.log('first step')
     if (user.role >= 5) fullAccess = true;
     else if (user.role === 3 || user.role === 4) {
-      console.log(JSON.stringify(user));
       const owner = await this.orgsRepository.getOwner(orgId);
       if (owner === user.id) {
         fullAccess = true;
