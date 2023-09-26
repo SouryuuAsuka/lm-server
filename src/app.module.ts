@@ -19,7 +19,6 @@ import {
   BotModule
 } from '@src/application/proxy';
 import { ExceptionsModule } from '@src/presentation/exceptions/exceptions.module';
-import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -38,7 +37,6 @@ import { PassportModule } from '@nestjs/passport';
     CouriersModule,
     CartsModule,
     AuthModule,
-    PassportModule
   ],
   controllers: [],
   providers: [],
