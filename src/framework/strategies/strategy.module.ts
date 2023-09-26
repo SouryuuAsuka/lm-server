@@ -1,11 +1,12 @@
 import { PassportModule } from '@nestjs/passport';
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import {
   LocalStrategy,
   AccessTokenStrategy,
   RefreshTokenStrategy,
   SimpleTokenStrategy,
 } from '@src/framework/strategies/';
+@Global()
 @Module({
   providers: [
     LocalStrategy,
