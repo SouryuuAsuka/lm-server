@@ -54,6 +54,8 @@ export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
     return user;
   }
 }
+
+@Injectable()
 export class LocalGuard extends AuthGuard('local') {
   handleRequest(err: any, user: any) {
     if (err || !user) {
