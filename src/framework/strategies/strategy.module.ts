@@ -3,7 +3,7 @@ import { LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy, SimpleTokenSt
 @Global()
 @Module({
   providers: [
-    LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy, SimpleTokenStrategy
+    AccessTokenStrategy, LocalStrategy, RefreshTokenStrategy, SimpleTokenStrategy
   ]
 })
 export class StrategyModule {}
