@@ -15,6 +15,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import {
+  LocalGuard,
   JwtAuthGuard,
   SimpleUserGuard,
   RefreshTokenGuard
@@ -26,7 +27,7 @@ import {
 })
 export class AuthController {
   constructor(private authUseCases: AuthUseCases) { }
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalGuard)
   @Post('signin')
   async signin(
     @Ip() ip: string,

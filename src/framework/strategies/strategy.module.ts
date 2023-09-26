@@ -8,6 +8,7 @@ import {
 } from '@src/framework/strategies/';
 @Module({
   providers: [
+    LocalStrategy,
     AccessTokenStrategy,
     SimpleTokenStrategy,
     RefreshTokenStrategy,
