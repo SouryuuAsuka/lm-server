@@ -19,6 +19,7 @@ import {
   BotModule
 } from '@src/application/proxy';
 import { ExceptionsModule } from '@src/presentation/exceptions/exceptions.module';
+import { StrategyModule } from './framework/strategies/strategy.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ExceptionsModule } from '@src/presentation/exceptions/exceptions.module
     CouriersModule,
     CartsModule,
     AuthModule,
+    StrategyModule,
   ],
   controllers: [],
   providers: [],

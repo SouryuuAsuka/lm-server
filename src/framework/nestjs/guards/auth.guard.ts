@@ -54,3 +54,11 @@ export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
     return user;
   }
 }
+export class LocalGuard extends AuthGuard('local') {
+  handleRequest(err: any, user: any) {
+    if (err || !user) {
+      throw new ForbiddenException();
+    }
+    return user;
+  }
+}
