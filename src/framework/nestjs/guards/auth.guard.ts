@@ -45,9 +45,16 @@ export class SimpleUserGuard extends AuthGuard('simple-jwt') {
     }
   }
 }
-
 @Injectable()
 export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
+  handleRequest(err: any, user: any) {
+    if (err || !user) {
+      throw new ForbiddenException();
+    }
+    return user;
+  }
+}
+export class LocalGuard extends AuthGuard('local') {
   handleRequest(err: any, user: any) {
     if (err || !user) {
       throw new ForbiddenException();

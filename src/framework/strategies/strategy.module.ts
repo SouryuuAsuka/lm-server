@@ -4,9 +4,6 @@ import { LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy, SimpleTokenSt
 @Module({
   providers: [
     LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy, SimpleTokenStrategy
-  ],
-  exports:[
-    LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy, SimpleTokenStrategy
   ]
 })
 export class StrategyModule {}
