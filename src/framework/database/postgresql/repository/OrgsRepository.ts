@@ -10,8 +10,7 @@ export class OrgsRepository {
   ) {}
   async getOrgById(orgId: number) {
     try {
-      const orgRow = await this.pool.query(
-        `
+      const orgRow = await this.pool.query(`
       SELECT 
       org.org_id AS "orgId", 
       org.name AS name, 
