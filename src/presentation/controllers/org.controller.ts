@@ -45,6 +45,7 @@ export class OrgsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async createOrg(@Body() createOrg: CreateOrgDto, @Req() req: any) {
+    console.log(JSON.stringify(createOrg))
     await this.orgsUseCases.createOrg(createOrg, req.user);
     return {
       status: 'success',
