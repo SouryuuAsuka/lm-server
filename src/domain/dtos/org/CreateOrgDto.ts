@@ -19,7 +19,7 @@ export class CreateOrgDto {
 
   @IsString()
   @IsNotEmpty()
-  country: number;
+  country: string;
 
   @IsString()
   @IsNotEmpty()
