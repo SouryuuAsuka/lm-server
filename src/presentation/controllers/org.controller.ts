@@ -50,7 +50,7 @@ export class OrgsController {
   @UseGuards(RoleGuard(Role.User))
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('avatar'))
   async createOrg(
     @UploadedFile() file: MemoryStorageFile,
     @Body() createOrg: CreateOrgDto,
