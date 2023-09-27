@@ -8,6 +8,7 @@ import {
   Query,
   Patch,
   Req,
+  UseInterceptors,
 } from '@nestjs/common';
 import { OrgsUseCases } from '@src/application/use-cases/org.use-case';
 import { CreateOrgDto, UpdateOrgDto } from '@src/domain/dtos/org';
@@ -22,6 +23,7 @@ import { UploadGuard } from '@src/framework/nestjs/guards/upload.guard';
 import { File } from '@src/framework/nestjs/decorators/file.decorator';
 import { MultipartFile } from "@fastify/multipart"
 import { FastifyRequest } from "fastify";
+import { FileInterceptor, UploadedFile, MemoryStorageFile } from '@blazity/nest-file-fastify';
 
 @ApiTags('orgs')
 @Controller({
@@ -45,13 +47,12 @@ export class OrgsController {
       data: await this.orgsUseCases.getOrgList(page, city, category),
     };
   }
-
   @UseGuards(RoleGuard(Role.User))
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UseGuards(UploadGuard)
+  @UseInterceptors(FileInterceptor('file'))
   async createOrg(
-    @File() file: MultipartFile,
+    @UploadedFile() file: MemoryStorageFile,
     @Body() createOrg: CreateOrgDto,
     @Req() req: FastifyRequest,
   ) {
