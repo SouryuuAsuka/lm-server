@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateOrgDto {
   @IsString()
@@ -13,7 +13,7 @@ export class CreateOrgDto {
   @IsNotEmpty()
   about: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   category: number;
 
