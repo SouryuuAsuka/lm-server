@@ -50,14 +50,14 @@ export class OrgsController {
   @UseGuards(RoleGuard(Role.User))
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('avatar'))
+  @UseInterceptors(FileInterceptor('file'))
   async createOrg(
     @UploadedFile() file: MemoryStorageFile,
     //@Body() createOrg: any,
     @Req() req: FastifyRequest,
   ) {
     //console.log("createOrg - " + JSON.stringify(createOrg))
-    console.log("req - " + JSON.stringify(req))
+    console.log("req.body - " + JSON.stringify(req.body))
     //await this.orgsUseCases.createOrg(createOrg, req.user.id, file);
     return {
       status: 'success',
