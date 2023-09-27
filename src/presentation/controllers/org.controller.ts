@@ -45,12 +45,10 @@ export class OrgsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async createOrg(
-    @Body() createOrg: CreateOrgDto, 
+    @Body() createOrg: any, 
     @Req() req: any,
-    @Body('lang') lang: string
     ) {
     console.log("createOrg - "+JSON.stringify(createOrg))
-    console.log("lang" + JSON.stringify(lang))
     await this.orgsUseCases.createOrg(createOrg, req.user);
     return {
       status: 'success',
