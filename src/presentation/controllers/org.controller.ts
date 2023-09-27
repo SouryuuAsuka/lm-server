@@ -53,12 +53,12 @@ export class OrgsController {
   @UseInterceptors(FileInterceptor('avatar'))
   async createOrg(
     @UploadedFile() file: MemoryStorageFile,
-    @Body() createOrg: any,
+    //@Body() createOrg: any,
     @Req() req: FastifyRequest,
   ) {
-    console.log("createOrg - " + JSON.stringify(createOrg))
+    //console.log("createOrg - " + JSON.stringify(createOrg))
     console.log("req.body - " + JSON.stringify(req.body))
-    await this.orgsUseCases.createOrg(createOrg, req.user.id, file);
+    //await this.orgsUseCases.createOrg(createOrg, req.user.id, file);
     return {
       status: 'success',
       data: {},
