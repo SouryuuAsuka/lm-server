@@ -50,9 +50,7 @@ export class OrgsController {
   @UseGuards(RoleGuard(Role.User))
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
   async createOrg(
-    @UploadedFile() file: MemoryStorageFile,
     //@Body() createOrg: any,
     @Req() req: FastifyRequest,
   ) {
