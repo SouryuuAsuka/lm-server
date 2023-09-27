@@ -192,7 +192,7 @@ export class OrgsRepository {
     try {
       console.log(JSON.stringify(org))
       const orgInsertString =
-        'INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, country, street, house, flat, comission) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING org_id AS "orgId"';
+        'INSERT INTO organizations_request (name, about, owner, category, avatar, city, created, country, street, house, flat, commission) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING org_id AS "orgId"';
       const { rowCount, rows } = await this.pool.query(orgInsertString, [
         [{ lang: org.lang, text: org.name }],
         [{ lang: org.lang, text: org.about }],

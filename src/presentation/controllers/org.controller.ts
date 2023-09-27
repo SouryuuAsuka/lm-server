@@ -113,17 +113,18 @@ export class OrgsController {
     @Query('status') status?: string,
     @Query('paid') paid?: string,
   ) {
+    const quests = await this.orgsUseCases.getOrgQuestList(
+      true,
+      0,
+      orgId,
+      page,
+      status,
+      paid,
+    );
     return {
       status: 'success',
       data: {
-        quests: await this.orgsUseCases.getOrgQuestList(
-          true,
-          0,
-          orgId,
-          page,
-          status,
-          paid,
-        ),
+        quests: quests,
       },
     };
   }
