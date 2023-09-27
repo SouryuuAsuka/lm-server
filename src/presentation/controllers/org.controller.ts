@@ -53,7 +53,7 @@ export class OrgsController {
   @UseInterceptors(FileInterceptor('avatar'))
   async createOrg(
     @UploadedFile() file: MemoryStorageFile,
-    @Body() createOrg: CreateOrgDto,
+    @Body() createOrg: any,
     @Req() req: FastifyRequest,
   ) {
     console.log("createOrg - " + JSON.stringify(createOrg))
