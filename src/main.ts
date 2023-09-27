@@ -19,7 +19,7 @@ async function bootstrap() {
   );
   await app.register(fastifyCookie);
   const logger = app.get<MyLogger>(MyLogger);
-  app.register(fmp);
+  app.register(fmp, { attachFieldsToBody: true });
   app.useLogger(logger);
   app.useGlobalFilters(new HttpExceptionFilter(logger));
   app.enableVersioning({

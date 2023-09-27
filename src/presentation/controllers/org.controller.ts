@@ -18,6 +18,11 @@ import {
 } from '@src/framework/nestjs/guards/auth.guard';
 import RoleGuard from '@src/framework/nestjs/guards/role.guard';
 import Role from '@src/domain/enums/role.enum';
+import { UploadGuard } from '@src/framework/nestjs/guards/upload.guard';
+import { File } from '@src/framework/nestjs/decorators/file.decorator';
+import { MultipartFile } from "@fastify/multipart"
+import { FastifyRequest } from "fastify";
+
 @ApiTags('orgs')
 @Controller({
   path: 'orgs',
@@ -44,12 +49,14 @@ export class OrgsController {
   @UseGuards(RoleGuard(Role.User))
   @UseGuards(JwtAuthGuard)
   @Post()
+  @UseGuards(UploadGuard)
   async createOrg(
-    @Body() createOrg: any, 
-    @Req() req: any,
-    ) {
-    console.log("createOrg - "+JSON.stringify(createOrg))
-    await this.orgsUseCases.createOrg(createOrg, req.user);
+    @File() file: MultipartFile,
+    @Body() createOrg: CreateOrgDto,
+    @Req() req: FastifyRequest,
+  ) {
+    console.log("createOrg - " + JSON.stringify(createOrg))
+    await this.orgsUseCases.createOrg(createOrg, req.user.id, file);
     return {
       status: 'success',
       data: {},

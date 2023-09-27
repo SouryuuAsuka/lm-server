@@ -21,8 +21,8 @@ export class ProductsUseCases {
     if (isAdmin) {
       fullAccess = true;
     } else {
-      const ownerId = await this.orgsRepository.getOwner(userId);
-      if (userId == ownerId) {
+      const owner = await this.orgsRepository.getOwner(userId);
+      if (userId == owner[0].owner) {
         fullAccess = true;
       }
     }

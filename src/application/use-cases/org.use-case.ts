@@ -1,10 +1,15 @@
+import { MultipartFile } from '@fastify/multipart';
 import { Injectable } from '@nestjs/common';
 import { IOrgsRepository } from '@src/application/ports/database/IOrgsRepository';
 import { CreateOrgDto, UpdateOrgDto } from '@src/domain/dtos/org';
+import { IAwsService } from '@src/application/ports/IAwsService';
 
 @Injectable()
 export class OrgsUseCases {
-  constructor(private readonly orgsRepository: IOrgsRepository) {}
+  constructor(
+    private readonly orgsRepository: IOrgsRepository,
+    private readonly awsRepository: IAwsService,
+    ) {}
 
   async getOrgList(
     page: number = 1,
@@ -13,8 +18,10 @@ export class OrgsUseCases {
   ) {
     return await this.orgsRepository.getList(page, city, category);
   }
-  async createOrg(createOrg: CreateOrgDto, ownerId: number) {
-    return await this.orgsRepository.create(createOrg, ownerId);
+  async createOrg(createOrg: CreateOrgDto, ownerId: number, file: MultipartFile) {
+    const orgs = await this.orgsRepository.create(createOrg, ownerId);
+    await this.awsRepository.savePicture(file, orgs[0].orgId, 'products');
+    return 
   }
   async getOrgById(orgId: number, user: any) {
     let fullAccess = false;
@@ -50,7 +57,7 @@ export class OrgsUseCases {
       fullAccess = true;
     } else {
       const owner = await this.orgsRepository.getOwner(orgId);
-      if (owner == userId) fullAccess = true;
+      if (owner[0].owner == userId) fullAccess = true;
     }
     if (fullAccess) {
       const quests = await this.orgsRepository.getQuestList(
