@@ -28,7 +28,7 @@ export class OrgsUseCases {
     if (user.role >= 5) fullAccess = true;
     else if (user.role === 3 || user.role === 4) {
       const owner = await this.orgsRepository.getOwner(orgId);
-      if (owner === user.id) {
+      if (owner[0].owner == user.id) {
         fullAccess = true;
       }
     }
