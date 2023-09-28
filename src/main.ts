@@ -19,14 +19,7 @@ async function bootstrap() {
   );
   await app.register(fastifyCookie);
   const logger = app.get<MyLogger>(MyLogger);
-  app.register(fmp, {
-    attachFieldsToBody: 'keyValues',
-    limits: {
-      fields: 10, // Max number of non-file fields
-      fileSize: 1024 * 1024 * 6, // limit size 6M
-      files: 5, // Max number of file fields
-    }
-  });
+  app.register(fmp);
   app.useLogger(logger);
   app.useGlobalFilters(new HttpExceptionFilter(logger));
   app.enableVersioning({
