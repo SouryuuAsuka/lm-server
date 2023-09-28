@@ -20,8 +20,7 @@ export class OrgsUseCases {
   }
   async createOrg(createOrg: CreateOrgDto, ownerId: number, file: MemoryStorageFile) {
     const orgs = await this.orgsRepository.create(createOrg, ownerId);
-    file.fieldname = orgs[0].orgId;
-    await this.awsRepository.savePicture(file, orgs[0].orgId, 'products');
+    await this.awsRepository.savePicture(file, orgs[0].orgId, 'avatars-org-request');
     return 
   }
   async getOrgById(orgId: number, user: any) {

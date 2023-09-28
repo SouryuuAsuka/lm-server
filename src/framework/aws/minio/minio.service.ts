@@ -19,18 +19,18 @@ export class MinioService {
     });
   }
 
-  async savePicture(file: MemoryStorageFile, newFilename, repository) {
+  async savePicture(file: MemoryStorageFile, newFilename:string, repository:string) {
     try {
       const image = sharp(file.buffer); // path to the stored image
       await image
         .resize({ width: 720, height: 720 })
         .toFormat('jpeg', { mozjpeg: true })
-        .toFile(path.resolve('tmp', 'resized', 'request_'+file.fieldname));
+        .toFile(path.resolve('tmp', 'resized', 'request_'+newFilename));
       const metaData = { 'Content-Type': 'image/jpeg' };
       await this.minio.fPutObject(
         repository,
         newFilename + '.jpeg',
-        path.resolve('tmp', 'resized', 'request_'+file.fieldname),
+        path.resolve('tmp', 'resized', 'request_'+newFilename),
         metaData,
       );
       return true;
