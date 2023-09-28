@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { IOrgsRepository } from '@src/application/ports/database/IOrgsRepository';
 import { CreateOrgDto, UpdateOrgDto } from '@src/domain/dtos/org';
 import { IAwsService } from '@src/application/ports/IAwsService';
-import { MemoryStorageFile } from '@blazity/nest-file-fastify';
 
 @Injectable()
 export class OrgsUseCases {
@@ -18,7 +17,7 @@ export class OrgsUseCases {
   ) {
     return await this.orgsRepository.getList(page, city, category);
   }
-  async createOrg(createOrg: CreateOrgDto, ownerId: number, file: MemoryStorageFile) {
+  async createOrg(createOrg: CreateOrgDto, ownerId: number, file: string) {
     const orgs = await this.orgsRepository.create(createOrg, ownerId);
     await this.awsRepository.savePicture(file, orgs[0].orgId, 'products');
     return 
