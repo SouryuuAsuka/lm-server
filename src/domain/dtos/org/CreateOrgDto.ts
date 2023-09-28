@@ -37,4 +37,6 @@ export class CreateOrgDto {
   @IsNotEmpty()
   flat: string;
 
+  @IsNotEmpty()
+  avatar:any;
 }

@@ -17,7 +17,7 @@ export class OrgsUseCases {
   ) {
     return await this.orgsRepository.getList(page, city, category);
   }
-  async createOrg(createOrg: CreateOrgDto, ownerId: number, file: string) {
+  async createOrg(createOrg: CreateOrgDto, ownerId: number, file: unknown|any) {
     const orgs = await this.orgsRepository.create(createOrg, ownerId);
     await this.awsRepository.savePicture(file, orgs[0].orgId, 'products');
     return 

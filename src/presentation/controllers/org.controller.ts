@@ -56,7 +56,7 @@ export class OrgsController {
   ) {
     //console.log("createOrg - " + JSON.stringify(createOrg))
     console.log("req.body - " + JSON.stringify(req.body))
-    await this.orgsUseCases.createOrg(createOrg, req.user.id, req.body.avatar);
+    await this.orgsUseCases.createOrg(createOrg, req.user.id, createOrg.avatar);
     return {
       status: 'success',
       data: {},
