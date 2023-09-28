@@ -56,8 +56,6 @@ export class OrgsController {
     @Body() createOrg: CreateOrgDto,
     @Req() req: FastifyRequest,
   ) {
-    console.log("createOrg - " + JSON.stringify(createOrg))
-    console.log("file - " + JSON.stringify(file))
     await this.orgsUseCases.createOrg(createOrg, req.user.id, file);
     return {
       status: 'success',
