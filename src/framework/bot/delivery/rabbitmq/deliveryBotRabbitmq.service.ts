@@ -5,6 +5,8 @@ import { ClientProxy } from '@nestjs/microservices';
 export class DeliveryBotRabbitmqService {
   constructor(@Inject('DELIVERY_BOT') private client: ClientProxy){}
   async sendMessage(id: number, msg: string) {
-    return this.client.send({cmd:"sendMessage"}, {id, msg});
+    const result = this.client.send({ cmd: "sendMessage" }, { id, msg });
+    result.subscribe();
+    return true;
   }
 }
