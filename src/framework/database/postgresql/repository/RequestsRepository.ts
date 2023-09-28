@@ -89,13 +89,12 @@ export class RequestsRepository {
       const { rows, rowCount } = await this.pool.query(`
         UPDATE organizations_request 
         SET moderator_comment = $1 
-        WHERE org_id = $2 
-        RETURNING app_id AS "appId";`,
+        WHERE org_id = $2;`,
         [comment, requestId],
       );
       if (rowCount === 0)
         throw new Error('Ошибка при переносе организации');
-      return rows;
+      return true;
     } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }
