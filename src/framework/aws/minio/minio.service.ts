@@ -25,12 +25,12 @@ export class MinioService {
       await image
         .resize({ width: 720, height: 720 })
         .toFormat('jpeg', { mozjpeg: true })
-        .toFile(path.resolve('@tmp', 'resized', 'request_'+file.fieldname));
+        .toFile(path.resolve('tmp', 'resized', 'request_'+file.fieldname));
       const metaData = { 'Content-Type': 'image/jpeg' };
       await this.minio.fPutObject(
         repository,
         newFilename + '.jpeg',
-        path.resolve('@tmp', 'resized', 'request_'+file.fieldname),
+        path.resolve('tmp', 'resized', 'request_'+file.fieldname),
         metaData,
       );
       return true;
