@@ -11,7 +11,7 @@ export class OrgsRepository {
   ) { }
   async getById(orgId: number) {
     try {
-      const {rows} = await this.pool.query(`
+      const { rows } = await this.pool.query(`
       SELECT 
       org.org_id AS "orgId", 
       org.name AS name, 
@@ -50,7 +50,7 @@ export class OrgsRepository {
   }
   async getFullById(orgId: number) {
     try {
-      const orgRow = await this.pool.query(
+      const { rows } = await this.pool.query(
         `
         SELECT 
         org.org_id AS "orgId"
@@ -107,11 +107,7 @@ export class OrgsRepository {
         ORDER BY org.created DESC`,
         [orgId],
       );
-      if (orgRow.rows.length != 0) {
-        return orgRow.rows[0];
-      } else {
-        throw new Error('Ошибка запроса');
-      }
+      return rows;
     } catch (err: any) {
       this.exceptionService.DatabaseException(err.message);
     }

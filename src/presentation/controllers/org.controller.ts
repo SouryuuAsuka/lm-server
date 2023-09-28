@@ -70,7 +70,7 @@ export class OrgsController {
     return {
       status: 'success',
       data: {
-        org
+        org: org[0]
       },
     };
   }
