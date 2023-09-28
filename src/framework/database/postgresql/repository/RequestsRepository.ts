@@ -25,6 +25,7 @@ export class RequestsRepository {
         , u.surname AS surname
         , u.telegram AS telegram
         , t.username AS "tgUsername"
+        , t.app_id AS "appId"
         FROM organizations_request AS o
         LEFT JOIN users AS u
         ON o.owner = u.user_id

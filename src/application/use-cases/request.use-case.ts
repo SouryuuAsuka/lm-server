@@ -21,8 +21,9 @@ export class RequestsUseCases {
     return this.usersRepository.updateUserRole(orgs[0].owner, 3);
   }
   async setRequestComment(requestId: number, comment: string) {
-    const request = await this.requestsRepository.setRequestComment(requestId, comment);
-    await this.techBotTransporter.sendMessage(requestId, comment)
+    await this.requestsRepository.setRequestComment(requestId, comment);
+    const request = await this.requestsRepository.getRequestById(requestId)
+    await this.techBotTransporter.sendMessage(request[0].appId, comment)
     return true
   }
 }
