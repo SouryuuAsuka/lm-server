@@ -1,3 +1,4 @@
+import { MemoryStorageFile } from '@blazity/nest-file-fastify';
 import { Injectable } from '@nestjs/common';
 import * as Minio from 'minio';
 import * as path from 'path';
@@ -18,18 +19,18 @@ export class MinioService {
     });
   }
 
-  async savePicture(file, newFilename, repository) {
+  async savePicture(file: MemoryStorageFile, newFilename, repository) {
     try {
-      const image = sharp(file.path); // path to the stored image
+      const image = sharp(file.buffer); // path to the stored image
       await image
         .resize({ width: 720, height: 720 })
         .toFormat('jpeg', { mozjpeg: true })
-        .toFile(path.resolve(file.destination, 'resized', file.filename));
+        .toFile(path.resolve('@tmp', 'resized', 'request_'+file.fieldname));
       const metaData = { 'Content-Type': 'image/jpeg' };
       await this.minio.fPutObject(
         repository,
         newFilename + '.jpeg',
-        path.resolve(file.destination, 'resized', file.filename),
+        path.resolve('@tmp', 'resized', 'request_'+file.fieldname),
         metaData,
       );
       return true;
