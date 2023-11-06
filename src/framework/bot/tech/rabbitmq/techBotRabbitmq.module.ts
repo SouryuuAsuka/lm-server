@@ -10,7 +10,7 @@ import { ITechBotTransporter } from '@src/application/ports/ITechBotTransporter'
         name: 'TECH_BOT',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://lm-rabbitmq:5672'],
+          urls: [`amqp://${process.env.RABBITMQ_DEFAULT_USER}:${process.env.RABBITMQ_DEFAULT_PASS}@lm-rabbitmq:5672`],
           queue: 'tbot',
           queueOptions: {
             durable: false
