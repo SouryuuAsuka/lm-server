@@ -65,7 +65,7 @@ export class RequestsController {
   @Patch(':requestId/comment')
   async setRequestComment(
     @Param('requestId') requestId: number,
-    @Body() comment: string,
+    @Body('comment') comment: string,
   ) {
     const requests = await this.requestsUseCases.setRequestComment(requestId, comment)
     return {
