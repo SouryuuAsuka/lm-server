@@ -5,6 +5,6 @@ import { CartCookiesDto } from '@src/domain/dtos/cart';
 export abstract class ICartsRepository {
   abstract get(cartToken:string, cartId:number): Promise<any[]>;
   abstract getFull(cartToken:string, cartId:number): Promise<any>;
-  abstract create(productId: number, token: string): Promise<boolean>;
+  abstract create(productId: number, token: string): Promise<any>;
   abstract addProduct(cart: any, cartToken: string, cartId: number): Promise<any>;
 }

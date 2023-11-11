@@ -6,12 +6,15 @@ import {
   Body,
   Query,
   Patch,
+  Res
 } from '@nestjs/common';
 import { CartsUseCases } from '@src/application/use-cases/cart.use-case';
 import { CartCookiesDto } from '@src/domain/dtos/cart';
 import { Cookies } from '@src/framework/nestjs/decorators';
 import { ApiTags } from '@nestjs/swagger';
 import { SimpleUserGuard } from '@src/framework/nestjs/guards/auth.guard';
+import { FastifyReply } from 'fastify';
+
 @ApiTags('carts')
 @Controller({
   path: 'carts',
@@ -42,14 +45,23 @@ export class CartsController {
     };
   }
 
-
   @UseGuards(SimpleUserGuard)
   @Post()
-  async createCart(@Body('productId') productId: number) {
-    return {
+  async createCart(
+    @Body('productId') productId: number,
+    @Res({ passthrough: true }) res: FastifyReply,
+  ) {
+    const { cartId, token } = await this.cartsUseCases.createCart(productId);
+    res.cookie('cart_id', cartId, {
+      domain: process.env.SERVER_DOMAIN,
+    });
+    res.cookie('cart_token', token, {
+      domain: process.env.SERVER_DOMAIN,
+    });
+    return res.send({
       status: 'success',
-      data: await this.cartsUseCases.createCart(productId),
-    };
+      data: {}
+    });
   }
 
   @UseGuards(SimpleUserGuard)
