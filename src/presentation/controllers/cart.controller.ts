@@ -22,15 +22,29 @@ export class CartsController {
 
   @UseGuards(SimpleUserGuard)
   @Get()
-  async getCart(@Query() type: string, @Cookies() cartCookies: CartCookiesDto) {
+  async getCart(
+    @Query('type') type: string,
+    @Cookies() cartCookies: CartCookiesDto) {
     return {
       status: 'success',
       data: await this.cartsUseCases.getCart(type, cartCookies),
     };
   }
 
+  @Get(':cartId')
+  async getCartById(
+    @Query('type') type: string,
+    @Body('cartId') cartId: number,
+    @Query('cart_token') cart_token: string) {
+    return {
+      status: 'success',
+      data: await this.cartsUseCases.getCart(type, { cart_id: cartId, cart_token }),
+    };
+  }
+
+
   @UseGuards(SimpleUserGuard)
-  @Post()
+  @Post(':productId')
   async createCart(@Body('productId') productId: number) {
     return {
       status: 'success',
