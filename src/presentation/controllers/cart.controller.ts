@@ -44,7 +44,7 @@ export class CartsController {
 
 
   @UseGuards(SimpleUserGuard)
-  @Post(':productId')
+  @Post()
   async createCart(@Body('productId') productId: number) {
     return {
       status: 'success',
