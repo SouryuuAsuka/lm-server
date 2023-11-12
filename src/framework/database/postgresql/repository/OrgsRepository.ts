@@ -13,7 +13,7 @@ export class OrgsRepository {
     try {
       const { rows } = await this.pool.query(`
       SELECT 
-      org.org_id AS "orgId", 
+      org.org_id AS org_id, 
       org.name AS name, 
       org.about AS about, 
       org.category AS category, 
@@ -23,7 +23,7 @@ export class OrgsRepository {
       null as owner,
       json_agg( 
         json_build_object(
-          'id', g.product_id, 
+          'product_id', g.product_id, 
           'name', g.name, 
           'about',  g.about, 
           'price',  g.price, 
@@ -32,8 +32,8 @@ export class OrgsRepository {
           'sold', g.sold, 
           'created', g.created, 
           'orders', g.orders, 
-          'catId', g.cat_id, 
-          'preparationTime', g.preparation_time
+          'cat_id', g.cat_id, 
+          'preparation_time', g.preparation_time
         )
       ) AS products
       FROM organizations AS org 
@@ -53,7 +53,7 @@ export class OrgsRepository {
       const { rows } = await this.pool.query(
         `
         SELECT 
-        org.org_id AS "orgId"
+        org.org_id AS org_id
         , org.name AS name
         , org.about AS about
         , org.category AS category
@@ -65,8 +65,8 @@ export class OrgsRepository {
         (SELECT 
           json_agg( 
             json_build_object(
-            'quId', qu.qu_id
-            , 'statusCode', qu.status_code
+            'qu_id', qu.qu_id
+            , 'status_code', qu.status_code
             , 'products', qu.products_array
             )
           )  
@@ -77,7 +77,7 @@ export class OrgsRepository {
         (SELECT 
           json_agg( 
             json_build_object(
-              'usdSum', p.usd_sum
+              'usd_sum', p.usd_sum
             )
           )  
           FROM org_payments AS p 
@@ -86,7 +86,7 @@ export class OrgsRepository {
         ) AS payments, 
         json_agg( 
           json_build_object(
-            'id', g.product_id
+            'product_id', g.product_id
             , 'name', g.name
             , 'about',  g.about
             , 'price',  g.price
@@ -95,10 +95,10 @@ export class OrgsRepository {
             , 'sold', g.sold
             , 'created', g.created
             , 'orders', g.orders
-            , 'catId', g.cat_id
-            , 'preparationTime', g.preparation_time
+            , 'cat_id', g.cat_id
+            , 'preparation_time', g.preparation_time
           )
-        ) AS products
+        ) AS productsuser
         FROM organizations AS org 
         LEFT JOIN products AS g
         ON g.org_id = org.org_id

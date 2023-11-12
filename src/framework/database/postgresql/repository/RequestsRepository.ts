@@ -13,19 +13,19 @@ export class RequestsRepository {
       const { rows, rowCount } = await this.pool.query(
         `
         SELECT 
-        o.org_id AS "orgId"
+        o.org_id AS org_id
         , o.name AS name
         , o.about AS about
         , o.avatar AS avatar
         , o.category AS category
         , o.city AS city
-        , o.moderator_comment AS "moderatorComment"
+        , o.moderator_comment AS moderator_comment
         , u.email AS email
         , u.firstname AS firstname
         , u.surname AS surname
         , u.telegram AS telegram
-        , t.username AS "tgUsername"
-        , t.app_id AS "appId"
+        , t.username AS tg_username
+        , t.app_id AS app_id
         FROM organizations_request AS o
         LEFT JOIN users AS u
         ON o.owner = u.user_id
@@ -68,7 +68,7 @@ export class RequestsRepository {
       const { rows } = await this.pool.query(
         `
         SELECT 
-        o.org_id AS id
+        o.org_id AS org_id
         , o.name AS name
         , o.about AS about
         , o.category AS category
