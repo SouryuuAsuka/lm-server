@@ -32,7 +32,7 @@ export class CartsController {
     return {
       status: 'success',
       data: {
-        cart
+        cart: cart[0]?.order_array ?? []
       },
     };
   }
@@ -46,7 +46,7 @@ export class CartsController {
     return {
       status: 'success',
       data: {
-        cart
+        cart: cart[0]?.order_array ?? []
       },
     };
   }
