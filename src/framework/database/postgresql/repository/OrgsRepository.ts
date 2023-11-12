@@ -144,7 +144,7 @@ export class OrgsRepository {
         , (SELECT 
           json_agg( 
             json_build_object(
-              'id', p.product_id
+              'product_id', p.product_id
               , 'name', p.name
               , 'about',  p.about
               , 'price',  p.price
