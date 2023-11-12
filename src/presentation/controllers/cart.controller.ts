@@ -28,9 +28,12 @@ export class CartsController {
   async getCart(
     @Query('type') type: string,
     @Cookies() cartCookies: CartCookiesDto) {
+    const cart = await this.cartsUseCases.getCart(type, cartCookies)
     return {
       status: 'success',
-      data: await this.cartsUseCases.getCart(type, cartCookies),
+      data: {
+        cart
+      },
     };
   }
 
@@ -39,9 +42,12 @@ export class CartsController {
     @Query('type') type: string,
     @Body('cartId') cartId: number,
     @Query('cart_token') cart_token: string) {
+    const cart = await this.cartsUseCases.getCart(type, { cart_id: cartId, cart_token });
     return {
       status: 'success',
-      data: await this.cartsUseCases.getCart(type, { cart_id: cartId, cart_token }),
+      data: {
+        cart
+      },
     };
   }
 
