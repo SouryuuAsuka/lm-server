@@ -23,7 +23,7 @@ export class RequestsUseCases {
   async setRequestComment(requestId: number, comment: string) {
     await this.requestsRepository.setRequestComment(requestId, comment);
     const request = await this.requestsRepository.getRequestById(requestId)
-    await this.techBotTransporter.sendMessage(request[0].appId, comment)
+    await this.techBotTransporter.sendMessage(request[0].app_id, comment)
     return true
   }
 }
