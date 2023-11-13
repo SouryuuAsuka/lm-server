@@ -5,11 +5,12 @@ import { CartCookiesDto } from '@src/domain/dtos/cart';
 @Injectable()
 export class CartsUseCases {
   constructor(private readonly cartRepository: ICartsRepository) {}
-  async getCart(type: string, cart: CartCookiesDto) {
+  async getCart(type: string, cartCookie: CartCookiesDto) {
     if (type === 'full') {
-      return await this.cartRepository.getFull(cart.cart_token, cart.cart_id);
+      return await this.cartRepository.getFull(cartCookie.cart_token, cartCookie.cart_id);
     } else {
-      return await this.cartRepository.get(cart.cart_token, cart.cart_id);
+      const cart = await this.cartRepository.get(cartCookie.cart_token, cartCookie.cart_id);
+      return {cart};
     }
   }
   async createCart(productId: number) {

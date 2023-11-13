@@ -6,7 +6,8 @@ import {
   Body,
   Query,
   Patch,
-  Res
+  Res,
+  Param
 } from '@nestjs/common';
 import { CartsUseCases } from '@src/application/use-cases/cart.use-case';
 import { CartCookiesDto } from '@src/domain/dtos/cart';
@@ -26,28 +27,24 @@ export class CartsController {
   @UseGuards(SimpleUserGuard)
   @Get()
   async getCart(
-    @Query('type') type: string,
-    @Cookies() cartCookies: CartCookiesDto) {
-    const cart = await this.cartsUseCases.getCart(type, cartCookies)
+    @Cookies() cartCookies: CartCookiesDto,
+    @Query('type') type?: string){
+    const data = await this.cartsUseCases.getCart(type, cartCookies)
     return {
       status: 'success',
-      data: {
-        cart: cart[0]?.order_array ?? []
-      },
+      data
     };
   }
 
   @Get(':cartId')
   async getCartById(
     @Query('type') type: string,
-    @Body('cartId') cartId: number,
+    @Param('cartId') cartId: number,
     @Query('cart_token') cart_token: string) {
-    const cart = await this.cartsUseCases.getCart(type, { cart_id: cartId, cart_token });
+    const data = await this.cartsUseCases.getCart(type, { cart_id: cartId, cart_token });
     return {
       status: 'success',
-      data: {
-        cart: cart[0]?.order_array ?? []
-      },
+      data
     };
   }
 
