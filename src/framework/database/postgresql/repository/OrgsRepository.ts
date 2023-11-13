@@ -153,8 +153,8 @@ export class OrgsRepository {
               , 'sold', p.sold
               , 'created', p.created
               , 'orders', p.orders
-              , 'catId', p.cat_id
-              , 'preparationTime', p.preparation_time
+              , 'cat_id', p.cat_id
+              , 'preparation_time', p.preparation_time
             )
           )  
           FROM products AS p
