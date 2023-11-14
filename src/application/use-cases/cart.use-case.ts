@@ -7,7 +7,9 @@ export class CartsUseCases {
   constructor(private readonly cartRepository: ICartsRepository) {}
   async getCart(type: string, cartCookie: CartCookiesDto) {
     if (type === 'full') {
-      return await this.cartRepository.getFull(cartCookie.cart_token, cartCookie.cart_id);
+      const cart = await this.cartRepository.getFull(cartCookie.cart_token, cartCookie.cart_id);
+      console.log(cart);
+      return cart
     } else {
       const cart = await this.cartRepository.get(cartCookie.cart_token, cartCookie.cart_id);
       return {cart: cart[0].order_array};
