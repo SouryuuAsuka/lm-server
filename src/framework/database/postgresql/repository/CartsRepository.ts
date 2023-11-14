@@ -23,26 +23,28 @@ export class CartsRepository {
   }
   async getFull(cartToken: string, cartId: number) {
     try{
-      const cartInsertString = `SELECT 
-        ARRAY_AGG(
-          elem ->> 'num' AS num,
-          elem ->> 'id' AS product_id,
-          elem ->> 'price' AS saved_price,
-          g.price AS price,
-          g.name AS name,
-          g.active AS active,
-          g.picture AS picture,
-          g.preparation_time AS preparation_time) AS products,
+      const cartInsertString = `
+      SELECT 
         o.org_id AS org_id,
-        o.name AS org_name
-        FROM carts AS c
-        CROSS JOIN LATERAL unnest(c.order_array) AS elem
-        JOIN products AS g
-        ON (elem ->> 'id')::INT = g.product_id
-        JOIN organizations AS o
-        ON o.org_id = g.org_id
-        GROUP BY o.org_id
-        WHERE c.token = $1 AND c.cart_id = $2`;
+        o.name AS org_name,
+        ARRAY_AGG(
+            jsonb_build_object(
+                'num', elem ->> 'num',
+                'product_id', elem ->> 'id',
+                'saved_price', elem ->> 'price',
+                'price', g.price,
+                'name', g.name,
+                'active', g.active,
+                'picture', g.picture,
+                'preparation_time', g.preparation_time
+            )
+        ) AS products
+      FROM carts AS c
+      CROSS JOIN LATERAL unnest(c.order_array) AS elem
+      JOIN products AS g ON (elem ->> 'id')::INT = g.product_id
+      JOIN organizations AS o ON o.org_id = g.org_id
+      WHERE c.token = $1 AND c.cart_id = $2
+      GROUP BY o.org_id, o.name`;
       const { rows } = await this.pool.query(cartInsertString, [
         cartToken,
         cartId,
