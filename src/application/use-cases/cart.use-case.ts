@@ -4,15 +4,20 @@ import { CartCookiesDto } from '@src/domain/dtos/cart';
 
 @Injectable()
 export class CartsUseCases {
-  constructor(private readonly cartRepository: ICartsRepository) {}
+  constructor(private readonly cartRepository: ICartsRepository) { }
   async getCart(type: string, cartCookie: CartCookiesDto) {
     if (type === 'full') {
       const cart = await this.cartRepository.getFull(cartCookie.cart_token, cartCookie.cart_id);
-      console.log(cart);
-      return cart
+      let prTime = 0;
+      for (const productGroup of cart) {
+        for ( const product of productGroup.products){
+          if(product.preparation_time > prTime) prTime = product.preparation_time;
+        }
+      }
+      return { cart }
     } else {
       const cart = await this.cartRepository.get(cartCookie.cart_token, cartCookie.cart_id);
-      return {cart: cart[0].order_array};
+      return { cart: cart[0].order_array };
     }
   }
   async createCart(productId: number) {
