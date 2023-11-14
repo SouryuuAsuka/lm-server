@@ -26,7 +26,7 @@ export class CartsRepository {
       const cartInsertString = `
       SELECT 
         o.org_id AS org_id,
-        o.name AS org_name,
+        o.name AS name,
         ARRAY_AGG(
             jsonb_build_object(
                 'num', elem ->> 'num',
