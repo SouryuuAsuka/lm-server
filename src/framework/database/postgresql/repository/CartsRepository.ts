@@ -113,14 +113,15 @@ export class CartsRepository {
         JOIN organizations AS o
         ON o.org_id = g.org_id
         WHERE c.token = $1 AND c.cart_id = $2`;
-      const cartRow = await this.pool.query(cartInsertString, [
+      const {rows} = await this.pool.query(cartInsertString, [
         cartToken,
         cartId,
       ]);
-      if (cartRow.rows.length == 0) {
+      console.log(JSON.stringify(rows));
+      if (rows.length == 0) {
         return { cart: [], prTime: null };
       } else {
-        sortCart(cartRow.rows, (cartArray, prTime) => {
+        sortCart(rows, (cartArray, prTime) => {
           return { cart: cartArray, prTime: prTime };
         });
       }
