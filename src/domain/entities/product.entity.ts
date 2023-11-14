@@ -6,6 +6,7 @@ export type ProductType = {
   name?: LangText[];
   about?: LangText[];
   price?: number;
+  saved_price?: number;
   active?: boolean;
   cat_id?: number;
   picture?: number;
@@ -13,4 +14,5 @@ export type ProductType = {
   orders?: number;
   preparation_time?: string;
   sold?: number;
+  num?: number;
 }

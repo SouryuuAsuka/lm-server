@@ -22,6 +22,40 @@ export class CartsRepository {
     }
   }
   async getFull(cartToken: string, cartId: number) {
+    try{
+      const cartInsertString = `SELECT 
+        ARRAY_AGG(
+          elem ->> 'num' AS num,
+          elem ->> 'id' AS product_id,
+          elem ->> 'price' AS saved_price,
+          g.price AS price,
+          g.name AS name,
+          g.active AS active,
+          g.picture AS picture,
+          g.preparation_time AS preparation_time) AS products,
+        o.org_id AS org_id,
+        o.name AS org_name
+        FROM carts AS c
+        CROSS JOIN LATERAL unnest(c.order_array) AS elem
+        JOIN products AS g
+        ON (elem ->> 'id')::INT = g.product_id
+        JOIN organizations AS o
+        ON o.org_id = g.org_id
+        GROUP BY o.org_id
+        WHERE c.token = $1 AND c.cart_id = $2`;
+      const { rows } = await this.pool.query(cartInsertString, [
+        cartToken,
+        cartId,
+      ]);
+      console.log(JSON.stringify(rows));
+      return rows;
+      
+    } catch (err: any) {
+      console.log(err);
+      this.exceptionService.DatabaseException(err.message);
+    }
+  }
+  /*async getFull(cartToken: string, cartId: number) {
     try {
       function sortCart(cart, callback) {
         const cartArray = [];
@@ -129,7 +163,7 @@ export class CartsRepository {
       console.log(err);
       this.exceptionService.DatabaseException(err.message);
     }
-  }
+  }*/
   async addProduct(cart, cartToken, cartId) {
     try {
       const orgInsertString =
