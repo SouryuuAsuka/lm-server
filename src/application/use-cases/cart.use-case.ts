@@ -14,7 +14,7 @@ export class CartsUseCases {
           if(product.preparation_time > prTime) prTime = product.preparation_time;
         }
       }
-      return { cart }
+      return { cart, prTime }
     } else {
       const cart = await this.cartRepository.get(cartCookie.cart_token, cartCookie.cart_id);
       return { cart: cart[0].order_array };
