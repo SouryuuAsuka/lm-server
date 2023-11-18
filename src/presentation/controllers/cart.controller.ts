@@ -28,7 +28,7 @@ export class CartsController {
   @Get()
   async getCart(
     @Cookies() cartCookies: CartCookiesDto,
-    @Query('type') type?: string){
+    @Query('type') type?: string) {
     const data = await this.cartsUseCases.getCart(type, cartCookies)
     return {
       status: 'success',
@@ -53,34 +53,47 @@ export class CartsController {
   async createCart(
     @Body('productId') productId: number,
     @Res({ passthrough: true }) res: FastifyReply,
+    @Body('twa') twa?: boolean,
   ) {
     const { cartId, token } = await this.cartsUseCases.createCart(productId);
-    res.cookie('cart_id', cartId, {
-      domain: '.'+process.env.SERVER_DOMAIN,
-      path: '/'
-    });
-    res.cookie('cart_token', token, {
-      domain: '.'+process.env.SERVER_DOMAIN,
-      path: '/'
-    });
+    if (!twa) {
+      res.cookie('cart_id', cartId, {
+        domain: process.env.SERVER_DOMAIN,
+        path: '/'
+      });
+      res.cookie('cart_token', token, {
+        domain: process.env.SERVER_DOMAIN,
+        path: '/'
+      });
+      return res.send({
+        status: 'success',
+        data: {}
+      });
+    }
     return res.send({
       status: 'success',
-      data: {}
+      data: {
+        cart_id: cartId,
+        cart_token: token,
+      }
     });
+
   }
 
   @UseGuards(SimpleUserGuard)
   @Patch()
   async addProductToCart(
     @Body('cart') cart: any,
-    @Cookies() cartCookies: CartCookiesDto,
+    @Cookies() cartCookies?: CartCookiesDto,
+    @Body('cart_id') cart_id?: number,
+    @Body('cart_token') cart_token?: string,
   ) {
     return {
       status: 'success',
       data: await this.cartsUseCases.addProductToCart(
         cart,
-        cartCookies.cart_token,
-        cartCookies.cart_id,
+        cartCookies.cart_token ?? cart_token,
+        cartCookies.cart_id ?? cart_id,
       ),
     };
   }
