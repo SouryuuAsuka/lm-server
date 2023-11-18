@@ -57,9 +57,11 @@ export class CartsController {
     const { cartId, token } = await this.cartsUseCases.createCart(productId);
     res.cookie('cart_id', cartId, {
       domain: process.env.SERVER_DOMAIN,
+      path: '/'
     });
     res.cookie('cart_token', token, {
       domain: process.env.SERVER_DOMAIN,
+      path: '/'
     });
     return res.send({
       status: 'success',
