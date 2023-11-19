@@ -85,8 +85,8 @@ export class CartsController {
   async addProductToCart(
     @Body('cart') cart: any,
     @Cookies() cartCookies?: CartCookiesDto,
-    @Body('cart_id') cart_id?: number,
-    @Body('cart_token') cart_token?: string,
+    @Body('cartId') cart_id?: number,
+    @Body('cartToken') cart_token?: string,
   ) {
     return {
       status: 'success',
